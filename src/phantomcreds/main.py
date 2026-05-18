@@ -10,6 +10,7 @@ from pathlib import Path
 
 from phantomcreds.config import (
     CODE_SEARCH_QUERIES,
+    FILE_FETCH_WORKERS,
     FINDINGS_FILE,
     MAX_CANDIDATES_PER_SCAN,
     MAX_CODE_RESULTS_PER_QUERY,
@@ -286,6 +287,22 @@ def _write_step_summary(reports: list[RepoReport], findings: list[RepoFinding], 
     _log.info("GitHub Actions step summary written")
 
 
+def _fetch_repo_files(
+    client: GitHubClient,
+    repo_full_name: str,
+    ref: str,
+    selected_paths: list[str],
+) -> dict[str, str]:
+    files = client.get_multiple_file_contents(
+        repo_full_name,
+        selected_paths,
+        ref,
+        max_workers=FILE_FETCH_WORKERS,
+    )
+    _log.info("Fetched %d/%d candidate files for %s", len(files), len(selected_paths), repo_full_name)
+    return files
+
+
 def main() -> None:
     setup_logging()
     client = GitHubClient(token=os.environ["GH_TOKEN"])
@@ -318,11 +335,12 @@ def main() -> None:
         selected_paths = _select_paths(tree_paths, code_paths.get(repo_full_name, set()))
         secret_sweep_paths = _select_secret_sweep_paths(tree_paths, selected_paths)
 
-        files: dict[str, str] = {}
-        for path in (*selected_paths, *secret_sweep_paths):
-            content = client.get_file_content(repo_full_name, path, metadata.default_branch)
-            if content is not None:
-                files[path] = content
+        files = _fetch_repo_files(
+            client,
+            repo_full_name,
+            metadata.default_branch,
+            [*selected_paths, *secret_sweep_paths],
+        )
 
         report, repo_findings = analyze_repository(
             metadata=metadata,

@@ -73,6 +73,25 @@ def _findings() -> list[RepoFinding]:
     ]
 
 
+def _secret_findings() -> list[RepoFinding]:
+    return [
+        RepoFinding(
+            repo_full_name="owner/repo",
+            finding_type="exposed_secret",
+            title="Secret-bearing credential material appears committed in current repository files",
+            severity="high",
+            confidence="confirmed",
+            summary="Current repository files appear to contain committed credential material.",
+            issue_worthy=True,
+            scan_date=SCAN_DATE,
+            evidence=(
+                ".env:1 - OPENAI_API_KEY=[REDACTED:sk-pro...3456]",
+                "deploy/id_rsa:1 - [REDACTED:-----BEGIN OPENSSH PRIVATE KEY-----]",
+            ),
+        )
+    ]
+
+
 def test_create_issue_when_no_open_thread_exists() -> None:
     client = FakeClient(existing_issue=None)
     notify_all(client, [_report()], _findings())
@@ -109,3 +128,15 @@ def test_report_only_repo_does_not_notify() -> None:
     notify_all(client, [_report(action="report_only")], _findings())
     assert client.created == []
     assert client.added_comments == []
+
+
+def test_issue_body_includes_secret_indicators_and_llm_fix_guide() -> None:
+    client = FakeClient(existing_issue=None)
+    notify_all(client, [_report()], _secret_findings())
+
+    body = client.created[0][2]
+    assert "Exposed secret indicators" in body
+    assert "OPENAI_API_KEY" in body
+    assert "OPENSSH PRIVATE KEY" in body
+    assert "LLM Fix Guide" in body
+    assert "Revoke or rotate the exposed credential" in body

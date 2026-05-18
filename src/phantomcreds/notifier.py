@@ -45,9 +45,72 @@ def _finding_markdown(finding: RepoFinding) -> str:
     )
 
 
+def _secret_indicators(findings: list[RepoFinding]) -> list[str]:
+    indicators: set[str] = set()
+    for finding in findings:
+        if finding.finding_type != "exposed_secret":
+            continue
+        for ref in finding.evidence:
+            if "OPENSSH PRIVATE KEY" in ref:
+                indicators.add("OPENSSH PRIVATE KEY")
+                continue
+            if "GCP service account private key block" in ref:
+                indicators.add("GCP service account private key block")
+                continue
+            if " - " not in ref:
+                continue
+            evidence_text = ref.split(" - ", 1)[1]
+            if "=" in evidence_text:
+                indicators.add(evidence_text.split("=", 1)[0].strip())
+    return sorted(indicators)
+
+
+def _llm_fix_guide(findings: list[RepoFinding]) -> str:
+    indicators = _secret_indicators(findings)
+    indicator_text = ", ".join(indicators) if indicators else "credential material"
+    if any(finding.finding_type == "exposed_secret" for finding in findings):
+        return f"""\
+### LLM Fix Guide
+
+Recommended remediation order:
+1. Revoke or rotate the exposed credential(s): `{indicator_text}`.
+2. Remove the committed secret material from the current branch and replace it with environment-variable or secret-manager loading.
+3. If the secret existed in prior commits, rewrite history or invalidate the old credential so historical clones are harmless.
+4. Add secret-bearing files to `.gitignore` and provide a safe template file such as `.env.example` instead of live credentials.
+
+Suggested prompt for an LLM coding assistant:
+
+```text
+Remove the exposed credential material from this repository without breaking runtime configuration.
+Replace committed secrets with environment-variable loading or secret-manager integration.
+Add or update ignore rules so secret-bearing files are not recommitted.
+Preserve existing behavior, but migrate any checked-in .env, private-key, or service-account material to safe templates.
+Show the exact files changed and include a short post-fix verification checklist.
+```
+"""
+
+    return """\
+### LLM Fix Guide
+
+Suggested prompt for an LLM coding assistant:
+
+```text
+Fix the credential-handling findings in this repository while preserving current behavior.
+Remove unsafe header logging, tighten exposed callback or management surfaces, and stop mirroring or persisting sensitive auth material unnecessarily.
+Show the exact files changed and include a short verification checklist for the maintainer.
+```
+"""
+
+
 def _issue_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     finding_types = ", ".join(sorted({finding.finding_type for finding in findings}))
     sections = "\n".join(_finding_markdown(finding) for finding in findings)
+    secret_indicators = _secret_indicators(findings)
+    secret_indicator_line = (
+        f"| Exposed secret indicators | {', '.join(secret_indicators)} |\n"
+        if secret_indicators
+        else ""
+    )
     return f"""\
 {_ISSUE_MARKER}
 {_scan_marker(report.scan_date)}
@@ -63,10 +126,13 @@ phantomcreds detected repo-level code or deployment patterns that warrant mainta
 | Findings | {report.finding_count} |
 | Issue-worthy findings | {report.issue_worthy_count} |
 | Discovery sources | {", ".join(report.discovery_sources) or "--"} |
+{secret_indicator_line}
 
 Detected finding types: `{finding_types}`
 
 {sections}
+
+{_llm_fix_guide(findings)}
 
 ---
 
@@ -80,6 +146,10 @@ Automated by [phantomcreds](https://github.com/tg12/phantomcreds).
 
 def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     finding_types = ", ".join(sorted({finding.finding_type for finding in findings}))
+    secret_indicators = _secret_indicators(findings)
+    indicator_line = (
+        f"- Exposed secret indicators: {', '.join(secret_indicators)}\n" if secret_indicators else ""
+    )
     return (
         f"{_scan_marker(report.scan_date)}\n"
         f"### Scan update: {report.scan_date}\n\n"
@@ -88,6 +158,7 @@ def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
         f"- Composite score: **{report.composite:.3f}**\n"
         f"- Findings: {report.finding_count}\n"
         f"- Issue-worthy findings: {report.issue_worthy_count}\n\n"
+        f"{indicator_line}"
         f"Finding types: `{finding_types}`\n\n"
         + "\n".join(f"- {finding.title}" for finding in findings)
         + (

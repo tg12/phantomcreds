@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import logging
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 import requests
@@ -154,6 +155,43 @@ class GitHubClient:
             return raw.decode("utf-8", errors="replace")
         except ValueError:
             return None
+
+    def get_multiple_file_contents(
+        self,
+        repo_full_name: str,
+        paths: list[str],
+        ref: str,
+        max_workers: int,
+    ) -> dict[str, str]:
+        """Fetch multiple text files concurrently and return path -> decoded content."""
+        unique_paths = list(dict.fromkeys(paths))
+        if not unique_paths:
+            return {}
+        if max_workers <= 1 or len(unique_paths) == 1:
+            result: dict[str, str] = {}
+            for path in unique_paths:
+                content = self.get_file_content(repo_full_name, path, ref)
+                if content is not None:
+                    result[path] = content
+            return result
+
+        result: dict[str, str] = {}
+        worker_count = min(max_workers, len(unique_paths))
+        with ThreadPoolExecutor(max_workers=worker_count) as executor:
+            future_to_path = {
+                executor.submit(self.get_file_content, repo_full_name, path, ref): path
+                for path in unique_paths
+            }
+            for future in as_completed(future_to_path):
+                path = future_to_path[future]
+                try:
+                    content = future.result()
+                except Exception as exc:  # pragma: no cover
+                    _log.warning("Failed to fetch %s from %s: %s", path, repo_full_name, exc)
+                    continue
+                if content is not None:
+                    result[path] = content
+        return result
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
         """Create an issue on the target repo and return the number."""
