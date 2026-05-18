@@ -6,12 +6,14 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from phantomcreds.main import (
+    _candidate_score,
     _filter_recent_candidates,
     _is_text_like_path,
     _parse_github_timestamp,
     _resolve_runtime_options,
     _select_paths,
     _select_secret_sweep_paths,
+    _source_family,
 )
 from phantomcreds.models import RepoMetadata
 
@@ -77,6 +79,34 @@ def test_filter_recent_candidates_keeps_recent_pushes_and_prefers_signal_count()
 
     assert candidates == ["owner/fresh-high-signal", "owner/fresh-low-signal"]
     assert set(metadata_by_repo) == set(candidate_sources)
+
+
+def test_source_family_collapses_language_suffixes() -> None:
+    assert _source_family("token-persistence-go") == "token-persistence"
+    assert _source_family("callback-exposure-typescript") == "callback-exposure"
+    assert _source_family("shared-subscription-posture") == "shared-subscription-posture"
+
+
+def test_candidate_score_penalizes_archived_and_forked_repos() -> None:
+    sources = {"shared-subscription-posture", "token-persistence-go", "auth-import-typescript"}
+    active_metadata = _metadata("owner/active", pushed_at="2026-05-18T11:30:00Z")
+    weak_metadata = RepoMetadata(
+        full_name="owner/weak",
+        description=None,
+        html_url="https://github.com/owner/weak",
+        default_branch="main",
+        stargazers_count=200,
+        created_at="2026-05-01T00:00:00Z",
+        pushed_at="2026-05-18T11:30:00Z",
+        updated_at="2026-05-18T11:30:00Z",
+        archived=True,
+        fork=True,
+    )
+
+    active_score = _candidate_score("owner/active", sources, active_metadata)
+    weak_score = _candidate_score("owner/weak", sources, weak_metadata)
+
+    assert active_score > weak_score
 
 
 def test_select_paths_prioritizes_secret_candidate_files() -> None:

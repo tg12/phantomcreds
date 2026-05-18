@@ -16,6 +16,7 @@ from phantomcreds.config import (
     FINDINGS_FILE,
     MAX_CANDIDATES_PER_SCAN,
     MAX_CODE_RESULTS_PER_QUERY,
+    MAX_DISCOVERY_CANDIDATES,
     MAX_FILES_PER_REPO,
     MAX_REPO_RESULTS_PER_QUERY,
     MAX_SECRET_SWEEP_FILES_PER_REPO,
@@ -120,6 +121,14 @@ _SKIP_TEXT_SWEEP_SEGMENTS: frozenset[str] = frozenset({
     "target",
     "vendor",
 })
+_LANGUAGE_SUFFIXES: frozenset[str] = frozenset({
+    "generic",
+    "go",
+    "javascript",
+    "python",
+    "rust",
+    "typescript",
+})
 
 
 @dataclass(frozen=True, slots=True)
@@ -202,10 +211,43 @@ def _build_candidate_pool(client: GitHubClient) -> tuple[dict[str, set[str]], di
 def _prioritize_candidates(candidate_sources: dict[str, set[str]]) -> list[str]:
     ranked = sorted(
         candidate_sources,
-        key=lambda repo: (len(candidate_sources[repo]), repo.lower()),
+        key=lambda repo: (
+            len({_source_family(label) for label in candidate_sources[repo]}),
+            len(candidate_sources[repo]),
+            repo.lower(),
+        ),
         reverse=True,
     )
-    return ranked[:MAX_CANDIDATES_PER_SCAN]
+    return ranked[:MAX_DISCOVERY_CANDIDATES]
+
+
+def _source_family(label: str) -> str:
+    family, separator, suffix = label.rpartition("-")
+    if separator and suffix in _LANGUAGE_SUFFIXES:
+        return family
+    return label
+
+
+def _candidate_score(repo_full_name: str, sources: set[str], metadata: RepoMetadata) -> tuple[float, datetime, str]:
+    family_count = len({_source_family(label) for label in sources})
+    source_count = len(sources)
+    has_posture_signal = any(label.endswith("posture") for label in sources)
+    has_code_signal = any(not label.endswith("posture") for label in sources)
+
+    score = float(family_count * 4 + source_count)
+    if has_posture_signal and has_code_signal:
+        score += 3.0
+    if metadata.fork:
+        score -= 2.0
+    if metadata.archived:
+        score -= 6.0
+    if metadata.stargazers_count == 0:
+        score += 0.5
+    elif metadata.stargazers_count < 25:
+        score += 1.0
+
+    pushed_at = _parse_github_timestamp(metadata.pushed_at) or datetime.min.replace(tzinfo=UTC)
+    return score, pushed_at, repo_full_name.lower()
 
 
 def _filter_recent_candidates(
@@ -227,11 +269,7 @@ def _filter_recent_candidates(
 
     ranked = sorted(
         recent_candidates,
-        key=lambda repo: (
-            len(candidate_sources[repo]),
-            _parse_github_timestamp(metadata_by_repo[repo].pushed_at) or datetime.min.replace(tzinfo=UTC),
-            repo.lower(),
-        ),
+        key=lambda repo: _candidate_score(repo, candidate_sources[repo], metadata_by_repo[repo]),
         reverse=True,
     )
     return ranked[:MAX_CANDIDATES_PER_SCAN], metadata_by_repo

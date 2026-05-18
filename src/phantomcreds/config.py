@@ -20,14 +20,41 @@ REPO_SEARCH_QUERIES: Final[tuple[tuple[str, str], ...]] = (
         "provider-relay-posture",
         '"Claude Code" relay OR "Codex" relay OR "Gemini" relay',
     ),
+    (
+        "session-reuse-posture",
+        '"use your own session" OR "desktop auth" OR "browser cookies" OR "import cookies"',
+    ),
+    (
+        "shared-provider-posture",
+        '"shared quota" OR "team account" OR "provider relay" OR "account rotation"',
+    ),
+    (
+        "auth-cache-posture",
+        '"session.json" OR "cookies.json" OR "auth.json" OR "credential store"',
+    ),
 )
 
 CODE_SEARCH_QUERIES: Final[tuple[tuple[str, str], ...]] = (
-    ("token-serialization", '"SaveTokenToFile" "refresh_token" language:Go'),
-    ("raw-auth-forwarding", '"cloneHeaders" "Authorization" "request log" language:Go'),
-    ("callback-exposure", '"0.0.0.0" "oauth-callback" language:Go'),
-    ("auth-bypass", '"wrapManagementAuth" language:Go'),
-    ("management-cors", '"Access-Control-Allow-Origin" "v0/management" language:Go'),
+    ("token-persistence-go", '"refresh_token" "SaveTokenToFile" language:Go'),
+    ("token-persistence-python", '"refresh_token" "write_text" language:Python'),
+    ("token-persistence-javascript", '"refresh_token" "fs.writeFile" language:JavaScript'),
+    ("token-persistence-typescript", '"refresh_token" "writeFile" language:TypeScript'),
+    ("session-persistence-python", '"cookies.json" "json.dump" language:Python'),
+    ("session-persistence-javascript", '"auth.json" "writeFile" language:JavaScript'),
+    ("session-persistence-typescript", '"session.json" "writeFile" language:TypeScript'),
+    ("raw-auth-forwarding-go", '"Authorization" "cloneHeaders" language:Go'),
+    ("raw-auth-forwarding-python", '"Authorization" "request.headers" language:Python'),
+    ("raw-auth-forwarding-javascript", '"Authorization" "req.headers" language:JavaScript'),
+    ("callback-exposure-go", '"0.0.0.0" "oauth-callback" language:Go'),
+    ("callback-exposure-python", '"0.0.0.0" "oauth" language:Python'),
+    ("callback-exposure-typescript", '"0.0.0.0" "callback" language:TypeScript'),
+    ("auth-bypass-go", '"wrapManagementAuth" language:Go'),
+    ("auth-bypass-javascript", '"/v0/management" "Access-Control-Allow-Origin" language:JavaScript'),
+    ("auth-import-python", '"auth.json" "cookies.json" language:Python'),
+    ("auth-import-typescript", '"auth.json" "cookies.json" language:TypeScript'),
+    ("secret-path-env", '"OPENAI_API_KEY" filename:.env'),
+    ("secret-path-service-account", '"private_key" "client_email" filename:service-account.json'),
+    ("secret-path-private-key", '"BEGIN OPENSSH PRIVATE KEY"'),
 )
 
 README_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
@@ -117,7 +144,8 @@ PRIORITY_PATH_SUFFIXES: Final[tuple[str, ...]] = tuple(sorted(
 
 MAX_REPO_RESULTS_PER_QUERY: Final[int] = 30
 MAX_CODE_RESULTS_PER_QUERY: Final[int] = 40
-MAX_CANDIDATES_PER_SCAN: Final[int] = 80
+MAX_DISCOVERY_CANDIDATES: Final[int] = 160
+MAX_CANDIDATES_PER_SCAN: Final[int] = 100
 MAX_FILES_PER_REPO: Final[int] = 18
 MAX_SECRET_SWEEP_FILES_PER_REPO: Final[int] = 80
 MAX_ISSUES_PER_SCAN: Final[int] = 10

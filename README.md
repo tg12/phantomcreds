@@ -34,10 +34,10 @@ It is built around one premise: operator trust is the product. If the scanner ca
 
 **phantomcreds** runs a daily GitHub Actions job that:
 
-1. Searches GitHub repositories for posture phrases such as `multi-account`, `no API key needed`, `auth file`, and `shared subscription`
-2. Searches code for strong credential-risk fingerprints such as `SaveTokenToFile`, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management CORS, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env`, credential, config, private-key, and service-account material
+1. Searches GitHub repositories for posture phrases such as `multi-account`, `no API key needed`, `auth file`, `shared subscription`, session reuse, provider relays, and imported browser-auth language
+2. Searches code across Go, Python, JavaScript, and TypeScript for credential-risk fingerprints such as token or session persistence, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management exposure, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env`, credential, config, private-key, and service-account material
 3. Fetches targeted high-signal files plus a bounded sweep of broadly text-like repo files directly from the GitHub API
-4. Scores each repo against a repo-level evidence model rather than a keyword count
+4. Scores each repo against a repo-level evidence model that prefers multi-family matches over single-query noise, then biases toward recently pushed non-archived non-fork repos
 5. Writes append-only ledgers to this repo:
    - [`data/repos.jsonl`](data/repos.jsonl) for per-repo scan outcomes
    - [`data/findings.jsonl`](data/findings.jsonl) for concrete findings with evidence
@@ -95,6 +95,7 @@ Why that loses:
 The winning move is smaller:
 
 - search-first discovery
+- multi-language query families
 - targeted file fetches
 - repo-level scoring
 - one issue per repo at most
