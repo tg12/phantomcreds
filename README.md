@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-18 | 104 | 60 | 44 | 45 | 26 | 44 |
+| 2026-05-18 | 114 | 68 | 45 | 46 | 27 | 45 |
 <!-- STATS:END -->
 
 ---
@@ -138,7 +138,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33365 | 2026-05-18 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33367 | 2026-05-18 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 83 | 2026-05-18 |
 | HsnSaboor/CLIProxyAPIPlus | 1.000 | 7 | report_only | 61 | 2026-05-17 |
 | Finesssee/ProxyPilot | 1.000 | 7 | report_only | 221 | 2026-05-18 |
@@ -146,7 +146,7 @@ The data model is structured so those questions can be answered from the ledger 
 | fxzer/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-14 |
 | vannek110/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-02-06 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-17 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-18 |
 | NguyenSiTrung/CLIProxyAPI | 1.000 | 6 | report_only | 1 | 2026-05-07 |
 | daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 39 | 2026-05-16 |
 | CodexNexor/VoltGate | 1.000 | 6 | report_only | 4 | 2026-04-27 |
