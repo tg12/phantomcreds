@@ -126,7 +126,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-18 | 160 | 94 | 43 | 74 | 39 | 43 |
+| 2026-05-18 | 240 | 143 | 44 | 114 | 59 | 44 |
 <!-- STATS:END -->
 
 ---
@@ -146,6 +146,11 @@ The data model is structured so those questions can be answered from the ledger 
 | tikhomirov/cliapi-webui | 1.000 | 7 | report_only | 0 | 2026-05-14 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 83 | 2026-05-18 |
 | fxzer/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-14 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33362 | 2026-05-18 |
+| HsnSaboor/CLIProxyAPIPlus | 1.000 | 7 | report_only | 61 | 2026-05-17 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 83 | 2026-05-18 |
+| tikhomirov/cliapi-webui | 1.000 | 7 | report_only | 0 | 2026-05-14 |
+| fxzer/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-14 |
 | router-for-me/CLIProxyAPI | 1.000 | 6 | report_only | 33287 | 2026-05-18 |
 | vannek110/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-02-06 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
@@ -156,11 +161,6 @@ The data model is structured so those questions can be answered from the ledger 
 | zhangrr/CLIProxyAPI | 1.000 | 6 | file_issue | 13 | 2026-05-11 |
 | tamaproject360/clipproxyhybrid | 1.000 | 6 | report_only | 0 | 2026-01-05 |
 | Sakuralaaa/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-03-06 |
-| SahandTava/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-01-02 |
-| nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-05-16 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-17 |
-| edlsh/CLIProxyAPIPlus-HsnSaboor | 1.000 | 6 | report_only | 0 | 2026-05-02 |
-| Camier/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-02-11 |
 <!-- REPO_STATS:END -->
 
 ---
