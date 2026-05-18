@@ -1,0 +1,4 @@
+# False-positive allowlist -- one GitHub repo per line.
+# Repos listed here are excluded from future phantomcreds scans.
+# Add entries only after reviewing a false-positive report via the issue tracker.
+# Format: owner/repo, one per line, no leading/trailing whitespace, no quotes.

@@ -1,0 +1,25 @@
+name: False positive / benign repo review
+description: Request review for a repo that phantomcreds flagged incorrectly
+title: "[false-positive] owner/repo"
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form if a repo was flagged by phantomcreds but the detection appears incorrect or materially outdated.
+  - type: input
+    id: repo
+    attributes:
+      label: Repository
+      description: Full `owner/repo` name that was flagged
+      placeholder: owner/repo
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why the detection is wrong
+      description: Cite the relevant files, paths, or changed behavior
+      placeholder: Explain which finding was incorrect and why
+    validations:
+      required: true
