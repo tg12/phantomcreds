@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from pathlib import Path
+from unittest.mock import MagicMock
 
+from phantomcreds.github_client import GitHubClient
 from phantomcreds.main import (
     _candidate_score,
     _filter_recent_candidates,
@@ -190,3 +192,46 @@ def test_resolve_runtime_options_supports_non_local_overrides(
     assert options.allowlist_path == Path("/tmp/custom-allowlist.txt")
     assert options.readme_path == Path("/tmp/custom-readme.md")
     assert options.notify_external is False
+
+
+def test_rate_limit_check_does_not_sleep_for_healthy_search_bucket(
+    monkeypatch,
+) -> None:
+    client = GitHubClient("test-token")
+    response = MagicMock()
+    response.headers = {
+        "X-RateLimit-Resource": "search",
+        "X-RateLimit-Limit": "30",
+        "X-RateLimit-Remaining": "29",
+        "X-RateLimit-Reset": "2000000000",
+    }
+    response.status_code = 200
+
+    sleep_calls: list[int] = []
+    monkeypatch.setattr("phantomcreds.github_client.time.sleep", sleep_calls.append)
+
+    client._check_rate_limit(response)
+
+    assert sleep_calls == []
+
+
+def test_rate_limit_check_sleeps_when_code_search_bucket_is_nearly_empty(
+    monkeypatch,
+) -> None:
+    client = GitHubClient("test-token")
+    response = MagicMock()
+    response.headers = {
+        "X-RateLimit-Resource": "code_search",
+        "X-RateLimit-Limit": "10",
+        "X-RateLimit-Remaining": "1",
+        "X-RateLimit-Reset": "2000000000",
+    }
+    response.status_code = 200
+
+    monkeypatch.setattr("phantomcreds.github_client.time.time", lambda: 1999999990)
+    sleep_calls: list[int] = []
+    monkeypatch.setattr("phantomcreds.github_client.time.sleep", sleep_calls.append)
+
+    client._check_rate_limit(response)
+
+    assert sleep_calls == [15]

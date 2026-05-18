@@ -30,6 +30,18 @@ _REPO_TABLE_HEADER = (
 )
 
 
+def _dedupe_records_per_repo_per_day(records: list[Record]) -> list[Record]:
+    """Keep the most recent row for each repo on each scan date."""
+    deduped: dict[tuple[str, str], Record] = {}
+    for record in records:
+        scan_date = str(record.get("scan_date", ""))
+        repo_full_name = str(record.get("full_name", ""))
+        if not scan_date or not repo_full_name:
+            continue
+        deduped[(scan_date, repo_full_name)] = record
+    return list(deduped.values())
+
+
 def _as_int(value: object, default: int = 0) -> int:
     if isinstance(value, bool):
         return int(value)
@@ -68,6 +80,7 @@ def _inject_block(content: str, start: str, end: str, block: str) -> str:
 
 
 def _build_daily_table(records: list[Record]) -> str:
+    records = _dedupe_records_per_repo_per_day(records)
     by_date: dict[str, list[Record]] = defaultdict(list)
     for record in records:
         scan_date = str(record.get("scan_date", "unknown"))
@@ -100,6 +113,7 @@ def _build_daily_table(records: list[Record]) -> str:
 
 
 def _build_repo_table(records: list[Record]) -> str:
+    records = _dedupe_records_per_repo_per_day(records)
     if not records:
         return f"{_REPO_TABLE_HEADER}\n| *No scan data yet* | -- | -- | -- | -- | -- |"
 

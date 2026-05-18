@@ -6,6 +6,7 @@ import base64
 import logging
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import UTC, datetime
 from typing import Any
 
 import requests
@@ -17,7 +18,11 @@ from phantomcreds.models import CodeSearchHit, RepoMetadata
 
 _log = logging.getLogger(__name__)
 
-_RATE_LIMIT_PAUSE_THRESHOLD = 150
+_DEFAULT_RATE_LIMIT_PAUSE_THRESHOLD = 150
+_RATE_LIMIT_PAUSE_THRESHOLDS: dict[str, int] = {
+    "search": 5,
+    "code_search": 2,
+}
 
 
 class GitHubClient:
@@ -262,11 +267,25 @@ class GitHubClient:
         return resp.json()
 
     def _check_rate_limit(self, resp: requests.Response) -> None:
+        resource = resp.headers.get("X-RateLimit-Resource", "core")
+        limit = int(resp.headers.get("X-RateLimit-Limit", 0))
         remaining = int(resp.headers.get("X-RateLimit-Remaining", 9999))
         reset_at = int(resp.headers.get("X-RateLimit-Reset", 0))
-        if remaining < _RATE_LIMIT_PAUSE_THRESHOLD:
+        pause_threshold = _RATE_LIMIT_PAUSE_THRESHOLDS.get(
+            resource,
+            _DEFAULT_RATE_LIMIT_PAUSE_THRESHOLD,
+        )
+        if remaining < pause_threshold:
             wait_s = max(0, reset_at - int(time.time())) + 5
-            _log.warning("Rate limit low (%d remaining), sleeping %ds", remaining, wait_s)
+            reset_at_text = datetime.fromtimestamp(reset_at, tz=UTC).isoformat()
+            _log.warning(
+                "Rate limit low for %s (%d/%d remaining, reset at %s), sleeping %ds",
+                resource,
+                remaining,
+                limit,
+                reset_at_text,
+                wait_s,
+            )
             time.sleep(wait_s)
         if resp.status_code == 403 and remaining == 0:
             raise RateLimitError(reset_at)
