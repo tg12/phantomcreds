@@ -14,6 +14,10 @@ _log = logging.getLogger(__name__)
 
 _ISSUE_TITLE = "[phantomcreds] Credential-handling risks detected in this repository"
 _ISSUE_MARKER = "<!-- phantomcreds:issue -->"
+_PROJECT_URL = "https://github.com/tg12/phantomcreds"
+_CREATOR_NAME = "James Sawyer"
+_CREATOR_URL = "https://github.com/tg12"
+_CREATOR_LABS_URL = "https://labs.jamessawyer.co.uk/"
 
 
 def _scan_marker(scan_date: str) -> str:
@@ -70,6 +74,7 @@ This scan is evidence-first and probabilistic. It is not an accusation of malici
 If any finding is incorrect or outdated, please reply with corrected context and exact file references.
 
 Automated by [phantomcreds](https://github.com/tg12/phantomcreds).
+[Project repo]({_PROJECT_URL}) · Created by [{_CREATOR_NAME}]({_CREATOR_URL}) at [JS Labs]({_CREATOR_LABS_URL}).
 """
 
 
@@ -85,6 +90,12 @@ def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
         f"- Issue-worthy findings: {report.issue_worthy_count}\n\n"
         f"Finding types: `{finding_types}`\n\n"
         + "\n".join(f"- {finding.title}" for finding in findings)
+        + (
+            "\n\n"
+            f"Source: [phantomcreds]({_PROJECT_URL})"
+            f" by [{_CREATOR_NAME}]({_CREATOR_URL})"
+            f" at [JS Labs]({_CREATOR_LABS_URL})."
+        )
     )
 
 

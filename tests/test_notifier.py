@@ -79,6 +79,8 @@ def test_create_issue_when_no_open_thread_exists() -> None:
     assert len(client.created) == 1
     assert "<!-- phantomcreds:issue -->" in client.created[0][2]
     assert "<!-- phantomcreds:scan:2026-05-18 -->" in client.created[0][2]
+    assert "Created by [James Sawyer](https://github.com/tg12)" in client.created[0][2]
+    assert "[Project repo](https://github.com/tg12/phantomcreds)" in client.created[0][2]
     assert client.added_comments == []
 
 
@@ -89,6 +91,7 @@ def test_comment_existing_issue_when_open_thread_exists() -> None:
     assert len(client.added_comments) == 1
     assert client.added_comments[0][1] == 77
     assert "This issue remains open." in client.added_comments[0][2]
+    assert "Source: [phantomcreds](https://github.com/tg12/phantomcreds)" in client.added_comments[0][2]
 
 
 def test_skip_duplicate_same_day_comment() -> None:
