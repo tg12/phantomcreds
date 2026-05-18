@@ -166,6 +166,22 @@ class GitHubClient:
             {"body": body},
         )
 
+    def list_issue_comments(self, owner_repo: str, issue_number: int) -> list[str]:
+        """Return comment bodies for an issue."""
+        comments: list[str] = []
+        for page in range(1, 6):
+            items = self._rest_get(
+                f"{GITHUB_API_BASE}/repos/{owner_repo}/issues/{issue_number}/comments",
+                params={"per_page": 100, "page": page},
+            )
+            if not isinstance(items, list) or not items:
+                break
+            for item in items:
+                body = item.get("body", "")
+                if isinstance(body, str):
+                    comments.append(body)
+        return comments
+
     def find_open_issue(self, owner_repo: str, title_fragment: str) -> int | None:
         """Return the first open issue whose title contains title_fragment."""
         for page in range(1, 5):
