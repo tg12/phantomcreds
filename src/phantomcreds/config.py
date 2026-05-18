@@ -52,6 +52,38 @@ SECRET_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
     "secrets.json",
     "auth.json",
     "cookies.json",
+    ".npmrc",
+    ".pypirc",
+    ".terraformrc",
+    "terraform.tfvars",
+    "terraform.tfvars.json",
+    "credentials",
+    "id_rsa",
+    "id_dsa",
+    "id_ecdsa",
+    "id_ed25519",
+    "service-account.json",
+    "gcp-service-account.json",
+    "azure.json",
+    "aws-credentials",
+)
+
+SECRET_CANDIDATE_SUFFIXES: Final[tuple[str, ...]] = (
+    ".env",
+    ".env.local",
+    ".env.production",
+    ".env.development",
+    ".env.example",
+    ".env.sample",
+    ".pem",
+    ".key",
+    ".p8",
+    ".p12",
+    ".pfx",
+    ".tfvars",
+    ".tfvars.json",
+    "service-account.json",
+    "credentials.json",
 )
 
 STORE_PATHS: Final[frozenset[str]] = frozenset({
@@ -86,7 +118,7 @@ PRIORITY_PATH_SUFFIXES: Final[tuple[str, ...]] = tuple(sorted(
 MAX_REPO_RESULTS_PER_QUERY: Final[int] = 30
 MAX_CODE_RESULTS_PER_QUERY: Final[int] = 40
 MAX_CANDIDATES_PER_SCAN: Final[int] = 80
-MAX_FILES_PER_REPO: Final[int] = 12
+MAX_FILES_PER_REPO: Final[int] = 18
 MAX_ISSUES_PER_SCAN: Final[int] = 10
 RECENT_PUSH_WINDOW_HOURS: Final[int] = 72
 

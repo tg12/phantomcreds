@@ -115,6 +115,43 @@ def test_exposed_secret_triggers_issue_filing_even_with_harvest_posture(
     assert "abcdefghijklmnopqrstuvwxyz123456" not in exposed.evidence[0]
 
 
+def test_exposed_secret_detects_cloud_keys_and_private_key_blocks(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.production": (
+                'AWS_ACCESS_KEY_ID="AKIA1234567890ABCDEF"\n'
+                'AWS_SECRET_ACCESS_KEY="abcdEFGHijklMNOPqrstUVWXyz0123456789+/="\n'
+                'GOOGLE_API_KEY="AIzaSyA123456789012345678901234567890123"\n'
+            ),
+            "deploy/id_rsa": (
+                "-----BEGIN OPENSSH PRIVATE KEY-----\n"
+                "b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAA=\n"
+                "-----END OPENSSH PRIVATE KEY-----\n"
+            ),
+            "gcp-service-account.json": (
+                '{\n'
+                '  "type": "service_account",\n'
+                '  "private_key": "-----BEGIN PRIVATE KEY-----\\nABC\\n-----END PRIVATE KEY-----\\n"\n'
+                '}\n'
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    assert "exposed_secret" in {finding.finding_type for finding in findings}
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    joined = "\n".join(exposed.evidence)
+    assert "AKIA1234567890ABCDEF" not in joined
+    assert "AIzaSyA123456789012345678901234567890123" not in joined
+    assert "OPENSSH PRIVATE KEY" in joined
+    assert "GCP service account private key block" in joined
+
+
 def test_callback_exposure_detected(repo_metadata: RepoMetadata) -> None:
     report, findings = analyze_repository(
         metadata=repo_metadata,

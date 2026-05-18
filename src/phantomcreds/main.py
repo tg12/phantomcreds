@@ -21,6 +21,7 @@ from phantomcreds.config import (
     REPO_SEARCH_QUERIES,
     REPORTS_FILE,
     SECRET_CANDIDATE_PATHS,
+    SECRET_CANDIDATE_SUFFIXES,
 )
 from phantomcreds.github_client import GitHubClient
 from phantomcreds.heuristics import analyze_repository
@@ -105,8 +106,10 @@ def _select_paths(tree_paths: list[str], code_hits: set[str]) -> list[str]:
     tree_set = set(tree_paths)
     ordered: list[str] = []
     seen: set[str] = set()
+    secret_candidate_names = {candidate.lower() for candidate in SECRET_CANDIDATE_PATHS}
+    secret_candidate_suffixes = tuple(suffix.lower() for suffix in SECRET_CANDIDATE_SUFFIXES)
 
-    for candidate in (*README_CANDIDATE_PATHS, *PRIORITY_PATH_SUFFIXES, *sorted(code_hits)):
+    for candidate in README_CANDIDATE_PATHS:
         if candidate in tree_set and candidate not in seen:
             ordered.append(candidate)
             seen.add(candidate)
@@ -115,9 +118,19 @@ def _select_paths(tree_paths: list[str], code_hits: set[str]) -> list[str]:
         if path in seen:
             continue
         lower_path = path.lower()
-        if lower_path in {candidate.lower() for candidate in SECRET_CANDIDATE_PATHS}:
+        basename = lower_path.rsplit("/", 1)[-1]
+        if lower_path in secret_candidate_names or basename in secret_candidate_names:
             ordered.append(path)
             seen.add(path)
+            continue
+        if any(lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in secret_candidate_suffixes):
+            ordered.append(path)
+            seen.add(path)
+
+    for candidate in (*PRIORITY_PATH_SUFFIXES, *sorted(code_hits)):
+        if candidate in tree_set and candidate not in seen:
+            ordered.append(candidate)
+            seen.add(candidate)
 
     return ordered[:MAX_FILES_PER_REPO]
 

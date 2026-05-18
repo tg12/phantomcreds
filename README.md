@@ -35,7 +35,7 @@ It is built around one premise: operator trust is the product. If the scanner ca
 **phantomcreds** runs a daily GitHub Actions job that:
 
 1. Searches GitHub repositories for posture phrases such as `multi-account`, `no API key needed`, `auth file`, and `shared subscription`
-2. Searches code for strong credential-risk fingerprints such as `SaveTokenToFile`, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management CORS, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env` or config material
+2. Searches code for strong credential-risk fingerprints such as `SaveTokenToFile`, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management CORS, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env`, credential, config, private-key, and service-account material
 3. Fetches targeted file contents directly from the GitHub API
 4. Scores each repo against a repo-level evidence model rather than a keyword count
 5. Writes append-only ledgers to this repo:
@@ -57,7 +57,7 @@ The scanner combines four evidence classes:
 |---|---|
 | Harvest posture | README or description markets shared subscriptions, relays, auth-file import, or "no API key needed" positioning |
 | Credential persistence | Code writes token-like material to local auth files or serialized session stores |
-| Direct secret exposure | Current repo files appear to contain committed API keys or webhook-style credentials; evidence is redacted in stored findings and issue bodies |
+| Direct secret exposure | Current repo files appear to contain committed cloud, model-provider, CI, package-registry, webhook, SSH, or service-account credentials; evidence is redacted in stored findings and issue bodies |
 | Unsafe exposure | Callback listeners bind broadly, management routes use wildcard CORS, or auth bypass wrappers weaken the control plane |
 | Centralized leakage | Request logging or telemetry paths appear to forward raw credential-bearing headers |
 
@@ -196,12 +196,12 @@ The data model is structured so those questions can be answered from the ledger 
   "title": "Secret-bearing credential material appears committed in current repository files",
   "severity": "high",
   "confidence": "confirmed",
-  "summary": "Current repository files appear to contain committed API keys or webhook-style credential material. Evidence is redacted in the report output.",
+  "summary": "Current repository files appear to contain committed cloud, model-provider, CI, package-registry, webhook, SSH, or service-account credential material. Evidence is redacted in the report output.",
   "issue_worthy": true,
   "scan_date": "2026-05-18",
   "evidence": [
     ".env:1 - OPENAI_API_KEY=[REDACTED:sk-pro...3456]",
-    "config.json:7 - SLACK_WEBHOOK_URL=[REDACTED:https://hooks.slack.com/services/REDACTED]"
+    "deploy/id_rsa:1 - [REDACTED:-----BEGIN OPENSSH PRIVATE KEY-----]"
   ]
 }
 ```

@@ -17,6 +17,44 @@ from phantomcreds.config import (
 )
 from phantomcreds.models import Classification, IssueAction, RepoFinding, RepoMetadata, RepoReport
 
+_SECRET_FILE_SUFFIXES: tuple[str, ...] = (
+    ".env",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".pem",
+    ".key",
+    ".p8",
+    ".p12",
+    ".pfx",
+    ".ini",
+    ".tfvars",
+    ".tfvars.json",
+)
+_SECRET_FILE_NAMES: frozenset[str] = frozenset({
+    ".env",
+    ".env.local",
+    ".env.production",
+    ".env.development",
+    ".env.example",
+    ".env.sample",
+    ".npmrc",
+    ".pypirc",
+    ".terraformrc",
+    "terraform.tfvars",
+    "terraform.tfvars.json",
+    "credentials",
+    "auth.json",
+    "cookies.json",
+    "service-account.json",
+    "gcp-service-account.json",
+    "azure.json",
+    "id_rsa",
+    "id_dsa",
+    "id_ecdsa",
+    "id_ed25519",
+})
+
 _POSTURE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("no_api_key_needed", re.compile(r"no api key needed", re.IGNORECASE)),
     ("multi_account", re.compile(r"multi-account|account pool", re.IGNORECASE)),
@@ -58,9 +96,93 @@ _SECRET_ASSIGNMENT_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
         ),
     ),
     (
-        "github_pat",
+        "github_token",
         re.compile(
-            r"(GH_TOKEN|GITHUB_TOKEN|github[_-]?token)\s*[:=]\s*[\"']?(github_pat_[A-Za-z0-9_]{20,})[\"']?",
+            r"(GH_TOKEN|GITHUB_TOKEN|github[_-]?token)\s*[:=]\s*[\"']?((?:github_pat|gh[pousr])_[A-Za-z0-9_]{20,255})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "google_api_key",
+        re.compile(
+            r"(GOOGLE_API_KEY|GEMINI_API_KEY|google[_-]?api[_-]?key|gemini[_-]?api[_-]?key)\s*[:=]\s*[\"']?(AIza[0-9A-Za-z\-_]{35})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "aws_access_key_id",
+        re.compile(
+            r"(AWS_ACCESS_KEY_ID|aws[_-]?access[_-]?key[_-]?id)\s*[:=]\s*[\"']?((?:AKIA|ASIA|AIDA|AROA)[A-Z0-9]{16})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "aws_secret_access_key",
+        re.compile(
+            r"(AWS_SECRET_ACCESS_KEY|aws[_-]?secret[_-]?access[_-]?key)\s*[:=]\s*[\"']?([A-Za-z0-9/+=]{40})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "azure_storage_connection_string",
+        re.compile(
+            r"(AZURE_STORAGE_CONNECTION_STRING|azure[_-]?storage[_-]?connection[_-]?string)\s*[:=]\s*[\"']?(DefaultEndpointsProtocol=https;AccountName=[^;]+;AccountKey=[A-Za-z0-9+/=]{20,};EndpointSuffix=[^\"';\s]+)[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "cloudflare_api_token",
+        re.compile(
+            r"(CF_API_TOKEN|CLOUDFLARE_API_TOKEN|cloudflare[_-]?api[_-]?token)\s*[:=]\s*[\"']?([A-Za-z0-9_-]{30,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "sendgrid_api_key",
+        re.compile(
+            r"(SENDGRID_API_KEY|sendgrid[_-]?api[_-]?key)\s*[:=]\s*[\"']?(SG\.[A-Za-z0-9_-]{16,}\.[A-Za-z0-9_-]{16,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "stripe_secret_key",
+        re.compile(
+            r"(STRIPE_SECRET_KEY|stripe[_-]?secret[_-]?key)\s*[:=]\s*[\"']?((?:sk|rk)_(?:live|test)_[A-Za-z0-9]{16,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "huggingface_token",
+        re.compile(
+            r"(HUGGINGFACE(?:HUB)?_API_TOKEN|HF_TOKEN|huggingface[_-]?(?:hub[_-]?)?api[_-]?token|hf[_-]?token)\s*[:=]\s*[\"']?(hf_[A-Za-z0-9]{24,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "npm_token",
+        re.compile(
+            r"(NPM_TOKEN|npm[_-]?token|_authToken)\s*[:=]\s*[\"']?(npm_[A-Za-z0-9]{24,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "pypi_token",
+        re.compile(
+            r"(PYPI_TOKEN|pypi[_-]?token|password)\s*[:=]\s*[\"']?(pypi-[A-Za-z0-9_-]{24,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "vercel_token",
+        re.compile(
+            r"(VERCEL_TOKEN|vercel[_-]?token)\s*[:=]\s*[\"']?([A-Za-z0-9]{24,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "digitalocean_token",
+        re.compile(
+            r"(DIGITALOCEAN_TOKEN|DO_TOKEN|digitalocean[_-]?token|do[_-]?token)\s*[:=]\s*[\"']?(dop_v1_[A-Za-z0-9_-]{24,})[\"']?",
             re.IGNORECASE,
         ),
     ),
@@ -71,6 +193,13 @@ _SECRET_ASSIGNMENT_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
             re.IGNORECASE,
         ),
     ),
+)
+_SSH_PRIVATE_KEY_HEADER_RE = re.compile(
+    r"-----BEGIN (?:OPENSSH|RSA|DSA|EC|PGP|PRIVATE) PRIVATE KEY-----"
+)
+_GCP_SERVICE_ACCOUNT_RE = re.compile(
+    r'"type"\s*:\s*"service_account".*"private_key"\s*:\s*"-----BEGIN PRIVATE KEY-----',
+    re.IGNORECASE | re.DOTALL,
 )
 _PLACEHOLDER_SECRET_RE = re.compile(
     r"(example|changeme|your[_-]?key|placeholder|dummy|test[-_]?key|xxxxx+|<[^>]+>)",
@@ -126,27 +255,36 @@ def _detect_exposed_secrets(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
     evidence: list[str] = []
-    detected_kinds: set[str] = set()
 
     for path, content in files.items():
         lower_name = path.lower()
+        basename = lower_name.rsplit("/", 1)[-1]
         if not (
-            lower_name.startswith(".env")
+            lower_name in _SECRET_FILE_NAMES
+            or basename in _SECRET_FILE_NAMES
             or lower_name in {candidate.lower() for candidate in README_CANDIDATE_PATHS}
-            or lower_name.endswith((".json", ".yaml", ".yml"))
+            or any(lower_name.endswith(suffix) or basename.endswith(suffix) for suffix in _SECRET_FILE_SUFFIXES)
         ):
             continue
+
+        if len(evidence) < 4 and _SSH_PRIVATE_KEY_HEADER_RE.search(content):
+            header_match = _SSH_PRIVATE_KEY_HEADER_RE.search(content)
+            if header_match is not None:
+                evidence.append(f"{path}:1 - [REDACTED:{header_match.group(0)}]")
+
+        if len(evidence) < 4 and _GCP_SERVICE_ACCOUNT_RE.search(content):
+            evidence.append(f"{path}:1 - [REDACTED:GCP service account private key block]")
+
         for lineno, line in enumerate(content.splitlines(), 1):
             if len(evidence) >= 4:
                 break
-            for secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
+            for _secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
                 match = pattern.search(line)
                 if not match:
                     continue
                 secret_value = match.group(2).strip()
                 if _PLACEHOLDER_SECRET_RE.search(secret_value):
                     continue
-                detected_kinds.add(secret_kind)
                 redacted = _redact_secret(secret_value)
                 evidence.append(
                     f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]"

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from phantomcreds.main import _filter_recent_candidates, _parse_github_timestamp
+from phantomcreds.main import _filter_recent_candidates, _parse_github_timestamp, _select_paths
 from phantomcreds.models import RepoMetadata
 
 
@@ -69,3 +69,24 @@ def test_filter_recent_candidates_keeps_recent_pushes_and_prefers_signal_count()
 
     assert candidates == ["owner/fresh-high-signal", "owner/fresh-low-signal"]
     assert set(metadata_by_repo) == set(candidate_sources)
+
+
+def test_select_paths_prioritizes_secret_candidate_files() -> None:
+    paths = _select_paths(
+        [
+            "README.md",
+            "src/main.go",
+            "deploy/id_rsa",
+            ".env.production",
+            "terraform.tfvars",
+            "config.json",
+            "internal/api/server.go",
+        ],
+        {"src/main.go"},
+    )
+
+    assert "README.md" in paths
+    assert "deploy/id_rsa" in paths
+    assert ".env.production" in paths
+    assert "terraform.tfvars" in paths
+    assert "config.json" in paths
