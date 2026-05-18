@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Final
 
 GITHUB_API_BASE: Final[str] = "https://api.github.com"
@@ -36,35 +37,52 @@ README_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
     "README_CN.md",
 )
 
-PRIORITY_PATH_SUFFIXES: Final[tuple[str, ...]] = (
-    "docker-compose.yml",
-    "internal/logging/request_logger.go",
-    "internal/logging/request_logger_home_test.go",
+STORE_PATHS: Final[frozenset[str]] = frozenset({
     "internal/store/objectstore.go",
     "internal/store/postgresstore.go",
+})
+
+LOGGER_PATHS: Final[frozenset[str]] = frozenset({
+    "internal/logging/request_logger.go",
+    "internal/logging/request_logger_home_test.go",
+})
+
+CALLBACK_PATHS: Final[frozenset[str]] = frozenset({
+    "docker-compose.yml",
     "internal/api/handlers/management/auth_files.go",
     "internal/auth/codex/oauth_server.go",
     "internal/auth/claude/oauth_server.go",
+})
+
+MANAGEMENT_ROUTE_PATHS: Final[frozenset[str]] = frozenset({
     "internal/api/modules/amp/routes.go",
+})
+
+SERVER_PATHS: Final[frozenset[str]] = frozenset({
     "internal/api/server.go",
-)
+})
+
+PRIORITY_PATH_SUFFIXES: Final[tuple[str, ...]] = tuple(sorted(
+    STORE_PATHS | LOGGER_PATHS | CALLBACK_PATHS | MANAGEMENT_ROUTE_PATHS | SERVER_PATHS
+))
 
 MAX_REPO_RESULTS_PER_QUERY: Final[int] = 30
 MAX_CODE_RESULTS_PER_QUERY: Final[int] = 40
 MAX_CANDIDATES_PER_SCAN: Final[int] = 80
 MAX_FILES_PER_REPO: Final[int] = 12
 MAX_ISSUES_PER_SCAN: Final[int] = 10
+RECENT_PUSH_WINDOW_HOURS: Final[int] = 72
 
 SCORE_HIGH_RISK: Final[float] = 0.65
 SCORE_WATCHLIST: Final[float] = 0.20
 
-DATA_DIR: Final[str] = "data"
-REPORTS_FILE: Final[str] = "data/repos.jsonl"
-FINDINGS_FILE: Final[str] = "data/findings.jsonl"
-ALLOWLIST_FILE: Final[str] = "data/allowlist.txt"
+DATA_DIR: Final[Path] = Path("data")
+REPORTS_FILE: Final[Path] = Path("data/repos.jsonl")
+FINDINGS_FILE: Final[Path] = Path("data/findings.jsonl")
+ALLOWLIST_FILE: Final[Path] = Path("data/allowlist.txt")
 
 README_START_MARKER: Final[str] = "<!-- STATS:START -->"
 README_END_MARKER: Final[str] = "<!-- STATS:END -->"
 REPO_STATS_START_MARKER: Final[str] = "<!-- REPO_STATS:START -->"
 REPO_STATS_END_MARKER: Final[str] = "<!-- REPO_STATS:END -->"
-README_PATH: Final[str] = "README.md"
+README_PATH: Final[Path] = Path("README.md")

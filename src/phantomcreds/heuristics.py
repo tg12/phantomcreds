@@ -5,7 +5,15 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 
-from phantomcreds.config import SCORE_HIGH_RISK, SCORE_WATCHLIST
+from phantomcreds.config import (
+    CALLBACK_PATHS,
+    LOGGER_PATHS,
+    MANAGEMENT_ROUTE_PATHS,
+    SCORE_HIGH_RISK,
+    SCORE_WATCHLIST,
+    SERVER_PATHS,
+    STORE_PATHS,
+)
 from phantomcreds.models import Classification, IssueAction, RepoFinding, RepoMetadata, RepoReport
 
 _POSTURE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -28,6 +36,10 @@ _CALLBACK_RE = re.compile(r"0\.0\.0\.0|Addr:\s*fmt\.Sprintf\(\"", re.IGNORECASE)
 _AUTH_BYPASS_RE = re.compile(r"wrapManagementAuth|/threads|/auth|/settings|/docs")
 _WILDCARD_CORS_RE = re.compile(
     r"Access-Control-Allow-Origin\",\s*\"\*\"|Access-Control-Allow-Origin',\s*'\*'"
+)
+_CORS_CONTEXT_RE = re.compile(
+    r"engine\.Use\(corsMiddleware\(\)\)|/v0/management"
+    r"|Access-Control-Allow-Origin\",\s*\"\*\"|Access-Control-Allow-Origin',\s*'\*'"
 )
 
 _TYPE_WEIGHTS: dict[str, float] = {
@@ -90,7 +102,7 @@ def _detect_harvest_posture(
             RepoFinding(
                 repo_full_name=metadata.full_name,
                 finding_type="harvest_posture",
-                title="README markets shared-subscription or credential relay usage",
+                title="README advertises shared-subscription or credential relay usage",
                 severity="medium",
                 confidence="confirmed",
                 summary=(
@@ -133,11 +145,7 @@ def _detect_credential_persistence(
 def _detect_local_secret_mirror(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    evidence = _find_matching_files(
-        files,
-        _LOCAL_MIRROR_RE,
-        {"internal/store/objectstore.go", "internal/store/postgresstore.go"},
-    )
+    evidence = _find_matching_files(files, _LOCAL_MIRROR_RE, STORE_PATHS)
     if len(evidence) < 2:
         return []
     return [
@@ -161,11 +169,7 @@ def _detect_local_secret_mirror(
 def _detect_raw_auth_forwarding(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    logger_refs = _find_matching_files(
-        files,
-        _RAW_AUTH_FORWARD_RE,
-        {"internal/logging/request_logger.go", "internal/logging/request_logger_home_test.go"},
-    )
+    logger_refs = _find_matching_files(files, _RAW_AUTH_FORWARD_RE, LOGGER_PATHS)
     if len(logger_refs) < 3:
         return []
     return [
@@ -189,16 +193,7 @@ def _detect_raw_auth_forwarding(
 def _detect_callback_exposure(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    evidence = _find_matching_files(
-        files,
-        _CALLBACK_RE,
-        {
-            "docker-compose.yml",
-            "internal/api/handlers/management/auth_files.go",
-            "internal/auth/codex/oauth_server.go",
-            "internal/auth/claude/oauth_server.go",
-        },
-    )
+    evidence = _find_matching_files(files, _CALLBACK_RE, CALLBACK_PATHS)
     if len(evidence) < 2:
         return []
     return [
@@ -222,11 +217,7 @@ def _detect_callback_exposure(
 def _detect_management_auth_bypass(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    evidence = _find_matching_files(
-        files,
-        _AUTH_BYPASS_RE,
-        {"internal/api/modules/amp/routes.go"},
-    )
+    evidence = _find_matching_files(files, _AUTH_BYPASS_RE, MANAGEMENT_ROUTE_PATHS)
     if len(evidence) < 3:
         return []
     return [
@@ -250,15 +241,11 @@ def _detect_management_auth_bypass(
 def _detect_wildcard_management_cors(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    server_go = files.get("internal/api/server.go")
+    server_path = next(iter(SERVER_PATHS))
+    server_go = files.get(server_path)
     if not server_go or "/v0/management" not in server_go or not _WILDCARD_CORS_RE.search(server_go):
         return []
-    evidence = _collect_refs("internal/api/server.go", server_go, _WILDCARD_CORS_RE, limit=2)
-    for needle in ("engine.Use(corsMiddleware())", "/v0/management"):
-        for lineno, line in enumerate(server_go.splitlines(), 1):
-            if needle in line:
-                evidence.append(f"internal/api/server.go:{lineno} - {line.strip()}")
-                break
+    evidence = _collect_refs(server_path, server_go, _CORS_CONTEXT_RE, limit=4)
     return [
         RepoFinding(
             repo_full_name=metadata.full_name,
@@ -272,7 +259,7 @@ def _detect_wildcard_management_cors(
             ),
             issue_worthy=True,
             scan_date=scan_date,
-            evidence=tuple(evidence[:4]),
+            evidence=tuple(evidence),
         )
     ]
 

@@ -38,13 +38,18 @@ jobs:
           echo "current_hour=${current_hour}" >> "${GITHUB_OUTPUT}"
           if [ "${current_hour}" != "07" ]; then
             echo "Skipping scheduled run outside 07:00 Europe/London."
-            exit 0
+          else
+            echo "Proceeding with 07:00 Europe/London run."
           fi
-          echo "Proceeding with 07:00 Europe/London run."
+          # exit 0 here does NOT stop subsequent steps — the if: conditions on
+          # each downstream step read current_hour from GITHUB_OUTPUT and gate
+          # execution there. This step only populates the output variable.
 
       - name: Stop early outside London run window
         if: github.event_name == 'schedule' && steps.schedule_gate.outputs.current_hour != '07'
-        run: exit 0
+        run: |
+          echo "Outside 07:00 Europe/London window — skipping scan."
+          exit 0
 
       - name: Set up Python 3.13
         if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'

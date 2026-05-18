@@ -15,7 +15,7 @@ _log = logging.getLogger(__name__)
 
 def load_allowlist(path: Path | None = None) -> set[str]:
     """Load lowercased allowlisted repo names."""
-    target = path or Path(ALLOWLIST_FILE)
+    target = path or ALLOWLIST_FILE
     if not target.exists():
         return set()
     repos: set[str] = set()

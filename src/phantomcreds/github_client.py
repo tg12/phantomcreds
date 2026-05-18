@@ -103,6 +103,7 @@ class GitHubClient:
             default_branch=str(data.get("default_branch", "main")),
             stargazers_count=int(data.get("stargazers_count", 0)),
             created_at=str(data.get("created_at", "")),
+            pushed_at=str(data.get("pushed_at", "")),
             updated_at=str(data.get("updated_at", "")),
             archived=bool(data.get("archived", False)),
             fork=bool(data.get("fork", False)),
@@ -111,7 +112,10 @@ class GitHubClient:
     def get_repo_tree(self, repo_full_name: str, ref: str) -> list[str]:
         """Fetch the recursive path list for the default branch, if available."""
         try:
-            data = self._rest_get(f"{GITHUB_API_BASE}/repos/{repo_full_name}/git/trees/{ref}?recursive=1")
+            data = self._rest_get(
+                f"{GITHUB_API_BASE}/repos/{repo_full_name}/git/trees/{ref}",
+                params={"recursive": "1"},
+            )
         except requests.HTTPError as exc:
             if exc.response is not None and exc.response.status_code in (404, 409):
                 return []

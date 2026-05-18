@@ -18,6 +18,7 @@ class RepoMetadata:
     default_branch: str
     stargazers_count: int
     created_at: str
+    pushed_at: str
     updated_at: str
     archived: bool
     fork: bool

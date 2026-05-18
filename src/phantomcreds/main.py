@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import os
 from collections import defaultdict
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from phantomcreds.config import (
@@ -17,18 +17,29 @@ from phantomcreds.config import (
     MAX_REPO_RESULTS_PER_QUERY,
     PRIORITY_PATH_SUFFIXES,
     README_CANDIDATE_PATHS,
+    RECENT_PUSH_WINDOW_HOURS,
     REPO_SEARCH_QUERIES,
     REPORTS_FILE,
 )
 from phantomcreds.github_client import GitHubClient
 from phantomcreds.heuristics import analyze_repository
 from phantomcreds.logging_config import setup_logging
-from phantomcreds.models import RepoFinding, RepoReport
+from phantomcreds.models import RepoFinding, RepoMetadata, RepoReport
 from phantomcreds.notifier import notify_all
 from phantomcreds.reporter import update_readme
 from phantomcreds.storage import append_findings, append_reports, load_allowlist
 
 _log = logging.getLogger(__name__)
+
+
+def _parse_github_timestamp(value: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    except ValueError:
+        _log.warning("Unable to parse GitHub timestamp: %s", value)
+        return None
 
 
 def _build_candidate_pool(client: GitHubClient) -> tuple[dict[str, set[str]], dict[str, set[str]]]:
@@ -60,16 +71,46 @@ def _prioritize_candidates(candidate_sources: dict[str, set[str]]) -> list[str]:
     return ranked[:MAX_CANDIDATES_PER_SCAN]
 
 
+def _filter_recent_candidates(
+    client: GitHubClient,
+    candidate_sources: dict[str, set[str]],
+    now: datetime,
+) -> tuple[list[str], dict[str, RepoMetadata]]:
+    cutoff = now - timedelta(hours=RECENT_PUSH_WINDOW_HOURS)
+    metadata_by_repo: dict[str, RepoMetadata] = {}
+    recent_candidates: list[str] = []
+
+    for repo_full_name in candidate_sources:
+        metadata = client.get_repo_metadata(repo_full_name)
+        metadata_by_repo[repo_full_name] = metadata
+        pushed_at = _parse_github_timestamp(metadata.pushed_at)
+        if pushed_at is None or pushed_at < cutoff:
+            continue
+        recent_candidates.append(repo_full_name)
+
+    ranked = sorted(
+        recent_candidates,
+        key=lambda repo: (
+            len(candidate_sources[repo]),
+            _parse_github_timestamp(metadata_by_repo[repo].pushed_at) or datetime.min.replace(tzinfo=UTC),
+            repo.lower(),
+        ),
+        reverse=True,
+    )
+    return ranked[:MAX_CANDIDATES_PER_SCAN], metadata_by_repo
+
+
 def _select_paths(tree_paths: list[str], code_hits: set[str]) -> list[str]:
-    selected = set(code_hits)
     tree_set = set(tree_paths)
-    for readme_path in README_CANDIDATE_PATHS:
-        if readme_path in tree_set:
-            selected.add(readme_path)
-    for suffix in PRIORITY_PATH_SUFFIXES:
-        if suffix in tree_set:
-            selected.add(suffix)
-    return sorted(selected)[:MAX_FILES_PER_REPO]
+    ordered: list[str] = []
+    seen: set[str] = set()
+
+    for candidate in (*README_CANDIDATE_PATHS, *PRIORITY_PATH_SUFFIXES, *sorted(code_hits)):
+        if candidate in tree_set and candidate not in seen:
+            ordered.append(candidate)
+            seen.add(candidate)
+
+    return ordered[:MAX_FILES_PER_REPO]
 
 
 def _write_step_summary(reports: list[RepoReport], findings: list[RepoFinding], scan_date: str) -> None:
@@ -115,12 +156,20 @@ def _write_step_summary(reports: list[RepoReport], findings: list[RepoFinding], 
 def main() -> None:
     setup_logging()
     client = GitHubClient(token=os.environ["GH_TOKEN"])
-    scan_date = datetime.now(UTC).date().isoformat()
+    now = datetime.now(UTC)
+    scan_date = now.date().isoformat()
     allowlist = load_allowlist()
 
     candidate_sources, code_paths = _build_candidate_pool(client)
-    candidates = _prioritize_candidates(candidate_sources)
-    _log.info("Candidate repos selected: %d", len(candidates))
+    initial_candidates = _prioritize_candidates(candidate_sources)
+    _log.info("Initial candidate repos selected: %d", len(initial_candidates))
+    recent_sources = {repo: candidate_sources[repo] for repo in initial_candidates}
+    candidates, metadata_by_repo = _filter_recent_candidates(client, recent_sources, now)
+    _log.info(
+        "Recent candidate repos selected: %d within last %d hours",
+        len(candidates),
+        RECENT_PUSH_WINDOW_HOURS,
+    )
 
     reports: list[RepoReport] = []
     findings: list[RepoFinding] = []
@@ -131,7 +180,7 @@ def main() -> None:
             continue
 
         _log.info("Analyzing %s", repo_full_name)
-        metadata = client.get_repo_metadata(repo_full_name)
+        metadata = metadata_by_repo[repo_full_name]
         tree_paths = client.get_repo_tree(repo_full_name, metadata.default_branch)
         selected_paths = _select_paths(tree_paths, code_paths.get(repo_full_name, set()))
 
@@ -150,9 +199,9 @@ def main() -> None:
         reports.append(report)
         findings.extend(repo_findings)
 
-    append_reports(reports, Path(REPORTS_FILE))
-    append_findings(findings, Path(FINDINGS_FILE))
-    update_readme(Path(REPORTS_FILE))
+    append_reports(reports, REPORTS_FILE)
+    append_findings(findings, FINDINGS_FILE)
+    update_readme(REPORTS_FILE)
     notify_all(client, reports, findings)
     _write_step_summary(reports, findings, scan_date)
 

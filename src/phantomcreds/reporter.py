@@ -128,7 +128,7 @@ def _build_repo_table(records: list[Record]) -> str:
     return f"{_REPO_TABLE_HEADER}\n" + "\n".join(rows)
 
 
-def update_readme(reports_path: Path, readme_path: Path = Path(README_PATH)) -> None:
+def update_readme(reports_path: Path, readme_path: Path = README_PATH) -> None:
     """Refresh the README stats blocks from the JSONL ledger."""
     if not readme_path.exists():
         _log.warning("README not found at %s", readme_path)
