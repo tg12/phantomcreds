@@ -36,7 +36,7 @@ It is built around one premise: operator trust is the product. If the scanner ca
 
 1. Searches GitHub repositories for posture phrases such as `multi-account`, `no API key needed`, `auth file`, and `shared subscription`
 2. Searches code for strong credential-risk fingerprints such as `SaveTokenToFile`, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management CORS, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env`, credential, config, private-key, and service-account material
-3. Fetches targeted file contents directly from the GitHub API
+3. Fetches targeted high-signal files plus a bounded sweep of broadly text-like repo files directly from the GitHub API
 4. Scores each repo against a repo-level evidence model rather than a keyword count
 5. Writes append-only ledgers to this repo:
    - [`data/repos.jsonl`](data/repos.jsonl) for per-repo scan outcomes

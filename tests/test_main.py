@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from phantomcreds.main import _filter_recent_candidates, _parse_github_timestamp, _select_paths
+from phantomcreds.main import (
+    _filter_recent_candidates,
+    _is_text_like_path,
+    _parse_github_timestamp,
+    _select_paths,
+    _select_secret_sweep_paths,
+)
 from phantomcreds.models import RepoMetadata
 
 
@@ -90,3 +96,30 @@ def test_select_paths_prioritizes_secret_candidate_files() -> None:
     assert ".env.production" in paths
     assert "terraform.tfvars" in paths
     assert "config.json" in paths
+
+
+def test_is_text_like_path_filters_binary_and_vendor_content() -> None:
+    assert _is_text_like_path("src/app.py") is True
+    assert _is_text_like_path("deploy/id_rsa") is True
+    assert _is_text_like_path("assets/logo.png") is False
+    assert _is_text_like_path("node_modules/pkg/index.js") is False
+
+
+def test_select_secret_sweep_paths_collects_extra_text_files() -> None:
+    sweep_paths = _select_secret_sweep_paths(
+        [
+            "README.md",
+            "src/app.py",
+            "docs/notes.txt",
+            "assets/logo.png",
+            "node_modules/pkg/index.js",
+            "deploy/id_rsa",
+        ],
+        ["README.md"],
+    )
+
+    assert "src/app.py" in sweep_paths
+    assert "docs/notes.txt" in sweep_paths
+    assert "deploy/id_rsa" in sweep_paths
+    assert "assets/logo.png" not in sweep_paths
+    assert "node_modules/pkg/index.js" not in sweep_paths

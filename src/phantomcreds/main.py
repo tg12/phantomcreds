@@ -15,6 +15,7 @@ from phantomcreds.config import (
     MAX_CODE_RESULTS_PER_QUERY,
     MAX_FILES_PER_REPO,
     MAX_REPO_RESULTS_PER_QUERY,
+    MAX_SECRET_SWEEP_FILES_PER_REPO,
     PRIORITY_PATH_SUFFIXES,
     README_CANDIDATE_PATHS,
     RECENT_PUSH_WINDOW_HOURS,
@@ -32,6 +33,89 @@ from phantomcreds.reporter import update_readme
 from phantomcreds.storage import append_findings, append_reports, load_allowlist
 
 _log = logging.getLogger(__name__)
+
+_TEXT_FILE_SUFFIXES: tuple[str, ...] = (
+    ".c",
+    ".cc",
+    ".cfg",
+    ".conf",
+    ".cpp",
+    ".cs",
+    ".css",
+    ".csv",
+    ".env",
+    ".go",
+    ".h",
+    ".hpp",
+    ".html",
+    ".ini",
+    ".java",
+    ".js",
+    ".json",
+    ".jsx",
+    ".kt",
+    ".kts",
+    ".md",
+    ".php",
+    ".properties",
+    ".py",
+    ".rb",
+    ".rs",
+    ".sh",
+    ".sql",
+    ".svg",
+    ".tf",
+    ".tfvars",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".xml",
+    ".yaml",
+    ".yml",
+)
+_LIKELY_BINARY_SUFFIXES: tuple[str, ...] = (
+    ".7z",
+    ".a",
+    ".bin",
+    ".class",
+    ".dll",
+    ".dmg",
+    ".eot",
+    ".exe",
+    ".gif",
+    ".gz",
+    ".ico",
+    ".jar",
+    ".jpeg",
+    ".jpg",
+    ".lockb",
+    ".mp3",
+    ".mp4",
+    ".o",
+    ".otf",
+    ".pdf",
+    ".png",
+    ".pyc",
+    ".so",
+    ".tar",
+    ".ttf",
+    ".wav",
+    ".webp",
+    ".woff",
+    ".woff2",
+    ".zip",
+)
+_SKIP_TEXT_SWEEP_SEGMENTS: frozenset[str] = frozenset({
+    ".git",
+    ".next",
+    ".venv",
+    "__pycache__",
+    "dist",
+    "node_modules",
+    "target",
+    "vendor",
+})
 
 
 def _parse_github_timestamp(value: str) -> datetime | None:
@@ -135,6 +219,33 @@ def _select_paths(tree_paths: list[str], code_hits: set[str]) -> list[str]:
     return ordered[:MAX_FILES_PER_REPO]
 
 
+def _is_text_like_path(path: str) -> bool:
+    lower_path = path.lower()
+    basename = lower_path.rsplit("/", 1)[-1]
+    segments = set(lower_path.split("/"))
+    if segments & _SKIP_TEXT_SWEEP_SEGMENTS:
+        return False
+    if any(lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in _LIKELY_BINARY_SUFFIXES):
+        return False
+    if any(lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in _TEXT_FILE_SUFFIXES):
+        return True
+    return "." not in basename
+
+
+def _select_secret_sweep_paths(tree_paths: list[str], selected_paths: list[str]) -> list[str]:
+    sweep_paths: list[str] = []
+    seen = set(selected_paths)
+    for path in sorted(tree_paths):
+        if path in seen:
+            continue
+        if not _is_text_like_path(path):
+            continue
+        sweep_paths.append(path)
+        if len(sweep_paths) >= MAX_SECRET_SWEEP_FILES_PER_REPO:
+            break
+    return sweep_paths
+
+
 def _write_step_summary(reports: list[RepoReport], findings: list[RepoFinding], scan_date: str) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
@@ -205,9 +316,10 @@ def main() -> None:
         metadata = metadata_by_repo[repo_full_name]
         tree_paths = client.get_repo_tree(repo_full_name, metadata.default_branch)
         selected_paths = _select_paths(tree_paths, code_paths.get(repo_full_name, set()))
+        secret_sweep_paths = _select_secret_sweep_paths(tree_paths, selected_paths)
 
         files: dict[str, str] = {}
-        for path in selected_paths:
+        for path in (*selected_paths, *secret_sweep_paths):
             content = client.get_file_content(repo_full_name, path, metadata.default_branch)
             if content is not None:
                 files[path] = content
