@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-18 | 114 | 68 | 45 | 46 | 27 | 45 |
+| 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
 <!-- STATS:END -->
 
 ---
@@ -155,7 +155,7 @@ The data model is structured so those questions can be answered from the ledger 
 | Sakuralaaa/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-03-06 |
 | SahandTava/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-01-02 |
 | nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-05-16 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-17 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-18 |
 | edlsh/CLIProxyAPIPlus-HsnSaboor | 1.000 | 6 | report_only | 0 | 2026-05-02 |
 | Camier/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-02-11 |
 | aeddk-bnh/cliproxyapi_clone | 1.000 | 6 | report_only | 0 | 2026-01-20 |
