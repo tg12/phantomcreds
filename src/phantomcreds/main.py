@@ -5,10 +5,12 @@ from __future__ import annotations
 import logging
 import os
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from phantomcreds.config import (
+    ALLOWLIST_FILE,
     CODE_SEARCH_QUERIES,
     FILE_FETCH_WORKERS,
     FINDINGS_FILE,
@@ -19,6 +21,7 @@ from phantomcreds.config import (
     MAX_SECRET_SWEEP_FILES_PER_REPO,
     PRIORITY_PATH_SUFFIXES,
     README_CANDIDATE_PATHS,
+    README_PATH,
     RECENT_PUSH_WINDOW_HOURS,
     REPO_SEARCH_QUERIES,
     REPORTS_FILE,
@@ -119,6 +122,15 @@ _SKIP_TEXT_SWEEP_SEGMENTS: frozenset[str] = frozenset({
 })
 
 
+@dataclass(frozen=True, slots=True)
+class RuntimeOptions:
+    reports_path: Path
+    findings_path: Path
+    allowlist_path: Path
+    readme_path: Path | None
+    notify_external: bool
+
+
 def _parse_github_timestamp(value: str) -> datetime | None:
     if not value:
         return None
@@ -127,6 +139,44 @@ def _parse_github_timestamp(value: str) -> datetime | None:
     except ValueError:
         _log.warning("Unable to parse GitHub timestamp: %s", value)
         return None
+
+
+def _parse_bool_env(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    normalized = raw.strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+    _log.warning("Invalid boolean value for %s=%r; using default=%s", name, raw, default)
+    return default
+
+
+def _resolve_runtime_options() -> RuntimeOptions:
+    local_mode = _parse_bool_env("PHANTOMCREDS_LOCAL_MODE", False)
+    if local_mode:
+        output_root = Path(os.environ.get("PHANTOMCREDS_OUTPUT_DIR", ".local/phantomcreds"))
+        return RuntimeOptions(
+            reports_path=output_root / "repos.jsonl",
+            findings_path=output_root / "findings.jsonl",
+            allowlist_path=ALLOWLIST_FILE,
+            readme_path=None,
+            notify_external=_parse_bool_env("PHANTOMCREDS_NOTIFY_EXTERNAL", False),
+        )
+
+    return RuntimeOptions(
+        reports_path=Path(os.environ.get("PHANTOMCREDS_REPORTS_FILE", str(REPORTS_FILE))),
+        findings_path=Path(os.environ.get("PHANTOMCREDS_FINDINGS_FILE", str(FINDINGS_FILE))),
+        allowlist_path=Path(os.environ.get("PHANTOMCREDS_ALLOWLIST_FILE", str(ALLOWLIST_FILE))),
+        readme_path=(
+            Path(os.environ.get("PHANTOMCREDS_README_PATH", str(README_PATH)))
+            if _parse_bool_env("PHANTOMCREDS_UPDATE_README", True)
+            else None
+        ),
+        notify_external=_parse_bool_env("PHANTOMCREDS_NOTIFY_EXTERNAL", True),
+    )
 
 
 def _build_candidate_pool(client: GitHubClient) -> tuple[dict[str, set[str]], dict[str, set[str]]]:
@@ -308,7 +358,8 @@ def main() -> None:
     client = GitHubClient(token=os.environ["GH_TOKEN"])
     now = datetime.now(UTC)
     scan_date = now.date().isoformat()
-    allowlist = load_allowlist()
+    runtime = _resolve_runtime_options()
+    allowlist = load_allowlist(runtime.allowlist_path)
 
     candidate_sources, code_paths = _build_candidate_pool(client)
     initial_candidates = _prioritize_candidates(candidate_sources)
@@ -351,10 +402,16 @@ def main() -> None:
         reports.append(report)
         findings.extend(repo_findings)
 
-    append_reports(reports, REPORTS_FILE)
-    append_findings(findings, FINDINGS_FILE)
-    update_readme(REPORTS_FILE)
-    notify_all(client, reports, findings)
+    append_reports(reports, runtime.reports_path)
+    append_findings(findings, runtime.findings_path)
+    if runtime.readme_path is not None:
+        update_readme(runtime.reports_path, runtime.readme_path)
+    else:
+        _log.info("README update disabled for this run")
+    if runtime.notify_external:
+        notify_all(client, reports, findings)
+    else:
+        _log.info("External issue notifications disabled for this run")
     _write_step_summary(reports, findings, scan_date)
 
     _log.info(

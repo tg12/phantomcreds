@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/phantomcreds-v0.1.0-0f766e?style=for-the-badge" alt="phantomcreds">
-  <img src="https://img.shields.io/badge/python-3.13-blue?style=for-the-badge" alt="Python 3.13">
+  <img src="https://img.shields.io/badge/python-3.14-blue?style=for-the-badge" alt="Python 3.14">
   <img src="https://img.shields.io/badge/license-Apache--2.0-green?style=for-the-badge" alt="Apache 2.0">
   <img src="https://img.shields.io/badge/CI-GitHub%20Actions-orange?style=for-the-badge" alt="GitHub Actions">
   <img src="https://img.shields.io/badge/runs-daily-brightgreen?style=for-the-badge" alt="Daily">
@@ -240,13 +240,44 @@ Manual trigger:
 
 ### 4. Run locally
 
+Safe local test run:
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/phantomcreds.git
 cd phantomcreds
 python -m venv venv && source venv/bin/activate
-pip install -e .
-GH_TOKEN=ghp_your_token python -m phantomcreds.main
+pip install -e .[dev]
+PHANTOMCREDS_LOCAL_MODE=1 GH_TOKEN=ghp_your_token phantomcreds
 ```
+
+This uses the same scan logic locally but:
+- disables external GitHub issue creation by default
+- does not rewrite the main `README.md`
+- writes results under `.local/phantomcreds/`
+- keeps the same GitHub API fetch, heuristic scoring, and issue-decision logic as the hosted run
+
+Production-style local run:
+
+```bash
+GH_TOKEN=ghp_your_token \
+PHANTOMCREDS_NOTIFY_EXTERNAL=1 \
+PHANTOMCREDS_UPDATE_README=1 \
+phantomcreds
+```
+
+Useful local overrides:
+- `PHANTOMCREDS_OUTPUT_DIR=/tmp/phantomcreds-run`
+- `PHANTOMCREDS_NOTIFY_EXTERNAL=0|1`
+- `PHANTOMCREDS_UPDATE_README=0|1`
+- `PHANTOMCREDS_REPORTS_FILE=/tmp/repos.jsonl`
+- `PHANTOMCREDS_FINDINGS_FILE=/tmp/findings.jsonl`
+- `PHANTOMCREDS_README_PATH=/tmp/README.md`
+
+Operational difference from GitHub Actions:
+- same discovery, fetch, scoring, and notification code paths
+- no scheduler wrapper
+- no Actions step summary unless `GITHUB_STEP_SUMMARY` is set
+- local mode is the safer way to test scanner changes before allowing external issue creation
 
 ---
 

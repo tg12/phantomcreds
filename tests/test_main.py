@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from pathlib import Path
 
 from phantomcreds.main import (
     _filter_recent_candidates,
     _is_text_like_path,
     _parse_github_timestamp,
+    _resolve_runtime_options,
     _select_paths,
     _select_secret_sweep_paths,
 )
@@ -123,3 +125,38 @@ def test_select_secret_sweep_paths_collects_extra_text_files() -> None:
     assert "deploy/id_rsa" in sweep_paths
     assert "assets/logo.png" not in sweep_paths
     assert "node_modules/pkg/index.js" not in sweep_paths
+
+
+def test_resolve_runtime_options_defaults_to_safe_local_mode(
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("PHANTOMCREDS_LOCAL_MODE", "1")
+    monkeypatch.delenv("PHANTOMCREDS_OUTPUT_DIR", raising=False)
+    monkeypatch.delenv("PHANTOMCREDS_NOTIFY_EXTERNAL", raising=False)
+
+    options = _resolve_runtime_options()
+
+    assert options.reports_path == Path(".local/phantomcreds/repos.jsonl")
+    assert options.findings_path == Path(".local/phantomcreds/findings.jsonl")
+    assert options.readme_path is None
+    assert options.notify_external is False
+
+
+def test_resolve_runtime_options_supports_non_local_overrides(
+    monkeypatch,
+) -> None:
+    monkeypatch.delenv("PHANTOMCREDS_LOCAL_MODE", raising=False)
+    monkeypatch.setenv("PHANTOMCREDS_REPORTS_FILE", "/tmp/custom-repos.jsonl")
+    monkeypatch.setenv("PHANTOMCREDS_FINDINGS_FILE", "/tmp/custom-findings.jsonl")
+    monkeypatch.setenv("PHANTOMCREDS_ALLOWLIST_FILE", "/tmp/custom-allowlist.txt")
+    monkeypatch.setenv("PHANTOMCREDS_README_PATH", "/tmp/custom-readme.md")
+    monkeypatch.setenv("PHANTOMCREDS_NOTIFY_EXTERNAL", "0")
+    monkeypatch.setenv("PHANTOMCREDS_UPDATE_README", "1")
+
+    options = _resolve_runtime_options()
+
+    assert options.reports_path == Path("/tmp/custom-repos.jsonl")
+    assert options.findings_path == Path("/tmp/custom-findings.jsonl")
+    assert options.allowlist_path == Path("/tmp/custom-allowlist.txt")
+    assert options.readme_path == Path("/tmp/custom-readme.md")
+    assert options.notify_external is False
