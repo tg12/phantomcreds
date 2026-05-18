@@ -9,6 +9,7 @@ from phantomcreds.config import (
     CALLBACK_PATHS,
     LOGGER_PATHS,
     MANAGEMENT_ROUTE_PATHS,
+    README_CANDIDATE_PATHS,
     SCORE_HIGH_RISK,
     SCORE_WATCHLIST,
     SERVER_PATHS,
@@ -41,6 +42,40 @@ _CORS_CONTEXT_RE = re.compile(
     r"engine\.Use\(corsMiddleware\(\)\)|/v0/management"
     r"|Access-Control-Allow-Origin\",\s*\"\*\"|Access-Control-Allow-Origin',\s*'\*'"
 )
+_SECRET_ASSIGNMENT_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
+    (
+        "openai_api_key",
+        re.compile(
+            r"(OPENAI_API_KEY|openai[_-]?api[_-]?key)\s*[:=]\s*[\"']?(sk-(?:proj-)?[A-Za-z0-9_-]{12,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "anthropic_api_key",
+        re.compile(
+            r"(ANTHROPIC_API_KEY|anthropic[_-]?api[_-]?key)\s*[:=]\s*[\"']?(sk-ant-[A-Za-z0-9_-]{12,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "github_pat",
+        re.compile(
+            r"(GH_TOKEN|GITHUB_TOKEN|github[_-]?token)\s*[:=]\s*[\"']?(github_pat_[A-Za-z0-9_]{20,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "slack_webhook",
+        re.compile(
+            r"(SLACK_WEBHOOK_URL|slack[_-]?webhook)\s*[:=]\s*[\"']?(https://hooks\.slack\.com/services/[A-Za-z0-9/_-]{20,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+)
+_PLACEHOLDER_SECRET_RE = re.compile(
+    r"(example|changeme|your[_-]?key|placeholder|dummy|test[-_]?key|xxxxx+|<[^>]+>)",
+    re.IGNORECASE,
+)
 
 _TYPE_WEIGHTS: dict[str, float] = {
     "harvest_posture": 0.18,
@@ -50,6 +85,7 @@ _TYPE_WEIGHTS: dict[str, float] = {
     "callback_exposure": 0.20,
     "management_auth_bypass": 0.24,
     "wildcard_management_cors": 0.20,
+    "exposed_secret": 0.35,
 }
 
 
@@ -76,6 +112,66 @@ def _find_matching_files(
             continue
         refs.extend(_collect_refs(path, content, pattern))
     return refs
+
+
+def _redact_secret(secret: str) -> str:
+    if secret.startswith("https://hooks.slack.com/services/"):
+        return "https://hooks.slack.com/services/REDACTED"
+    if len(secret) <= 10:
+        return "[REDACTED]"
+    return f"{secret[:6]}...{secret[-4:]}"
+
+
+def _detect_exposed_secrets(
+    metadata: RepoMetadata, files: dict[str, str], scan_date: str
+) -> list[RepoFinding]:
+    evidence: list[str] = []
+    detected_kinds: set[str] = set()
+
+    for path, content in files.items():
+        lower_name = path.lower()
+        if not (
+            lower_name.startswith(".env")
+            or lower_name in {candidate.lower() for candidate in README_CANDIDATE_PATHS}
+            or lower_name.endswith((".json", ".yaml", ".yml"))
+        ):
+            continue
+        for lineno, line in enumerate(content.splitlines(), 1):
+            if len(evidence) >= 4:
+                break
+            for secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
+                match = pattern.search(line)
+                if not match:
+                    continue
+                secret_value = match.group(2).strip()
+                if _PLACEHOLDER_SECRET_RE.search(secret_value):
+                    continue
+                detected_kinds.add(secret_kind)
+                redacted = _redact_secret(secret_value)
+                evidence.append(
+                    f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]"
+                )
+                break
+
+    if not evidence:
+        return []
+
+    return [
+        RepoFinding(
+            repo_full_name=metadata.full_name,
+            finding_type="exposed_secret",
+            title="Secret-bearing credential material appears committed in current repository files",
+            severity="high",
+            confidence="confirmed",
+            summary=(
+                "Current repository files appear to contain committed API keys or webhook-style "
+                "credential material. Evidence is redacted in the report output."
+            ),
+            issue_worthy=True,
+            scan_date=scan_date,
+            evidence=tuple(evidence),
+        )
+    ]
 
 
 def _detect_harvest_posture(
@@ -284,6 +380,7 @@ def analyze_repository(
 
     posture_findings, overt_harvest_posture = _detect_harvest_posture(metadata, files, scan_date)
     findings.extend(posture_findings)
+    findings.extend(_detect_exposed_secrets(metadata, files, scan_date))
     findings.extend(_detect_credential_persistence(metadata, files, scan_date))
     findings.extend(_detect_local_secret_mirror(metadata, files, scan_date))
     findings.extend(_detect_raw_auth_forwarding(metadata, files, scan_date))
@@ -301,8 +398,9 @@ def analyze_repository(
     classification = _classify(score)
     issue_worthy_count = sum(1 for finding in findings if finding.issue_worthy)
     has_persistence = any(f.finding_type == "credential_persistence" for f in findings)
+    has_exposed_secret = any(f.finding_type == "exposed_secret" for f in findings)
 
-    if issue_worthy_count > 0 and not overt_harvest_posture:
+    if has_exposed_secret or (issue_worthy_count > 0 and not overt_harvest_posture):
         action: IssueAction = "file_issue"
     elif overt_harvest_posture and (issue_worthy_count > 0 or has_persistence):
         action = "report_only"

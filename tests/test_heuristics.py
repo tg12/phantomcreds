@@ -95,6 +95,26 @@ def test_fixable_management_findings_trigger_issue_filing(repo_metadata: RepoMet
     }
 
 
+def test_exposed_secret_triggers_issue_filing_even_with_harvest_posture(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "README.md": "No API key needed.\nShared subscription relay.\n",
+            ".env": 'OPENAI_API_KEY="sk-proj-abcdefghijklmnopqrstuvwxyz123456"\n',
+        },
+        discovery_sources={"shared-subscription-posture"},
+        scan_date=SCAN_DATE,
+    )
+    assert report.action == "file_issue"
+    assert "exposed_secret" in {finding.finding_type for finding in findings}
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert exposed.issue_worthy is True
+    assert "REDACTED" in exposed.evidence[0]
+    assert "abcdefghijklmnopqrstuvwxyz123456" not in exposed.evidence[0]
+
+
 def test_callback_exposure_detected(repo_metadata: RepoMetadata) -> None:
     report, findings = analyze_repository(
         metadata=repo_metadata,

@@ -35,7 +35,7 @@ It is built around one premise: operator trust is the product. If the scanner ca
 **phantomcreds** runs a daily GitHub Actions job that:
 
 1. Searches GitHub repositories for posture phrases such as `multi-account`, `no API key needed`, `auth file`, and `shared subscription`
-2. Searches code for strong credential-risk fingerprints such as `SaveTokenToFile`, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management CORS, and callback listeners bound to `0.0.0.0`
+2. Searches code for strong credential-risk fingerprints such as `SaveTokenToFile`, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management CORS, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env` or config material
 3. Fetches targeted file contents directly from the GitHub API
 4. Scores each repo against a repo-level evidence model rather than a keyword count
 5. Writes append-only ledgers to this repo:
@@ -57,6 +57,7 @@ The scanner combines four evidence classes:
 |---|---|
 | Harvest posture | README or description markets shared subscriptions, relays, auth-file import, or "no API key needed" positioning |
 | Credential persistence | Code writes token-like material to local auth files or serialized session stores |
+| Direct secret exposure | Current repo files appear to contain committed API keys or webhook-style credentials; evidence is redacted in stored findings and issue bodies |
 | Unsafe exposure | Callback listeners bind broadly, management routes use wildcard CORS, or auth bypass wrappers weaken the control plane |
 | Centralized leakage | Request logging or telemetry paths appear to forward raw credential-bearing headers |
 
@@ -191,16 +192,16 @@ The data model is structured so those questions can be answered from the ledger 
 ```json
 {
   "repo_full_name": "owner/repo",
-  "finding_type": "raw_auth_forwarding",
-  "title": "Home request logging forwards raw Authorization headers",
+  "finding_type": "exposed_secret",
+  "title": "Secret-bearing credential material appears committed in current repository files",
   "severity": "high",
   "confidence": "confirmed",
-  "summary": "Downstream request headers appear to be cloned into centralized request-log transport without secret redaction.",
+  "summary": "Current repository files appear to contain committed API keys or webhook-style credential material. Evidence is redacted in the report output.",
   "issue_worthy": true,
   "scan_date": "2026-05-18",
   "evidence": [
-    "internal/logging/request_logger.go:204 - Headers: cloneHeaders(headers),",
-    "internal/logging/request_logger_home_test.go:42 - \"Authorization\": {\"Bearer secret\"},"
+    ".env:1 - OPENAI_API_KEY=[REDACTED:sk-pro...3456]",
+    "config.json:7 - SLACK_WEBHOOK_URL=[REDACTED:https://hooks.slack.com/services/REDACTED]"
   ]
 }
 ```

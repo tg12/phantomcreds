@@ -20,6 +20,7 @@ from phantomcreds.config import (
     RECENT_PUSH_WINDOW_HOURS,
     REPO_SEARCH_QUERIES,
     REPORTS_FILE,
+    SECRET_CANDIDATE_PATHS,
 )
 from phantomcreds.github_client import GitHubClient
 from phantomcreds.heuristics import analyze_repository
@@ -109,6 +110,14 @@ def _select_paths(tree_paths: list[str], code_hits: set[str]) -> list[str]:
         if candidate in tree_set and candidate not in seen:
             ordered.append(candidate)
             seen.add(candidate)
+
+    for path in sorted(tree_paths):
+        if path in seen:
+            continue
+        lower_path = path.lower()
+        if lower_path in {candidate.lower() for candidate in SECRET_CANDIDATE_PATHS}:
+            ordered.append(path)
+            seen.add(path)
 
     return ordered[:MAX_FILES_PER_REPO]
 

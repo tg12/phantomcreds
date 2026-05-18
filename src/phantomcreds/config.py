@@ -37,6 +37,23 @@ README_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
     "README_CN.md",
 )
 
+SECRET_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
+    ".env",
+    ".env.local",
+    ".env.production",
+    ".env.development",
+    ".env.example",
+    ".env.sample",
+    "env.example",
+    "config.json",
+    "config.yaml",
+    "config.yml",
+    "settings.json",
+    "secrets.json",
+    "auth.json",
+    "cookies.json",
+)
+
 STORE_PATHS: Final[frozenset[str]] = frozenset({
     "internal/store/objectstore.go",
     "internal/store/postgresstore.go",
