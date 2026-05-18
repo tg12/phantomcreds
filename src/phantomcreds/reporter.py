@@ -93,9 +93,7 @@ def _build_daily_table(records: list[Record]) -> str:
         scanned = len(day)
         flagged = sum(1 for row in day if row.get("classification") != "clean")
         high_risk = {
-            str(row.get("full_name"))
-            for row in day
-            if row.get("classification") == "high_risk"
+            str(row.get("full_name")) for row in day if row.get("classification") == "high_risk"
         }
         issue_worthy = sum(1 for row in day if _as_int(row.get("issue_worthy_count", 0)) > 0)
         report_only = sum(1 for row in day if row.get("action") == "report_only")
@@ -128,7 +126,10 @@ def _build_repo_table(records: list[Record]) -> str:
 
     top = sorted(
         today,
-        key=lambda row: (_as_float(row.get("composite", 0.0)), _as_int(row.get("finding_count", 0))),
+        key=lambda row: (
+            _as_float(row.get("composite", 0.0)),
+            _as_int(row.get("finding_count", 0)),
+        ),
         reverse=True,
     )[:25]
     rows = []

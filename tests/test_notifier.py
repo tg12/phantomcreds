@@ -9,7 +9,9 @@ SCAN_DATE = "2026-05-18"
 
 
 class FakeClient:
-    def __init__(self, existing_issue: int | None = None, comments: list[str] | None = None) -> None:
+    def __init__(
+        self, existing_issue: int | None = None, comments: list[str] | None = None
+    ) -> None:
         self.existing_issue = existing_issue
         self.comments = comments or []
         self.created: list[tuple[str, str, str, list[str]]] = []
@@ -68,7 +70,9 @@ def _findings() -> list[RepoFinding]:
             summary="Management routes inherit Access-Control-Allow-Origin: *.",
             issue_worthy=True,
             scan_date=SCAN_DATE,
-            evidence=("internal/api/server.go:1355 - c.Header(\"Access-Control-Allow-Origin\", \"*\")",),
+            evidence=(
+                'internal/api/server.go:1355 - c.Header("Access-Control-Allow-Origin", "*")',
+            ),
         ),
     ]
 
@@ -110,7 +114,10 @@ def test_comment_existing_issue_when_open_thread_exists() -> None:
     assert len(client.added_comments) == 1
     assert client.added_comments[0][1] == 77
     assert "This issue remains open." in client.added_comments[0][2]
-    assert "Source: [phantomcreds](https://github.com/tg12/phantomcreds)" in client.added_comments[0][2]
+    assert (
+        "Source: [phantomcreds](https://github.com/tg12/phantomcreds)"
+        in client.added_comments[0][2]
+    )
 
 
 def test_skip_duplicate_same_day_comment() -> None:

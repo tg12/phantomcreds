@@ -148,7 +148,9 @@ def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     finding_types = ", ".join(sorted({finding.finding_type for finding in findings}))
     secret_indicators = _secret_indicators(findings)
     indicator_line = (
-        f"- Exposed secret indicators: {', '.join(secret_indicators)}\n" if secret_indicators else ""
+        f"- Exposed secret indicators: {', '.join(secret_indicators)}\n"
+        if secret_indicators
+        else ""
     )
     return (
         f"{_scan_marker(report.scan_date)}\n"
@@ -172,9 +174,13 @@ def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
 
 def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[RepoFinding]) -> None:
     """Create or update one issue per qualifying repo."""
-    eligible = [report for report in reports if report.action == "file_issue" and report.issue_worthy_count]
+    eligible = [
+        report for report in reports if report.action == "file_issue" and report.issue_worthy_count
+    ]
     if len(eligible) > MAX_ISSUES_PER_SCAN:
-        _log.warning("Capping issue notifications from %d to %d", len(eligible), MAX_ISSUES_PER_SCAN)
+        _log.warning(
+            "Capping issue notifications from %d to %d", len(eligible), MAX_ISSUES_PER_SCAN
+        )
         eligible = eligible[:MAX_ISSUES_PER_SCAN]
 
     for report in eligible:
@@ -188,7 +194,9 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
         try:
             existing = client.find_open_issue(report.full_name, _ISSUE_TITLE)
             if existing is None:
-                number = client.create_issue(report.full_name, _ISSUE_TITLE, _issue_body(report, repo_findings), [])
+                number = client.create_issue(
+                    report.full_name, _ISSUE_TITLE, _issue_body(report, repo_findings), []
+                )
                 _log.info("Created issue #%d on %s", number, report.full_name)
             else:
                 comments = client.list_issue_comments(report.full_name, existing)

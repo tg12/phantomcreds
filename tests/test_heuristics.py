@@ -132,10 +132,10 @@ def test_exposed_secret_detects_cloud_keys_and_private_key_blocks(
                 "-----END OPENSSH PRIVATE KEY-----\n"
             ),
             "gcp-service-account.json": (
-                '{\n'
+                "{\n"
                 '  "type": "service_account",\n'
                 '  "private_key": "-----BEGIN PRIVATE KEY-----\\nABC\\n-----END PRIVATE KEY-----\\n"\n'
-                '}\n'
+                "}\n"
             ),
         },
         discovery_sources={"auth-import-posture"},
@@ -150,6 +150,60 @@ def test_exposed_secret_detects_cloud_keys_and_private_key_blocks(
     assert "AIzaSyA123456789012345678901234567890123" not in joined
     assert "OPENSSH PRIVATE KEY" in joined
     assert "GCP service account private key block" in joined
+
+
+def test_exposed_secret_scans_txt_files_and_additional_ai_keys(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "notes/ops.txt": (
+                "OPENROUTER_API_KEY=sk-or-v1-abcdefghijklmnopqrstuvwxyz123456\n"
+                "GROQ_API_KEY=gsk_abcdefghijklmnopqrstuvwxyz123456\n"
+                "REPLICATE_API_TOKEN=r8_abcdefghijklmnopqrstuvwxyz123456\n"
+                "PERPLEXITY_API_KEY=pplx-abcdefghijklmnopqrstuvwxyz123456\n"
+                "AWS_SESSION_TOKEN=abcdEFGHijklMNOPqrstUVWXyz0123456789+/abcdEFGHijklMNOPqrstUVWXyz0123456789+/==\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert len(exposed.evidence) == 5
+    assert "5 redacted secret indicators" in exposed.summary
+    joined = "\n".join(exposed.evidence)
+    assert "sk-or-v1-abcdefghijklmnopqrstuvwxyz123456" not in joined
+    assert "gsk_abcdefghijklmnopqrstuvwxyz123456" not in joined
+    assert "r8_abcdefghijklmnopqrstuvwxyz123456" not in joined
+    assert "pplx-abcdefghijklmnopqrstuvwxyz123456" not in joined
+
+
+def test_redacted_secret_examples_do_not_trigger_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "README.md": (
+                "```json\n"
+                "{\n"
+                '  "evidence": [\n'
+                '    ".env:1 - OPENAI_API_KEY=[REDACTED:sk-pro...3456]",\n'
+                '    "deploy/id_rsa:1 - [REDACTED:-----BEGIN OPENSSH PRIVATE KEY-----]"\n'
+                "  ]\n"
+                "}\n"
+                "```\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
 
 
 def test_callback_exposure_detected(repo_metadata: RepoMetadata) -> None:

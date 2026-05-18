@@ -49,7 +49,10 @@ CODE_SEARCH_QUERIES: Final[tuple[tuple[str, str], ...]] = (
     ("callback-exposure-python", '"0.0.0.0" "oauth" language:Python'),
     ("callback-exposure-typescript", '"0.0.0.0" "callback" language:TypeScript'),
     ("auth-bypass-go", '"wrapManagementAuth" language:Go'),
-    ("auth-bypass-javascript", '"/v0/management" "Access-Control-Allow-Origin" language:JavaScript'),
+    (
+        "auth-bypass-javascript",
+        '"/v0/management" "Access-Control-Allow-Origin" language:JavaScript',
+    ),
     ("auth-import-python", '"auth.json" "cookies.json" language:Python'),
     ("auth-import-typescript", '"auth.json" "cookies.json" language:TypeScript'),
     ("secret-path-env", '"OPENAI_API_KEY" filename:.env'),
@@ -113,34 +116,44 @@ SECRET_CANDIDATE_SUFFIXES: Final[tuple[str, ...]] = (
     "credentials.json",
 )
 
-STORE_PATHS: Final[frozenset[str]] = frozenset({
-    "internal/store/objectstore.go",
-    "internal/store/postgresstore.go",
-})
+STORE_PATHS: Final[frozenset[str]] = frozenset(
+    {
+        "internal/store/objectstore.go",
+        "internal/store/postgresstore.go",
+    }
+)
 
-LOGGER_PATHS: Final[frozenset[str]] = frozenset({
-    "internal/logging/request_logger.go",
-    "internal/logging/request_logger_home_test.go",
-})
+LOGGER_PATHS: Final[frozenset[str]] = frozenset(
+    {
+        "internal/logging/request_logger.go",
+        "internal/logging/request_logger_home_test.go",
+    }
+)
 
-CALLBACK_PATHS: Final[frozenset[str]] = frozenset({
-    "docker-compose.yml",
-    "internal/api/handlers/management/auth_files.go",
-    "internal/auth/codex/oauth_server.go",
-    "internal/auth/claude/oauth_server.go",
-})
+CALLBACK_PATHS: Final[frozenset[str]] = frozenset(
+    {
+        "docker-compose.yml",
+        "internal/api/handlers/management/auth_files.go",
+        "internal/auth/codex/oauth_server.go",
+        "internal/auth/claude/oauth_server.go",
+    }
+)
 
-MANAGEMENT_ROUTE_PATHS: Final[frozenset[str]] = frozenset({
-    "internal/api/modules/amp/routes.go",
-})
+MANAGEMENT_ROUTE_PATHS: Final[frozenset[str]] = frozenset(
+    {
+        "internal/api/modules/amp/routes.go",
+    }
+)
 
-SERVER_PATHS: Final[frozenset[str]] = frozenset({
-    "internal/api/server.go",
-})
+SERVER_PATHS: Final[frozenset[str]] = frozenset(
+    {
+        "internal/api/server.go",
+    }
+)
 
-PRIORITY_PATH_SUFFIXES: Final[tuple[str, ...]] = tuple(sorted(
-    STORE_PATHS | LOGGER_PATHS | CALLBACK_PATHS | MANAGEMENT_ROUTE_PATHS | SERVER_PATHS
-))
+PRIORITY_PATH_SUFFIXES: Final[tuple[str, ...]] = tuple(
+    sorted(STORE_PATHS | LOGGER_PATHS | CALLBACK_PATHS | MANAGEMENT_ROUTE_PATHS | SERVER_PATHS)
+)
 
 MAX_REPO_RESULTS_PER_QUERY: Final[int] = 30
 MAX_CODE_RESULTS_PER_QUERY: Final[int] = 40
@@ -155,7 +168,6 @@ RECENT_PUSH_WINDOW_HOURS: Final[int] = 72
 SCORE_HIGH_RISK: Final[float] = 0.65
 SCORE_WATCHLIST: Final[float] = 0.20
 
-DATA_DIR: Final[Path] = Path("data")
 REPORTS_FILE: Final[Path] = Path("data/repos.jsonl")
 FINDINGS_FILE: Final[Path] = Path("data/findings.jsonl")
 ALLOWLIST_FILE: Final[Path] = Path("data/allowlist.txt")

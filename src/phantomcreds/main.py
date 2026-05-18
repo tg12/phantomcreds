@@ -111,24 +111,28 @@ _LIKELY_BINARY_SUFFIXES: tuple[str, ...] = (
     ".woff2",
     ".zip",
 )
-_SKIP_TEXT_SWEEP_SEGMENTS: frozenset[str] = frozenset({
-    ".git",
-    ".next",
-    ".venv",
-    "__pycache__",
-    "dist",
-    "node_modules",
-    "target",
-    "vendor",
-})
-_LANGUAGE_SUFFIXES: frozenset[str] = frozenset({
-    "generic",
-    "go",
-    "javascript",
-    "python",
-    "rust",
-    "typescript",
-})
+_SKIP_TEXT_SWEEP_SEGMENTS: frozenset[str] = frozenset(
+    {
+        ".git",
+        ".next",
+        ".venv",
+        "__pycache__",
+        "dist",
+        "node_modules",
+        "target",
+        "vendor",
+    }
+)
+_LANGUAGE_SUFFIXES: frozenset[str] = frozenset(
+    {
+        "generic",
+        "go",
+        "javascript",
+        "python",
+        "rust",
+        "typescript",
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -228,7 +232,9 @@ def _source_family(label: str) -> str:
     return label
 
 
-def _candidate_score(repo_full_name: str, sources: set[str], metadata: RepoMetadata) -> tuple[float, datetime, str]:
+def _candidate_score(
+    repo_full_name: str, sources: set[str], metadata: RepoMetadata
+) -> tuple[float, datetime, str]:
     family_count = len({_source_family(label) for label in sources})
     source_count = len(sources)
     has_posture_signal = any(label.endswith("posture") for label in sources)
@@ -296,7 +302,10 @@ def _select_paths(tree_paths: list[str], code_hits: set[str]) -> list[str]:
             ordered.append(path)
             seen.add(path)
             continue
-        if any(lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in secret_candidate_suffixes):
+        if any(
+            lower_path.endswith(suffix) or basename.endswith(suffix)
+            for suffix in secret_candidate_suffixes
+        ):
             ordered.append(path)
             seen.add(path)
 
@@ -314,9 +323,14 @@ def _is_text_like_path(path: str) -> bool:
     segments = set(lower_path.split("/"))
     if segments & _SKIP_TEXT_SWEEP_SEGMENTS:
         return False
-    if any(lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in _LIKELY_BINARY_SUFFIXES):
+    if any(
+        lower_path.endswith(suffix) or basename.endswith(suffix)
+        for suffix in _LIKELY_BINARY_SUFFIXES
+    ):
         return False
-    if any(lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in _TEXT_FILE_SUFFIXES):
+    if any(
+        lower_path.endswith(suffix) or basename.endswith(suffix) for suffix in _TEXT_FILE_SUFFIXES
+    ):
         return True
     return "." not in basename
 
@@ -335,7 +349,9 @@ def _select_secret_sweep_paths(tree_paths: list[str], selected_paths: list[str])
     return sweep_paths
 
 
-def _write_step_summary(reports: list[RepoReport], findings: list[RepoFinding], scan_date: str) -> None:
+def _write_step_summary(
+    reports: list[RepoReport], findings: list[RepoFinding], scan_date: str
+) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
         return
@@ -387,7 +403,9 @@ def _fetch_repo_files(
         ref,
         max_workers=FILE_FETCH_WORKERS,
     )
-    _log.info("Fetched %d/%d candidate files for %s", len(files), len(selected_paths), repo_full_name)
+    _log.info(
+        "Fetched %d/%d candidate files for %s", len(files), len(selected_paths), repo_full_name
+    )
     return files
 
 

@@ -9,7 +9,6 @@ from phantomcreds.config import (
     CALLBACK_PATHS,
     LOGGER_PATHS,
     MANAGEMENT_ROUTE_PATHS,
-    README_CANDIDATE_PATHS,
     SCORE_HIGH_RISK,
     SCORE_WATCHLIST,
     SERVER_PATHS,
@@ -31,29 +30,31 @@ _SECRET_FILE_SUFFIXES: tuple[str, ...] = (
     ".tfvars",
     ".tfvars.json",
 )
-_SECRET_FILE_NAMES: frozenset[str] = frozenset({
-    ".env",
-    ".env.local",
-    ".env.production",
-    ".env.development",
-    ".env.example",
-    ".env.sample",
-    ".npmrc",
-    ".pypirc",
-    ".terraformrc",
-    "terraform.tfvars",
-    "terraform.tfvars.json",
-    "credentials",
-    "auth.json",
-    "cookies.json",
-    "service-account.json",
-    "gcp-service-account.json",
-    "azure.json",
-    "id_rsa",
-    "id_dsa",
-    "id_ecdsa",
-    "id_ed25519",
-})
+_SECRET_FILE_NAMES: frozenset[str] = frozenset(
+    {
+        ".env",
+        ".env.local",
+        ".env.production",
+        ".env.development",
+        ".env.example",
+        ".env.sample",
+        ".npmrc",
+        ".pypirc",
+        ".terraformrc",
+        "terraform.tfvars",
+        "terraform.tfvars.json",
+        "credentials",
+        "auth.json",
+        "cookies.json",
+        "service-account.json",
+        "gcp-service-account.json",
+        "azure.json",
+        "id_rsa",
+        "id_dsa",
+        "id_ecdsa",
+        "id_ed25519",
+    }
+)
 
 _POSTURE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("no_api_key_needed", re.compile(r"no api key needed", re.IGNORECASE)),
@@ -110,6 +111,41 @@ _SECRET_ASSIGNMENT_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
         ),
     ),
     (
+        "openrouter_api_key",
+        re.compile(
+            r"(OPENROUTER_API_KEY|openrouter[_-]?api[_-]?key)\s*[:=]\s*[\"']?(sk-or-v1-[A-Za-z0-9_-]{16,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "groq_api_key",
+        re.compile(
+            r"(GROQ_API_KEY|groq[_-]?api[_-]?key)\s*[:=]\s*[\"']?(gsk_[A-Za-z0-9]{20,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "replicate_api_token",
+        re.compile(
+            r"(REPLICATE_API_TOKEN|REPLICATE_TOKEN|replicate[_-]?(?:api[_-]?)?token)\s*[:=]\s*[\"']?(r8_[A-Za-z0-9]{20,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "deepseek_api_key",
+        re.compile(
+            r"(DEEPSEEK_API_KEY|deepseek[_-]?api[_-]?key)\s*[:=]\s*[\"']?(sk-[A-Za-z0-9_-]{20,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "perplexity_api_key",
+        re.compile(
+            r"(PERPLEXITY_API_KEY|PPLX_API_KEY|perplexity[_-]?api[_-]?key|pplx[_-]?api[_-]?key)\s*[:=]\s*[\"']?(pplx-[A-Za-z0-9_-]{20,})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
         "aws_access_key_id",
         re.compile(
             r"(AWS_ACCESS_KEY_ID|aws[_-]?access[_-]?key[_-]?id)\s*[:=]\s*[\"']?((?:AKIA|ASIA|AIDA|AROA)[A-Z0-9]{16})[\"']?",
@@ -120,6 +156,13 @@ _SECRET_ASSIGNMENT_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
         "aws_secret_access_key",
         re.compile(
             r"(AWS_SECRET_ACCESS_KEY|aws[_-]?secret[_-]?access[_-]?key)\s*[:=]\s*[\"']?([A-Za-z0-9/+=]{40})[\"']?",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "aws_session_token",
+        re.compile(
+            r"(AWS_SESSION_TOKEN|aws[_-]?session[_-]?token)\s*[:=]\s*[\"']?([A-Za-z0-9/+=]{32,})[\"']?",
             re.IGNORECASE,
         ),
     ),
@@ -205,6 +248,7 @@ _PLACEHOLDER_SECRET_RE = re.compile(
     r"(example|changeme|your[_-]?key|placeholder|dummy|test[-_]?key|xxxxx+|<[^>]+>)",
     re.IGNORECASE,
 )
+_MAX_EXPOSED_SECRET_EVIDENCE = 12
 
 _TYPE_WEIGHTS: dict[str, float] = {
     "harvest_posture": 0.18,
@@ -251,49 +295,81 @@ def _redact_secret(secret: str) -> str:
     return f"{secret[:6]}...{secret[-4:]}"
 
 
+def _is_redacted_example_line(line: str) -> bool:
+    return "[REDACTED:" in line
+
+
+def _collect_private_key_evidence(path: str, content: str) -> list[str]:
+    evidence: list[str] = []
+    for lineno, line in enumerate(content.splitlines(), 1):
+        if _is_redacted_example_line(line):
+            continue
+        if _SSH_PRIVATE_KEY_HEADER_RE.search(line):
+            header_match = _SSH_PRIVATE_KEY_HEADER_RE.search(line)
+            if header_match is not None:
+                evidence.append(f"{path}:{lineno} - [REDACTED:{header_match.group(0)}]")
+
+    if "[REDACTED:" not in content and _GCP_SERVICE_ACCOUNT_RE.search(content):
+        evidence.append(f"{path}:1 - [REDACTED:GCP service account private key block]")
+
+    return evidence
+
+
+def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list[str]:
+    evidence: list[str] = []
+    if limit <= 0:
+        return evidence
+
+    for lineno, line in enumerate(content.splitlines(), 1):
+        if len(evidence) >= limit:
+            return evidence
+        if _is_redacted_example_line(line):
+            continue
+        for _secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
+            match = pattern.search(line)
+            if not match:
+                continue
+            secret_value = match.group(2).strip()
+            if _PLACEHOLDER_SECRET_RE.search(secret_value):
+                continue
+            redacted = _redact_secret(secret_value)
+            evidence.append(f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]")
+            break
+
+    return evidence
+
+
+def _collect_exposed_secret_evidence(path: str, content: str, limit: int) -> list[str]:
+    evidence = _collect_private_key_evidence(path, content)
+    if len(evidence) >= limit:
+        return evidence[:limit]
+    evidence.extend(_collect_inline_secret_evidence(path, content, limit - len(evidence)))
+    return evidence
+
+
 def _detect_exposed_secrets(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
     evidence: list[str] = []
+    total_secret_hits = 0
 
     for path, content in files.items():
-        lower_name = path.lower()
-        basename = lower_name.rsplit("/", 1)[-1]
-        if not (
-            lower_name in _SECRET_FILE_NAMES
-            or basename in _SECRET_FILE_NAMES
-            or lower_name in {candidate.lower() for candidate in README_CANDIDATE_PATHS}
-            or any(lower_name.endswith(suffix) or basename.endswith(suffix) for suffix in _SECRET_FILE_SUFFIXES)
-        ):
+        file_evidence = _collect_exposed_secret_evidence(
+            path,
+            content,
+            _MAX_EXPOSED_SECRET_EVIDENCE,
+        )
+        if not file_evidence:
             continue
-
-        if len(evidence) < 4 and _SSH_PRIVATE_KEY_HEADER_RE.search(content):
-            header_match = _SSH_PRIVATE_KEY_HEADER_RE.search(content)
-            if header_match is not None:
-                evidence.append(f"{path}:1 - [REDACTED:{header_match.group(0)}]")
-
-        if len(evidence) < 4 and _GCP_SERVICE_ACCOUNT_RE.search(content):
-            evidence.append(f"{path}:1 - [REDACTED:GCP service account private key block]")
-
-        for lineno, line in enumerate(content.splitlines(), 1):
-            if len(evidence) >= 4:
-                break
-            for _secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
-                match = pattern.search(line)
-                if not match:
-                    continue
-                secret_value = match.group(2).strip()
-                if _PLACEHOLDER_SECRET_RE.search(secret_value):
-                    continue
-                redacted = _redact_secret(secret_value)
-                evidence.append(
-                    f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]"
-                )
-                break
+        total_secret_hits += len(file_evidence)
+        remaining = _MAX_EXPOSED_SECRET_EVIDENCE - len(evidence)
+        if remaining > 0:
+            evidence.extend(file_evidence[:remaining])
 
     if not evidence:
         return []
 
+    secret_label = "indicator" if total_secret_hits == 1 else "indicators"
     return [
         RepoFinding(
             repo_full_name=metadata.full_name,
@@ -303,11 +379,12 @@ def _detect_exposed_secrets(
             confidence="confirmed",
             summary=(
                 "Current repository files appear to contain committed API keys or webhook-style "
-                "credential material. Evidence is redacted in the report output."
+                f"credential material. {total_secret_hits} redacted secret {secret_label} "
+                "were found in fetched repository files. Evidence is redacted in the report output."
             ),
             issue_worthy=True,
             scan_date=scan_date,
-            evidence=tuple(evidence),
+            evidence=tuple(evidence[:_MAX_EXPOSED_SECRET_EVIDENCE]),
         )
     ]
 
@@ -477,7 +554,11 @@ def _detect_wildcard_management_cors(
 ) -> list[RepoFinding]:
     server_path = next(iter(SERVER_PATHS))
     server_go = files.get(server_path)
-    if not server_go or "/v0/management" not in server_go or not _WILDCARD_CORS_RE.search(server_go):
+    if (
+        not server_go
+        or "/v0/management" not in server_go
+        or not _WILDCARD_CORS_RE.search(server_go)
+    ):
         return []
     evidence = _collect_refs(server_path, server_go, _CORS_CONTEXT_RE, limit=4)
     return [
