@@ -25,7 +25,12 @@ def _scan_marker(scan_date: str) -> str:
 
 
 class IssueClient(Protocol):
-    def find_open_issue(self, owner_repo: str, title_fragment: str) -> int | None: ...
+    def find_open_issue(
+        self,
+        owner_repo: str,
+        title_fragment: str,
+        body_marker: str | None = None,
+    ) -> int | None: ...
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int: ...
 
@@ -192,7 +197,7 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
         if not repo_findings:
             continue
         try:
-            existing = client.find_open_issue(report.full_name, _ISSUE_TITLE)
+            existing = client.find_open_issue(report.full_name, _ISSUE_TITLE, _ISSUE_MARKER)
             if existing is None:
                 number = client.create_issue(
                     report.full_name, _ISSUE_TITLE, _issue_body(report, repo_findings), []

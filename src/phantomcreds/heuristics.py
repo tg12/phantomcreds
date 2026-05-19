@@ -15,7 +15,7 @@ from phantomcreds.config import (
     SERVER_PATHS,
     STORE_PATHS,
 )
-from phantomcreds.models import Classification, IssueAction, RepoFinding, RepoMetadata, RepoReport
+from phantomcreds.models import Classification, RepoFinding, RepoMetadata, RepoReport
 
 _SECRET_FILE_SUFFIXES: tuple[str, ...] = (
     ".env",
@@ -991,10 +991,10 @@ def analyze_repository(
     has_persistence = any(f.finding_type == "credential_persistence" for f in findings)
     has_exposed_secret = any(f.finding_type == "exposed_secret" for f in findings)
 
-    if has_exposed_secret or (issue_worthy_count > 0 and not overt_harvest_posture):
-        action: IssueAction = "file_issue"
-    elif overt_harvest_posture and (issue_worthy_count > 0 or has_persistence):
+    if overt_harvest_posture and (issue_worthy_count > 0 or has_persistence or has_exposed_secret):
         action = "report_only"
+    elif has_exposed_secret or issue_worthy_count > 0:
+        action = "file_issue"
     else:
         action = "watch"
 

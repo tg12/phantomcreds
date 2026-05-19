@@ -229,8 +229,13 @@ class GitHubClient:
                     comments.append(body)
         return comments
 
-    def find_open_issue(self, owner_repo: str, title_fragment: str) -> int | None:
-        """Return the first open issue whose title contains title_fragment."""
+    def find_open_issue(
+        self,
+        owner_repo: str,
+        title_fragment: str,
+        body_marker: str | None = None,
+    ) -> int | None:
+        """Return the first matching open issue for phantomcreds-owned threads."""
         for page in range(1, 5):
             items = self._rest_get(
                 f"{GITHUB_API_BASE}/repos/{owner_repo}/issues",
@@ -241,6 +246,8 @@ class GitHubClient:
             for item in items:
                 title = str(item.get("title", ""))
                 if title_fragment in title:
+                    if body_marker is not None and body_marker not in str(item.get("body", "")):
+                        continue
                     return int(item["number"])
         return None
 

@@ -10,14 +10,23 @@ SCAN_DATE = "2026-05-18"
 
 class FakeClient:
     def __init__(
-        self, existing_issue: int | None = None, comments: list[str] | None = None
+        self,
+        existing_issue: int | None = None,
+        comments: list[str] | None = None,
     ) -> None:
         self.existing_issue = existing_issue
         self.comments = comments or []
         self.created: list[tuple[str, str, str, list[str]]] = []
         self.added_comments: list[tuple[str, int, str]] = []
+        self.find_calls: list[tuple[str, str, str | None]] = []
 
-    def find_open_issue(self, owner_repo: str, title_fragment: str) -> int | None:
+    def find_open_issue(
+        self,
+        owner_repo: str,
+        title_fragment: str,
+        body_marker: str | None = None,
+    ) -> int | None:
+        self.find_calls.append((owner_repo, title_fragment, body_marker))
         return self.existing_issue
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
@@ -100,6 +109,13 @@ def test_create_issue_when_no_open_thread_exists() -> None:
     client = FakeClient(existing_issue=None)
     notify_all(client, [_report()], _findings())
     assert len(client.created) == 1
+    assert client.find_calls == [
+        (
+            "owner/repo",
+            "[phantomcreds] Credential-handling risks detected in this repository",
+            "<!-- phantomcreds:issue -->",
+        )
+    ]
     assert "<!-- phantomcreds:issue -->" in client.created[0][2]
     assert "<!-- phantomcreds:scan:2026-05-18 -->" in client.created[0][2]
     assert "Created by [James Sawyer](https://github.com/tg12)" in client.created[0][2]

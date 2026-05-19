@@ -12,12 +12,13 @@ from phantomcreds.main import (
     _filter_recent_candidates,
     _is_text_like_path,
     _parse_github_timestamp,
+    _process_candidates,
     _resolve_runtime_options,
     _select_paths,
     _select_secret_sweep_paths,
     _source_family,
 )
-from phantomcreds.models import RepoMetadata
+from phantomcreds.models import RepoFinding, RepoMetadata, RepoReport
 
 
 class FakeClient:
@@ -235,3 +236,72 @@ def test_rate_limit_check_sleeps_when_code_search_bucket_is_nearly_empty(
     client._check_rate_limit(response)
 
     assert sleep_calls == [15]
+
+
+def test_process_candidates_continues_after_repo_failure(monkeypatch) -> None:
+    metadata_by_repo = {
+        "owner/good": _metadata("owner/good", pushed_at="2026-05-18T11:30:00Z"),
+        "owner/bad": _metadata("owner/bad", pushed_at="2026-05-18T11:45:00Z"),
+    }
+    scanned: list[str] = []
+
+    def fake_scan_repository(
+        client,
+        repo_full_name: str,
+        metadata: RepoMetadata,
+        code_hits: set[str],
+        discovery_sources: set[str],
+        scan_date: str,
+    ) -> tuple[RepoReport, list[RepoFinding]]:
+        scanned.append(repo_full_name)
+        if repo_full_name == "owner/bad":
+            raise RuntimeError("boom")
+        return (
+            RepoReport(
+                full_name=repo_full_name,
+                composite=0.7,
+                classification="high_risk",
+                action="file_issue",
+                finding_count=1,
+                issue_worthy_count=1,
+                stars=metadata.stargazers_count,
+                scan_date=scan_date,
+                created_at=metadata.created_at,
+                updated_at=metadata.updated_at,
+                discovery_sources=tuple(sorted(discovery_sources)),
+                finding_types=("exposed_secret",),
+            ),
+            [
+                RepoFinding(
+                    repo_full_name=repo_full_name,
+                    finding_type="exposed_secret",
+                    title="Secret-bearing credential material appears committed in current repository files",
+                    severity="high",
+                    confidence="confirmed",
+                    summary="Current repository files appear to contain committed credential material.",
+                    issue_worthy=True,
+                    scan_date=scan_date,
+                    evidence=(".env:1 - OPENAI_API_KEY=[REDACTED:sk-pro...3456]",),
+                )
+            ],
+        )
+
+    monkeypatch.setattr("phantomcreds.main._scan_repository", fake_scan_repository)
+
+    reports, findings, failed_repos = _process_candidates(
+        client=MagicMock(),
+        candidates=["owner/good", "owner/bad"],
+        metadata_by_repo=metadata_by_repo,
+        code_paths={"owner/good": set(), "owner/bad": set()},
+        candidate_sources={
+            "owner/good": {"auth-import-posture"},
+            "owner/bad": {"auth-import-posture"},
+        },
+        allowlist=set(),
+        scan_date="2026-05-18",
+    )
+
+    assert scanned == ["owner/good", "owner/bad"]
+    assert [report.full_name for report in reports] == ["owner/good"]
+    assert [finding.repo_full_name for finding in findings] == ["owner/good"]
+    assert failed_repos == ["owner/bad"]

@@ -350,7 +350,10 @@ def _select_secret_sweep_paths(tree_paths: list[str], selected_paths: list[str])
 
 
 def _write_step_summary(
-    reports: list[RepoReport], findings: list[RepoFinding], scan_date: str
+    reports: list[RepoReport],
+    findings: list[RepoFinding],
+    scan_date: str,
+    failed_repo_count: int = 0,
 ) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
@@ -370,6 +373,7 @@ def _write_step_summary(
         f"| Findings captured | **{len(findings)}** |",
         f"| Repos eligible for issue filing | **{len(file_issue)}** |",
         f"| Repos marked report-only | {len(report_only)} |",
+        f"| Repo analysis failures | {failed_repo_count} |",
         "",
     ]
 
@@ -409,6 +413,70 @@ def _fetch_repo_files(
     return files
 
 
+def _scan_repository(
+    client: GitHubClient,
+    repo_full_name: str,
+    metadata: RepoMetadata,
+    code_hits: set[str],
+    discovery_sources: set[str],
+    scan_date: str,
+) -> tuple[RepoReport, list[RepoFinding]]:
+    tree_paths = client.get_repo_tree(repo_full_name, metadata.default_branch)
+    selected_paths = _select_paths(tree_paths, code_hits)
+    secret_sweep_paths = _select_secret_sweep_paths(tree_paths, selected_paths)
+    files = _fetch_repo_files(
+        client,
+        repo_full_name,
+        metadata.default_branch,
+        [*selected_paths, *secret_sweep_paths],
+    )
+    return analyze_repository(
+        metadata=metadata,
+        files=files,
+        discovery_sources=discovery_sources,
+        scan_date=scan_date,
+    )
+
+
+def _process_candidates(
+    client: GitHubClient,
+    candidates: list[str],
+    metadata_by_repo: dict[str, RepoMetadata],
+    code_paths: dict[str, set[str]],
+    candidate_sources: dict[str, set[str]],
+    allowlist: set[str],
+    scan_date: str,
+) -> tuple[list[RepoReport], list[RepoFinding], list[str]]:
+    reports: list[RepoReport] = []
+    findings: list[RepoFinding] = []
+    failed_repos: list[str] = []
+
+    for repo_full_name in candidates:
+        if repo_full_name.lower() in allowlist:
+            _log.info("Skipping allowlisted repo: %s", repo_full_name)
+            continue
+
+        _log.info("Analyzing %s", repo_full_name)
+        try:
+            report, repo_findings = _scan_repository(
+                client,
+                repo_full_name,
+                metadata_by_repo[repo_full_name],
+                code_paths.get(repo_full_name, set()),
+                candidate_sources[repo_full_name],
+                scan_date,
+            )
+        except Exception:
+            failed_repos.append(repo_full_name)
+            _log.exception("Failed to analyze %s", repo_full_name)
+            continue
+
+        reports.append(report)
+        findings.extend(repo_findings)
+
+    return reports, findings, failed_repos
+
+
 def main() -> None:
     setup_logging()
     client = GitHubClient(token=os.environ["GH_TOKEN"])
@@ -428,35 +496,15 @@ def main() -> None:
         RECENT_PUSH_WINDOW_HOURS,
     )
 
-    reports: list[RepoReport] = []
-    findings: list[RepoFinding] = []
-
-    for repo_full_name in candidates:
-        if repo_full_name.lower() in allowlist:
-            _log.info("Skipping allowlisted repo: %s", repo_full_name)
-            continue
-
-        _log.info("Analyzing %s", repo_full_name)
-        metadata = metadata_by_repo[repo_full_name]
-        tree_paths = client.get_repo_tree(repo_full_name, metadata.default_branch)
-        selected_paths = _select_paths(tree_paths, code_paths.get(repo_full_name, set()))
-        secret_sweep_paths = _select_secret_sweep_paths(tree_paths, selected_paths)
-
-        files = _fetch_repo_files(
-            client,
-            repo_full_name,
-            metadata.default_branch,
-            [*selected_paths, *secret_sweep_paths],
-        )
-
-        report, repo_findings = analyze_repository(
-            metadata=metadata,
-            files=files,
-            discovery_sources=candidate_sources[repo_full_name],
-            scan_date=scan_date,
-        )
-        reports.append(report)
-        findings.extend(repo_findings)
+    reports, findings, failed_repos = _process_candidates(
+        client,
+        candidates,
+        metadata_by_repo,
+        code_paths,
+        candidate_sources,
+        allowlist,
+        scan_date,
+    )
 
     append_reports(reports, runtime.reports_path)
     append_findings(findings, runtime.findings_path)
@@ -468,13 +516,14 @@ def main() -> None:
         notify_all(client, reports, findings)
     else:
         _log.info("External issue notifications disabled for this run")
-    _write_step_summary(reports, findings, scan_date)
+    _write_step_summary(reports, findings, scan_date, failed_repo_count=len(failed_repos))
 
     _log.info(
-        "Scan complete: %d repos, %d high-risk, %d findings",
+        "Scan complete: %d repos, %d high-risk, %d findings, %d failures",
         len(reports),
         sum(1 for report in reports if report.classification == "high_risk"),
         len(findings),
+        len(failed_repos),
     )
 
 
