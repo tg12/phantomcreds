@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-05-19 | 37 | 22 | 13 | 13 | 5 | 0 |
 | 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
 <!-- STATS:END -->
 
@@ -138,31 +139,28 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33367 | 2026-05-18 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 83 | 2026-05-18 |
-| HsnSaboor/CLIProxyAPIPlus | 1.000 | 7 | report_only | 61 | 2026-05-17 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33452 | 2026-05-19 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 85 | 2026-05-19 |
+| HsnSaboor/CLIProxyAPIPlus | 1.000 | 7 | report_only | 62 | 2026-05-19 |
 | Finesssee/ProxyPilot | 1.000 | 7 | report_only | 221 | 2026-05-18 |
-| tikhomirov/cliapi-webui | 1.000 | 7 | report_only | 0 | 2026-05-14 |
-| fxzer/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-14 |
-| vannek110/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-02-06 |
-| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-18 |
-| NguyenSiTrung/CLIProxyAPI | 1.000 | 6 | report_only | 1 | 2026-05-07 |
-| daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 39 | 2026-05-16 |
-| CodexNexor/VoltGate | 1.000 | 6 | report_only | 4 | 2026-04-27 |
-| zhangrr/CLIProxyAPI | 1.000 | 6 | file_issue | 13 | 2026-05-11 |
-| tamaproject360/clipproxyhybrid | 1.000 | 6 | report_only | 0 | 2026-01-05 |
-| Sakuralaaa/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-03-06 |
-| SahandTava/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-01-02 |
-| nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-05-16 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 12 | 2026-05-19 |
+| chainreactors/EvilProxy | 1.000 | 6 | report_only | 14 | 2026-05-19 |
 | kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-18 |
-| edlsh/CLIProxyAPIPlus-HsnSaboor | 1.000 | 6 | report_only | 0 | 2026-05-02 |
-| Camier/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-02-11 |
-| aeddk-bnh/cliproxyapi_clone | 1.000 | 6 | report_only | 0 | 2026-01-20 |
-| 0xAstroAlpha/cliProxyAPI-Dashboard | 1.000 | 6 | report_only | 182 | 2026-05-11 |
-| zhlhlf/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-05-10 |
-| Zeuyel/Proxy-me | 1.000 | 6 | file_issue | 1 | 2026-05-18 |
-| tamaproject360/pabriktokenx | 1.000 | 6 | report_only | 0 | 2026-04-17 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-18 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 696 | 2026-05-19 |
+| leic4u/CLIProxyAPIPlus | 1.000 | 5 | file_issue | 2 | 2026-05-19 |
+| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-12 |
+| tg12/phantomcreds | 0.770 | 3 | file_issue | 0 | 2026-05-18 |
+| eric69eric/business-gemini-2api | 0.390 | 2 | watch | 5 | 2026-05-19 |
+| GboyCode/CodexAuth | 0.390 | 2 | watch | 0 | 2026-05-19 |
+| ThomasEdwardYorke/cc-triad-relay | 0.390 | 2 | watch | 1 | 2026-05-19 |
+| tuxevil/pi-antigravity-rotator | 0.390 | 2 | watch | 8 | 2026-05-19 |
+| tranminhmanh/wp-stack-skill | 0.390 | 2 | watch | 2 | 2026-05-17 |
+| ugotmessage/tg-cli-relay | 0.390 | 2 | watch | 0 | 2026-05-19 |
+| tachibanayu24/claude-code-remote | 0.390 | 2 | watch | 0 | 2026-05-17 |
+| Teraflop-Inc/dev-agent-lens | 0.390 | 2 | watch | 67 | 2026-05-18 |
+| Wangnov/gpt-image-2-skill | 0.390 | 2 | watch | 42 | 2026-05-18 |
 <!-- REPO_STATS:END -->
 
 ---
