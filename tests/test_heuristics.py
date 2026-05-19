@@ -132,6 +132,39 @@ def test_exposed_secret_without_overt_harvest_triggers_issue_filing(
     assert "exposed_secret" in {finding.finding_type for finding in findings}
 
 
+def test_exposed_secret_detects_real_keys_inside_env_example_files(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.example": 'OPENAI_API_KEY="sk-proj-abcdefghijklmnopqrstuvwxyz123456"\n',
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert ".env.example:1 - OPENAI_API_KEY=[REDACTED:" in exposed.evidence[0]
+
+
+def test_exposed_secret_ignores_placeholder_keys_inside_env_example_files(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.example": 'OPENAI_API_KEY="your-openai-key-here"\n',
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert findings == []
+
+
 def test_exposed_secret_detects_cloud_keys_and_private_key_blocks(
     repo_metadata: RepoMetadata,
 ) -> None:

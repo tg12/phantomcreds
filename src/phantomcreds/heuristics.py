@@ -396,15 +396,18 @@ def _basename(path: str) -> str:
     return path.rsplit("/", 1)[-1].lower()
 
 
-def _is_non_live_secret_path(path: str) -> bool:
+def _is_non_live_secret_path(path: str, allow_template_basename: bool = False) -> bool:
     lower_path = path.lower()
     basename = _basename(path)
     if _path_segments(path) & _NON_LIVE_SECRET_SEGMENTS:
         return True
-    if basename in _NON_LIVE_SECRET_BASENAMES:
+    template_basename = basename in _NON_LIVE_SECRET_BASENAMES
+    if not allow_template_basename and template_basename:
         return True
     if basename.startswith("test_"):
         return True
+    if allow_template_basename and template_basename:
+        return False
     return lower_path.endswith(_NON_LIVE_SECRET_SUFFIXES)
 
 
@@ -477,7 +480,7 @@ def _is_redacted_example_line(line: str) -> bool:
 
 
 def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     evidence: list[str] = []
@@ -500,7 +503,7 @@ def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[str]:
 
 
 def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     key_matches: dict[int, str] = {}
@@ -536,7 +539,7 @@ def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[str]
 
 
 def _collect_connection_string_evidence(path: str, content: str, limit: int) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     evidence: list[str] = []
@@ -559,7 +562,7 @@ def _collect_connection_string_evidence(path: str, content: str, limit: int) -> 
 
 
 def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     basename = _basename(path)
@@ -599,7 +602,7 @@ def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[str]:
 
 
 def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     basename = _basename(path)
@@ -623,7 +626,7 @@ def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[s
 
 
 def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     basename = _basename(path)
@@ -647,7 +650,7 @@ def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> li
 
 
 def _collect_private_key_evidence(path: str, content: str) -> list[str]:
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
     evidence: list[str] = []
@@ -669,7 +672,7 @@ def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list
     evidence: list[str] = []
     if limit <= 0:
         return evidence
-    if _is_non_live_secret_path(path):
+    if _is_non_live_secret_path(path, allow_template_basename=True):
         return evidence
 
     for lineno, line in enumerate(content.splitlines(), 1):

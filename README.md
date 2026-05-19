@@ -285,7 +285,8 @@ If a repo is repeatedly benign but matches the search posture, add it to [`data/
 
 The scanner also applies built-in context filters before raising secret findings:
 - redacted evidence snippets are ignored
-- test, fixture, sample, example, and docs paths are not treated as live secret exposure
+- test, fixture, and docs paths are not treated as live secret exposure
+- template files such as `.env.example` remain non-issues when they contain placeholders, but still raise findings if they contain real credential material
 - Docker auth evidence must decode to printable `user:password` material before it is treated as a committed secret
 - credential-persistence findings require nearby write or serialization behavior, not just words like `session` or `cookie`
 
