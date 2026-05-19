@@ -140,6 +140,8 @@ _LANGUAGE_SUFFIXES: frozenset[str] = frozenset(
 
 @dataclass(frozen=True, slots=True)
 class RuntimeOptions:
+    """Runtime-selected output and notification settings."""
+
     reports_path: Path
     findings_path: Path
     allowlist_path: Path
@@ -286,7 +288,7 @@ def _recent_commit_source_labels(
     return labels
 
 
-def _enrich_recent_candidates_with_commit_signals(
+def _enrich_recent_candidates_with_commit_signals(  # pylint: disable=broad-exception-caught
     client: GitHubClient,
     candidates: list[str],
     candidate_sources: dict[str, set[str]],
@@ -488,7 +490,7 @@ def _fetch_repo_files(
     return files
 
 
-def _scan_repository(
+def _scan_repository(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     client: GitHubClient,
     repo_full_name: str,
     metadata: RepoMetadata,
@@ -513,7 +515,7 @@ def _scan_repository(
     )
 
 
-def _process_candidates(
+def _process_candidates(  # pylint: disable=too-many-arguments,too-many-positional-arguments,broad-exception-caught
     client: GitHubClient,
     candidates: list[str],
     metadata_by_repo: dict[str, RepoMetadata],
@@ -553,6 +555,7 @@ def _process_candidates(
 
 
 def main() -> None:
+    """Run discovery, analysis, persistence, and optional notification."""
     setup_logging()
     client = GitHubClient(token=os.environ["GH_TOKEN"])
     now = datetime.now(UTC)

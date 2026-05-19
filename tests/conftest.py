@@ -1,4 +1,5 @@
 """Fixtures for repo-level credential-risk tests."""
+# pylint: disable=missing-function-docstring
 
 from __future__ import annotations
 

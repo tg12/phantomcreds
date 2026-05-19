@@ -1,4 +1,11 @@
 """Tests for candidate discovery and recency filtering."""
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=protected-access
+# pylint: disable=use-implicit-booleaness-not-comparison
+# pylint: disable=too-many-arguments
+# pylint: disable=too-many-positional-arguments
+# pylint: disable=unused-argument
 
 from __future__ import annotations
 
@@ -273,7 +280,7 @@ def test_rate_limit_check_does_not_sleep_for_healthy_search_bucket(
 
     client._check_rate_limit(response)
 
-    assert sleep_calls == []
+    assert not sleep_calls
 
 
 def test_rate_limit_check_sleeps_when_code_search_bucket_is_nearly_empty(
@@ -315,7 +322,7 @@ def test_rate_limit_check_raises_on_hard_429_without_sleep(monkeypatch) -> None:
     with pytest.raises(RateLimitError) as exc_info:
         client._check_rate_limit(response)
     assert exc_info.value.reset_at == 2000000000
-    assert sleep_calls == []
+    assert not sleep_calls
 
 
 def test_raise_for_retryable_status_raises_transient_error() -> None:
@@ -353,7 +360,7 @@ def test_rest_get_retries_transient_http_failures(monkeypatch) -> None:
     result = client._rest_get("https://example.com")
 
     assert result == {"items": []}
-    assert calls == []
+    assert not calls
 
 
 def test_rest_post_retries_timeout(monkeypatch) -> None:
@@ -417,10 +424,16 @@ def test_process_candidates_continues_after_repo_failure(monkeypatch) -> None:
                 RepoFinding(
                     repo_full_name=repo_full_name,
                     finding_type="exposed_secret",
-                    title="Secret-bearing credential material appears committed in current repository files",
+                    title=(
+                        "Secret-bearing credential material appears committed "
+                        "in current repository files"
+                    ),
                     severity="high",
                     confidence="confirmed",
-                    summary="Current repository files appear to contain committed credential material.",
+                    summary=(
+                        "Current repository files appear to contain committed "
+                        "credential material."
+                    ),
                     issue_worthy=True,
                     scan_date=scan_date,
                     evidence=(".env:1 - OPENAI_API_KEY=[REDACTED:sk-pro...3456]",),

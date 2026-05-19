@@ -1,4 +1,5 @@
 """GitHub API client for search, content fetch, and issue filing."""
+# pylint: disable=duplicate-code
 
 from __future__ import annotations
 
@@ -228,7 +229,7 @@ class GitHubClient:
                 path = future_to_path[future]
                 try:
                     content = future.result()
-                except Exception as exc:  # pragma: no cover
+                except Exception as exc:  # pylint: disable=broad-exception-caught  # pragma: no cover
                     _log.warning("Failed to fetch %s from %s: %s", path, repo_full_name, exc)
                     continue
                 if content is not None:

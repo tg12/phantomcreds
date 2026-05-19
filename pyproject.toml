@@ -51,3 +51,6 @@ strict = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=src/phantomcreds --cov-report=term-missing"
+
+[tool.pylint.'MESSAGES CONTROL']
+disable = ["duplicate-code"]

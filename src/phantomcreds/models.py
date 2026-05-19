@@ -1,4 +1,5 @@
 """Data models for repo-level credential-risk scans."""
+# pylint: disable=too-many-instance-attributes
 
 from __future__ import annotations
 
@@ -8,6 +9,7 @@ from typing import Literal
 Classification = Literal["high_risk", "watchlist", "clean"]
 IssueAction = Literal["file_issue", "report_only", "watch"]
 Severity = Literal["high", "medium", "low"]
+
 
 def _report_row(report: "RepoReport") -> dict[str, object]:
     """Return a stable JSON-serializable row for repo reports."""

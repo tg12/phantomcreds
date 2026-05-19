@@ -122,7 +122,10 @@ def _build_repo_table(records: list[Record]) -> str:
         if record.get("scan_date") == latest_scan and record.get("classification") != "clean"
     ]
     if not today:
-        return f"{_REPO_TABLE_HEADER}\n| *No flagged repos for {latest_scan}* | -- | -- | -- | -- | -- |"
+        return (
+            f"{_REPO_TABLE_HEADER}\n"
+            f"| *No flagged repos for {latest_scan}* | -- | -- | -- | -- | -- |"
+        )
 
     top = sorted(
         today,

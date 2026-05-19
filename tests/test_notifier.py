@@ -1,4 +1,8 @@
 """Tests for issue-creation and update etiquette."""
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=unused-argument
+# pylint: disable=use-implicit-booleaness-not-comparison
 
 from __future__ import annotations
 
@@ -9,6 +13,8 @@ SCAN_DATE = "2026-05-18"
 
 
 class FakeClient:
+    """Record notifier interactions for assertions."""
+
     def __init__(
         self,
         existing_issue: int | None = None,
@@ -26,21 +32,26 @@ class FakeClient:
         title_fragment: str,
         body_markers: tuple[str, ...] | None = None,
     ) -> int | None:
+        """Return the configured open issue number, if any."""
         self.find_calls.append((owner_repo, title_fragment, body_markers))
         return self.existing_issue
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
+        """Record created issues and return a synthetic issue number."""
         self.created.append((owner_repo, title, body, labels))
         return 123
 
     def list_issue_comments(self, owner_repo: str, issue_number: int) -> list[str]:
+        """Return preloaded comments for duplicate-update checks."""
         return list(self.comments)
 
     def add_comment(self, owner_repo: str, issue_number: int, body: str) -> None:
+        """Record appended issue comments."""
         self.added_comments.append((owner_repo, issue_number, body))
 
 
 def _report(action: str = "file_issue") -> RepoReport:
+    """Build a report fixture with a configurable action."""
     return RepoReport(
         full_name="owner/repo",
         composite=0.85,
@@ -58,6 +69,7 @@ def _report(action: str = "file_issue") -> RepoReport:
 
 
 def _findings() -> list[RepoFinding]:
+    """Return non-secret fixable findings for notifier tests."""
     return [
         RepoFinding(
             repo_full_name="owner/repo",
@@ -87,11 +99,15 @@ def _findings() -> list[RepoFinding]:
 
 
 def _secret_findings() -> list[RepoFinding]:
+    """Return exposed-secret findings for notifier tests."""
     return [
         RepoFinding(
             repo_full_name="owner/repo",
             finding_type="exposed_secret",
-            title="Secret-bearing credential material appears committed in current repository files",
+            title=(
+                "Secret-bearing credential material appears committed "
+                "in current repository files"
+            ),
             severity="high",
             confidence="confirmed",
             summary="Current repository files appear to contain committed credential material.",
@@ -125,13 +141,13 @@ def test_create_issue_when_no_open_thread_exists() -> None:
     assert "<!-- phantomcreds:scan:2026-05-18 -->" in client.created[0][2]
     assert "Created by [James Sawyer](https://github.com/tg12)" in client.created[0][2]
     assert "[Project repo](https://github.com/tg12/phantomcreds)" in client.created[0][2]
-    assert client.added_comments == []
+    assert not client.added_comments
 
 
 def test_comment_existing_issue_when_open_thread_exists() -> None:
     client = FakeClient(existing_issue=77, comments=[])
     notify_all(client, [_report()], _findings())
-    assert client.created == []
+    assert not client.created
     assert len(client.added_comments) == 1
     assert client.added_comments[0][1] == 77
     assert "This issue remains open." in client.added_comments[0][2]
@@ -147,15 +163,15 @@ def test_skip_duplicate_same_day_comment() -> None:
         comments=["<!-- phantomcreds:scan:2026-05-18 -->\nprevious update"],
     )
     notify_all(client, [_report()], _findings())
-    assert client.created == []
-    assert client.added_comments == []
+    assert not client.created
+    assert not client.added_comments
 
 
 def test_report_only_repo_does_not_notify() -> None:
     client = FakeClient(existing_issue=None)
     notify_all(client, [_report(action="report_only")], _findings())
-    assert client.created == []
-    assert client.added_comments == []
+    assert not client.created
+    assert not client.added_comments
 
 
 def test_issue_body_includes_secret_indicators_and_llm_fix_guide() -> None:

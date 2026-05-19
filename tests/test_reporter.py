@@ -1,4 +1,5 @@
 """Tests for README dashboard aggregation."""
+# pylint: disable=missing-function-docstring
 
 from __future__ import annotations
 

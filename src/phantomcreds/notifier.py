@@ -28,18 +28,24 @@ def _scan_marker(scan_date: str) -> str:
 
 
 class IssueClient(Protocol):
+    """Minimal issue client protocol for create/update operations."""
+
     def find_open_issue(
         self,
         owner_repo: str,
         title_fragment: str,
         body_markers: tuple[str, ...] | None = None,
-    ) -> int | None: ...
+    ) -> int | None:
+        """Return an existing matching open issue number, if present."""
 
-    def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int: ...
+    def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
+        """Create a new issue and return its number."""
 
-    def list_issue_comments(self, owner_repo: str, issue_number: int) -> list[str]: ...
+    def list_issue_comments(self, owner_repo: str, issue_number: int) -> list[str]:
+        """Return all visible issue comments for duplicate-update checks."""
 
-    def add_comment(self, owner_repo: str, issue_number: int, body: str) -> None: ...
+    def add_comment(self, owner_repo: str, issue_number: int, body: str) -> None:
+        """Append a comment to an existing issue."""
 
 
 def _finding_markdown(finding: RepoFinding) -> str:
@@ -165,7 +171,8 @@ This scan is evidence-first and probabilistic. It is not an accusation of malici
 If any finding is incorrect or outdated, please reply with corrected context and exact file references.
 
 Automated by [phantomcreds](https://github.com/tg12/phantomcreds).
-[Project repo]({_PROJECT_URL}) · Created by [{_CREATOR_NAME}]({_CREATOR_URL}) at [JS Labs]({_CREATOR_LABS_URL}).
+[Project repo]({_PROJECT_URL}) · Created by [{_CREATOR_NAME}]({_CREATOR_URL})
+at [JS Labs]({_CREATOR_LABS_URL}).
 """
 
 

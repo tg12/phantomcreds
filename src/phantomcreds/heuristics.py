@@ -1,4 +1,6 @@
 """Repo-level credential-risk detection and scoring."""
+# pylint: disable=line-too-long
+# pylint: disable=too-many-lines
 
 from __future__ import annotations
 
@@ -295,7 +297,9 @@ _NETRC_RE = re.compile(
     r"\bmachine\s+(?P<machine>\S+)\s+login\s+(?P<login>\S+)\s+password\s+(?P<password>\S+)",
     re.IGNORECASE,
 )
-_AWS_CREDENTIAL_ID_RE = re.compile(r"aws_access_key_id\s*[:=]\s*(?P<id>(?:AKIA|ASIA|AIDA|AROA)[A-Z0-9]{16})", re.IGNORECASE)
+_AWS_CREDENTIAL_ID_RE = re.compile(
+    r"aws_access_key_id\s*[:=]\s*(?P<id>(?:AKIA|ASIA|AIDA|AROA)[A-Z0-9]{16})", re.IGNORECASE
+)
 _AWS_CREDENTIAL_SECRET_RE = re.compile(
     r"aws_secret_access_key\s*[:=]\s*(?P<secret>[A-Za-z0-9/+=]{40})",
     re.IGNORECASE,
@@ -468,7 +472,7 @@ def _redact_connection_string(match: re.Match[str]) -> str:
 def _looks_like_docker_auth(auth_value: str) -> bool:
     try:
         decoded = b64decode(auth_value, validate=True).decode("utf-8")
-    except (ValueError, UnicodeDecodeError):
+    except ValueError, UnicodeDecodeError:
         return False
     if ":" not in decoded:
         return False
@@ -552,9 +556,7 @@ def _collect_connection_string_evidence(path: str, content: str, limit: int) -> 
                 continue
             if _PLACEHOLDER_SECRET_RE.search(match.group("password")):
                 continue
-            evidence.append(
-                f"{path}:{lineno} - [REDACTED:{_redact_connection_string(match)}]"
-            )
+            evidence.append(f"{path}:{lineno} - [REDACTED:{_redact_connection_string(match)}]")
             break
         if len(evidence) >= limit:
             break

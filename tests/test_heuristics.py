@@ -1,4 +1,7 @@
 """Tests for repo-level credential-risk heuristics."""
+# pylint: disable=missing-function-docstring
+# pylint: disable=use-implicit-booleaness-not-comparison
+# pylint: disable=line-too-long
 
 from __future__ import annotations
 
@@ -17,7 +20,7 @@ def test_clean_repo_stays_clean(repo_metadata: RepoMetadata) -> None:
     )
     assert report.classification == "clean"
     assert report.action == "watch"
-    assert findings == []
+    assert not findings
 
 
 def test_overt_harvest_posture_becomes_report_only(repo_metadata: RepoMetadata) -> None:
@@ -162,7 +165,7 @@ def test_exposed_secret_ignores_placeholder_keys_inside_env_example_files(
     )
 
     assert report.action == "watch"
-    assert findings == []
+    assert not findings
 
 
 def test_exposed_secret_detects_cloud_keys_and_private_key_blocks(
@@ -269,9 +272,7 @@ def test_exposed_secret_detects_pypirc_docker_and_terraform_credentials(
         metadata=repo_metadata,
         files={
             ".pypirc": (
-                "[pypi]\n"
-                "username = __token__\n"
-                "password = pypi-abcdefghijklmnopqrstuvwxyz123456\n"
+                "[pypi]\nusername = __token__\npassword = pypi-abcdefghijklmnopqrstuvwxyz123456\n"
             ),
             ".docker/config.json": (
                 "{\n"
@@ -361,7 +362,7 @@ def test_non_live_secret_contexts_do_not_trigger_exposed_secret(
                 "-----END OPENSSH PRIVATE KEY-----\n"
             ),
             "fixtures/service-account.example.json": (
-                '{\n'
+                "{\n"
                 '  "type": "service_account",\n'
                 '  "private_key": "-----BEGIN PRIVATE KEY-----\\nABC\\n-----END PRIVATE KEY-----\\n"\n'
                 "}\n"
@@ -381,11 +382,7 @@ def test_placeholder_container_credentials_do_not_trigger_exposed_secret(
     report, findings = analyze_repository(
         metadata=repo_metadata,
         files={
-            ".pypirc": (
-                "[pypi]\n"
-                "username = __token__\n"
-                "password = your-token-here\n"
-            ),
+            ".pypirc": ("[pypi]\nusername = __token__\npassword = your-token-here\n"),
             "credentials.tfrc.json": (
                 "{\n"
                 '  "credentials": {\n'
