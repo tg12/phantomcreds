@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-19 | 37 | 22 | 13 | 13 | 5 | 0 |
+| 2026-05-19 | 45 | 21 | 14 | 16 | 7 | 1 |
 | 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
 <!-- STATS:END -->
 
@@ -139,9 +139,9 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33452 | 2026-05-19 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 33469 | 2026-05-19 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 85 | 2026-05-19 |
-| HsnSaboor/CLIProxyAPIPlus | 1.000 | 7 | report_only | 62 | 2026-05-19 |
+| HsnSaboor/CLIProxyAPIPlus | 1.000 | 7 | report_only | 64 | 2026-05-19 |
 | Finesssee/ProxyPilot | 1.000 | 7 | report_only | 221 | 2026-05-18 |
 | 6enta0/CPAplus | 1.000 | 6 | file_issue | 12 | 2026-05-19 |
 | chainreactors/EvilProxy | 1.000 | 6 | report_only | 14 | 2026-05-19 |
@@ -151,16 +151,15 @@ The data model is structured so those questions can be answered from the ledger 
 | kittors/CliRelay | 1.000 | 5 | file_issue | 696 | 2026-05-19 |
 | leic4u/CLIProxyAPIPlus | 1.000 | 5 | file_issue | 2 | 2026-05-19 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-12 |
-| tg12/phantomcreds | 0.770 | 3 | file_issue | 0 | 2026-05-18 |
+| tg12/phantomcreds | 0.770 | 3 | report_only | 0 | 2026-05-19 |
+| Teraflop-Inc/dev-agent-lens | 0.770 | 3 | file_issue | 67 | 2026-05-18 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 145 | 2026-05-18 |
 | eric69eric/business-gemini-2api | 0.390 | 2 | watch | 5 | 2026-05-19 |
 | GboyCode/CodexAuth | 0.390 | 2 | watch | 0 | 2026-05-19 |
-| ThomasEdwardYorke/cc-triad-relay | 0.390 | 2 | watch | 1 | 2026-05-19 |
 | tuxevil/pi-antigravity-rotator | 0.390 | 2 | watch | 8 | 2026-05-19 |
-| tranminhmanh/wp-stack-skill | 0.390 | 2 | watch | 2 | 2026-05-17 |
-| ugotmessage/tg-cli-relay | 0.390 | 2 | watch | 0 | 2026-05-19 |
 | tachibanayu24/claude-code-remote | 0.390 | 2 | watch | 0 | 2026-05-17 |
-| Teraflop-Inc/dev-agent-lens | 0.390 | 2 | watch | 67 | 2026-05-18 |
-| Wangnov/gpt-image-2-skill | 0.390 | 2 | watch | 42 | 2026-05-18 |
+| tranhailong012/windsurf-tools | 0.390 | 2 | report_only | 2 | 2026-05-19 |
+| Vexa-ai/vexa | 0.350 | 1 | file_issue | 2064 | 2026-05-19 |
 <!-- REPO_STATS:END -->
 
 ---
