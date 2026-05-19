@@ -35,7 +35,7 @@ It is built around one premise: operator trust is the product. If the scanner ca
 **phantomcreds** runs a daily GitHub Actions job that:
 
 1. Searches GitHub repositories for posture phrases such as `multi-account`, `no API key needed`, `auth file`, `shared subscription`, session reuse, provider relays, and imported browser-auth language
-2. Searches code across Go, Python, JavaScript, and TypeScript for credential-risk fingerprints such as token or session persistence, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management exposure, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env`, credential, config, private-key, and service-account material
+2. Searches code across Go, Python, JavaScript, and TypeScript for credential-risk fingerprints such as token or session persistence, raw `Authorization` forwarding, management auth bypass wrappers, wildcard management exposure, callback listeners bound to `0.0.0.0`, and committed secret-bearing `.env`, `.netrc`, `.pypirc`, Docker auth config, Terraform credential, private-key, service-account, and connection-string material
 3. Fetches targeted high-signal files plus a bounded sweep of broadly text-like repo files directly from the GitHub API
 4. Scores each repo against a repo-level evidence model that prefers multi-family matches over single-query noise, then biases toward recently pushed non-archived non-fork repos
 5. Writes append-only ledgers to this repo:
@@ -57,7 +57,7 @@ The scanner combines four evidence classes:
 |---|---|
 | Harvest posture | README or description markets shared subscriptions, relays, auth-file import, or "no API key needed" positioning |
 | Credential persistence | Code writes token-like material to local auth files or serialized session stores |
-| Direct secret exposure | Current repo files appear to contain committed cloud, model-provider, CI, package-registry, webhook, SSH, or service-account credentials; evidence is redacted in stored findings and issue bodies |
+| Direct secret exposure | Current repo files appear to contain committed cloud, model-provider, CI, package-registry, webhook, SSH, service-account, registry-auth, Terraform, or database-connection credentials; evidence is redacted in stored findings and issue bodies |
 | Unsafe exposure | Callback listeners bind broadly, management routes use wildcard CORS, or auth bypass wrappers weaken the control plane |
 | Centralized leakage | Request logging or telemetry paths appear to forward raw credential-bearing headers |
 
@@ -287,6 +287,7 @@ If a repo is repeatedly benign but matches the search posture, add it to [`data/
 The scanner also applies built-in context filters before raising secret findings:
 - redacted evidence snippets are ignored
 - test, fixture, sample, example, and docs paths are not treated as live secret exposure
+- Docker auth evidence must decode to printable `user:password` material before it is treated as a committed secret
 - credential-persistence findings require nearby write or serialization behavior, not just words like `session` or `cookie`
 
 This is a repo-level scanner. It does not store individual user identities, and it does not attempt attribution beyond public repository content.

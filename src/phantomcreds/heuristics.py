@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from base64 import b64decode
 from collections.abc import Iterable
 
 from phantomcreds.config import (
@@ -257,7 +258,7 @@ _SECRET_ASSIGNMENT_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
     (
         "pypi_token",
         re.compile(
-            r"(PYPI_TOKEN|pypi[_-]?token|password)\s*[:=]\s*[\"']?(pypi-[A-Za-z0-9_-]{24,})[\"']?",
+            r"(PYPI_TOKEN|pypi[_-]?token)\s*[:=]\s*[\"']?(pypi-[A-Za-z0-9_-]{24,})[\"']?",
             re.IGNORECASE,
         ),
     ),
@@ -290,8 +291,49 @@ _GCP_SERVICE_ACCOUNT_RE = re.compile(
     r'"type"\s*:\s*"service_account".*"private_key"\s*:\s*"-----BEGIN PRIVATE KEY-----',
     re.IGNORECASE | re.DOTALL,
 )
+_NETRC_RE = re.compile(
+    r"\bmachine\s+(?P<machine>\S+)\s+login\s+(?P<login>\S+)\s+password\s+(?P<password>\S+)",
+    re.IGNORECASE,
+)
+_AWS_CREDENTIAL_ID_RE = re.compile(r"aws_access_key_id\s*[:=]\s*(?P<id>(?:AKIA|ASIA|AIDA|AROA)[A-Z0-9]{16})", re.IGNORECASE)
+_AWS_CREDENTIAL_SECRET_RE = re.compile(
+    r"aws_secret_access_key\s*[:=]\s*(?P<secret>[A-Za-z0-9/+=]{40})",
+    re.IGNORECASE,
+)
+_CONNECTION_STRING_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
+    (
+        "postgres_connection_string",
+        re.compile(
+            r"(?P<dsn>postgres(?:ql)?://(?P<user>[^:\s/@]+):(?P<password>[^@\s]+)@(?P<host>[^\s]+))",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "mysql_connection_string",
+        re.compile(
+            r"(?P<dsn>mysql://(?P<user>[^:\s/@]+):(?P<password>[^@\s]+)@(?P<host>[^\s]+))",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "mongodb_connection_string",
+        re.compile(
+            r"(?P<dsn>mongodb(?:\+srv)?://(?P<user>[^:\s/@]+):(?P<password>[^@\s]+)@(?P<host>[^\s]+))",
+            re.IGNORECASE,
+        ),
+    ),
+)
+_PYPI_PASSWORD_RE = re.compile(r"password\s*[:=]\s*(?P<password>\S+)", re.IGNORECASE)
+_PYPI_USERNAME_RE = re.compile(r"username\s*[:=]\s*(?P<username>\S+)", re.IGNORECASE)
+_DOCKER_AUTH_RE = re.compile(r'"auth"\s*:\s*"(?P<auth>[A-Za-z0-9+/=]{16,})"', re.IGNORECASE)
+_DOCKER_AUTHS_RE = re.compile(r'"auths"\s*:', re.IGNORECASE)
+_TERRAFORM_TOKEN_RE = re.compile(
+    r"[\"']?token[\"']?\s*[:=]\s*[\"']?(?P<token>[A-Za-z0-9._-]{20,})[\"']?",
+    re.IGNORECASE,
+)
+_TERRAFORM_HOST_RE = re.compile(r"app\.terraform\.io|atlas\.hashicorp\.com", re.IGNORECASE)
 _PLACEHOLDER_SECRET_RE = re.compile(
-    r"(example|changeme|your[_-]?key|placeholder|dummy|test[-_]?key|xxxxx+|<[^>]+>)",
+    r"(example|changeme|your[_-]?(?:key|token)|placeholder|dummy|test[-_]?(?:key|token)|xxxxx+|<[^>]+>)",
     re.IGNORECASE,
 )
 _MAX_EXPOSED_SECRET_EVIDENCE = 12
@@ -412,8 +454,196 @@ def _redact_secret(secret: str) -> str:
     return f"{secret[:6]}...{secret[-4:]}"
 
 
+def _redact_connection_string(match: re.Match[str]) -> str:
+    user = match.group("user")
+    password = match.group("password")
+    host = match.group("host")
+    scheme = match.group("dsn").split("://", 1)[0]
+    return f"{scheme}://{user}:[REDACTED:{_redact_secret(password)}]@{host}"
+
+
+def _looks_like_docker_auth(auth_value: str) -> bool:
+    try:
+        decoded = b64decode(auth_value, validate=True).decode("utf-8")
+    except (ValueError, UnicodeDecodeError):
+        return False
+    if ":" not in decoded:
+        return False
+    return not any(ord(char) < 32 or ord(char) > 126 for char in decoded)
+
+
 def _is_redacted_example_line(line: str) -> bool:
     return "[REDACTED:" in line
+
+
+def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
+    evidence: list[str] = []
+    for lineno, line in enumerate(content.splitlines(), 1):
+        match = _NETRC_RE.search(line)
+        if not match:
+            continue
+        password = match.group("password").strip()
+        if _PLACEHOLDER_SECRET_RE.search(password):
+            continue
+        machine = match.group("machine").strip()
+        login = match.group("login").strip()
+        evidence.append(
+            f"{path}:{lineno} - machine {machine} login {login} "
+            f"password [REDACTED:{_redact_secret(password)}]"
+        )
+        if len(evidence) >= limit:
+            break
+    return evidence
+
+
+def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
+    key_matches: dict[int, str] = {}
+    secret_matches: dict[int, str] = {}
+    for lineno, line in enumerate(content.splitlines(), 1):
+        key_match = _AWS_CREDENTIAL_ID_RE.search(line)
+        if key_match:
+            key_matches[lineno] = key_match.group("id").strip()
+        secret_match = _AWS_CREDENTIAL_SECRET_RE.search(line)
+        if secret_match:
+            secret_value = secret_match.group("secret").strip()
+            if not _PLACEHOLDER_SECRET_RE.search(secret_value):
+                secret_matches[lineno] = secret_value
+
+    if not key_matches or not secret_matches:
+        return []
+
+    evidence: list[str] = []
+    for key_lineno, key_value in key_matches.items():
+        for secret_lineno, secret_value in secret_matches.items():
+            if abs(key_lineno - secret_lineno) > 5:
+                continue
+            evidence.append(
+                f"{path}:{key_lineno} - AWS_ACCESS_KEY_ID=[REDACTED:{_redact_secret(key_value)}]"
+            )
+            if len(evidence) >= limit:
+                return evidence
+            evidence.append(
+                f"{path}:{secret_lineno} - AWS_SECRET_ACCESS_KEY=[REDACTED:{_redact_secret(secret_value)}]"
+            )
+            return evidence[:limit]
+    return []
+
+
+def _collect_connection_string_evidence(path: str, content: str, limit: int) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
+    evidence: list[str] = []
+    for lineno, line in enumerate(content.splitlines(), 1):
+        if _is_redacted_example_line(line):
+            continue
+        for _kind, pattern in _CONNECTION_STRING_RES:
+            match = pattern.search(line)
+            if not match:
+                continue
+            if _PLACEHOLDER_SECRET_RE.search(match.group("password")):
+                continue
+            evidence.append(
+                f"{path}:{lineno} - [REDACTED:{_redact_connection_string(match)}]"
+            )
+            break
+        if len(evidence) >= limit:
+            break
+    return evidence
+
+
+def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
+    basename = _basename(path)
+    if basename != ".pypirc":
+        return []
+
+    username_matches: dict[int, str] = {}
+    password_matches: dict[int, str] = {}
+    for lineno, line in enumerate(content.splitlines(), 1):
+        username_match = _PYPI_USERNAME_RE.search(line)
+        if username_match:
+            username_matches[lineno] = username_match.group("username").strip()
+        password_match = _PYPI_PASSWORD_RE.search(line)
+        if not password_match:
+            continue
+        password = password_match.group("password").strip().strip("\"'")
+        if _PLACEHOLDER_SECRET_RE.search(password):
+            continue
+        password_matches[lineno] = password
+
+    if not username_matches or not password_matches:
+        return []
+
+    evidence: list[str] = []
+    for username_lineno, username in username_matches.items():
+        for password_lineno, password in password_matches.items():
+            if abs(username_lineno - password_lineno) > 5:
+                continue
+            evidence.append(f"{path}:{username_lineno} - username={username}")
+            if len(evidence) >= limit:
+                return evidence
+            evidence.append(
+                f"{path}:{password_lineno} - password=[REDACTED:{_redact_secret(password)}]"
+            )
+            return evidence[:limit]
+    return []
+
+
+def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
+    basename = _basename(path)
+    if basename not in {".dockercfg", ".dockerconfigjson", "config.json"}:
+        return []
+    if not _DOCKER_AUTHS_RE.search(content):
+        return []
+
+    evidence: list[str] = []
+    for lineno, line in enumerate(content.splitlines(), 1):
+        match = _DOCKER_AUTH_RE.search(line)
+        if not match:
+            continue
+        auth_value = match.group("auth").strip()
+        if _PLACEHOLDER_SECRET_RE.search(auth_value) or not _looks_like_docker_auth(auth_value):
+            continue
+        evidence.append(f"{path}:{lineno} - auth=[REDACTED:{_redact_secret(auth_value)}]")
+        if len(evidence) >= limit:
+            break
+    return evidence
+
+
+def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
+    basename = _basename(path)
+    if basename not in {".terraformrc", "credentials.tfrc.json"}:
+        return []
+    if not _TERRAFORM_HOST_RE.search(content):
+        return []
+
+    evidence: list[str] = []
+    for lineno, line in enumerate(content.splitlines(), 1):
+        match = _TERRAFORM_TOKEN_RE.search(line)
+        if not match:
+            continue
+        token = match.group("token").strip()
+        if _PLACEHOLDER_SECRET_RE.search(token):
+            continue
+        evidence.append(f"{path}:{lineno} - token=[REDACTED:{_redact_secret(token)}]")
+        if len(evidence) >= limit:
+            break
+    return evidence
 
 
 def _collect_private_key_evidence(path: str, content: str) -> list[str]:
@@ -463,6 +693,18 @@ def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list
 
 def _collect_exposed_secret_evidence(path: str, content: str, limit: int) -> list[str]:
     evidence = _collect_private_key_evidence(path, content)
+    if len(evidence) < limit:
+        evidence.extend(_collect_netrc_evidence(path, content, limit - len(evidence)))
+    if len(evidence) < limit:
+        evidence.extend(_collect_aws_pair_evidence(path, content, limit - len(evidence)))
+    if len(evidence) < limit:
+        evidence.extend(_collect_connection_string_evidence(path, content, limit - len(evidence)))
+    if len(evidence) < limit:
+        evidence.extend(_collect_pypirc_evidence(path, content, limit - len(evidence)))
+    if len(evidence) < limit:
+        evidence.extend(_collect_docker_auth_evidence(path, content, limit - len(evidence)))
+    if len(evidence) < limit:
+        evidence.extend(_collect_terraform_token_evidence(path, content, limit - len(evidence)))
     if len(evidence) >= limit:
         return evidence[:limit]
     evidence.extend(_collect_inline_secret_evidence(path, content, limit - len(evidence)))

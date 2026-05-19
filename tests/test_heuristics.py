@@ -181,6 +181,83 @@ def test_exposed_secret_scans_txt_files_and_additional_ai_keys(
     assert "pplx-abcdefghijklmnopqrstuvwxyz123456" not in joined
 
 
+def test_exposed_secret_detects_netrc_aws_pairs_and_connection_strings(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".netrc": "machine api.example.com login deploy password super-secret-password\n",
+            "infra/credentials": (
+                "aws_access_key_id=AKIA1234567890ABCDEF\n"
+                "aws_secret_access_key=abcdEFGHijklMNOPqrstUVWXyz0123456789+/=\n"
+            ),
+            "config/database.ini": (
+                "DATABASE_URL=postgres://scanner:topsecretpass@db.example.com:5432/app\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    joined = "\n".join(exposed.evidence)
+    assert "super-secret-password" not in joined
+    assert "AKIA1234567890ABCDEF" not in joined
+    assert "abcdEFGHijklMNOPqrstUVWXyz0123456789+/=" not in joined
+    assert "topsecretpass" not in joined
+    assert "machine api.example.com login deploy password [REDACTED:" in joined
+    assert "aws_access_key_id=[REDACTED:" in joined
+    assert "postgres://scanner:[REDACTED:" in joined
+
+
+def test_exposed_secret_detects_pypirc_docker_and_terraform_credentials(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".pypirc": (
+                "[pypi]\n"
+                "username = __token__\n"
+                "password = pypi-abcdefghijklmnopqrstuvwxyz123456\n"
+            ),
+            ".docker/config.json": (
+                "{\n"
+                '  "auths": {\n'
+                '    "https://index.docker.io/v1/": {\n'
+                '      "auth": "ZGVwbG95OnN1cGVyLXNlY3JldC1wYXNz"\n'
+                "    }\n"
+                "  }\n"
+                "}\n"
+            ),
+            "credentials.tfrc.json": (
+                "{\n"
+                '  "credentials": {\n'
+                '    "app.terraform.io": {\n'
+                '      "token": "atlasv1abcdefghijklmnopqrstuvwxyz123456"\n'
+                "    }\n"
+                "  }\n"
+                "}\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    joined = "\n".join(exposed.evidence)
+    assert "pypi-abcdefghijklmnopqrstuvwxyz123456" not in joined
+    assert "ZGVwbG95OnN1cGVyLXNlY3JldC1wYXNz" not in joined
+    assert "atlasv1abcdefghijklmnopqrstuvwxyz123456" not in joined
+    assert "username=__token__" in joined
+    assert "password=[REDACTED:pypi-a...3456]" in joined
+    assert "auth=[REDACTED:ZGVwbG...YXNz]" in joined
+    assert "token=[REDACTED:atlasv...3456]" in joined
+
+
 def test_redacted_secret_examples_do_not_trigger_exposed_secret(
     repo_metadata: RepoMetadata,
 ) -> None:
@@ -246,6 +323,44 @@ def test_non_live_secret_contexts_do_not_trigger_exposed_secret(
 
     assert "exposed_secret" not in {finding.finding_type for finding in findings}
     assert report.issue_worthy_count == 0
+
+
+def test_placeholder_container_credentials_do_not_trigger_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".pypirc": (
+                "[pypi]\n"
+                "username = __token__\n"
+                "password = your-token-here\n"
+            ),
+            "credentials.tfrc.json": (
+                "{\n"
+                '  "credentials": {\n'
+                '    "app.terraform.io": {\n'
+                '      "token": "placeholder-token-value"\n'
+                "    }\n"
+                "  }\n"
+                "}\n"
+            ),
+            ".docker/config.json": (
+                "{\n"
+                '  "auths": {\n'
+                '    "https://index.docker.io/v1/": {\n'
+                '      "auth": "exampleexampleexample"\n'
+                "    }\n"
+                "  }\n"
+                "}\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
 
 
 def test_docs_and_query_strings_do_not_trigger_credential_persistence(

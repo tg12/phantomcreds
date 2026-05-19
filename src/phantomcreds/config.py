@@ -56,6 +56,12 @@ CODE_SEARCH_QUERIES: Final[tuple[tuple[str, str], ...]] = (
     ("auth-import-python", '"auth.json" "cookies.json" language:Python'),
     ("auth-import-typescript", '"auth.json" "cookies.json" language:TypeScript'),
     ("secret-path-env", '"OPENAI_API_KEY" filename:.env'),
+    ("secret-path-netrc", '"machine " "password " filename:.netrc'),
+    ("secret-path-aws-credentials", '"aws_access_key_id" "aws_secret_access_key" filename:credentials'),
+    ("secret-path-npmrc", '"_authToken" filename:.npmrc'),
+    ("secret-path-pypirc", '"[pypi]" "password" filename:.pypirc'),
+    ("secret-path-docker-config", '"\\"auths\\"" "\\"auth\\"" filename:config.json'),
+    ("secret-path-terraform-credentials", '"app.terraform.io" "token" filename:credentials.tfrc.json'),
     ("secret-path-service-account", '"private_key" "client_email" filename:service-account.json'),
     ("secret-path-private-key", '"BEGIN OPENSSH PRIVATE KEY"'),
 )
@@ -85,9 +91,11 @@ SECRET_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
     ".npmrc",
     ".pypirc",
     ".terraformrc",
+    "credentials.tfrc.json",
     "terraform.tfvars",
     "terraform.tfvars.json",
     "credentials",
+    ".netrc",
     "id_rsa",
     "id_dsa",
     "id_ecdsa",
@@ -96,6 +104,9 @@ SECRET_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
     "gcp-service-account.json",
     "azure.json",
     "aws-credentials",
+    ".dockercfg",
+    ".dockerconfigjson",
+    ".docker/config.json",
 )
 
 SECRET_CANDIDATE_SUFFIXES: Final[tuple[str, ...]] = (
@@ -112,8 +123,10 @@ SECRET_CANDIDATE_SUFFIXES: Final[tuple[str, ...]] = (
     ".pfx",
     ".tfvars",
     ".tfvars.json",
+    ".tfrc",
     "service-account.json",
     "credentials.json",
+    "credentials.tfrc.json",
 )
 
 STORE_PATHS: Final[frozenset[str]] = frozenset(
