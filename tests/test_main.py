@@ -55,7 +55,6 @@ def _metadata(
     return RepoMetadata(
         full_name=name,
         description=None,
-        html_url=f"https://github.com/{name}",
         default_branch="main",
         stargazers_count=0,
         created_at="2026-05-01T00:00:00Z",
@@ -158,7 +157,6 @@ def test_candidate_score_penalizes_archived_and_forked_repos() -> None:
     weak_metadata = RepoMetadata(
         full_name="owner/weak",
         description=None,
-        html_url="https://github.com/owner/weak",
         default_branch="main",
         stargazers_count=200,
         created_at="2026-05-01T00:00:00Z",
@@ -342,12 +340,11 @@ def test_rest_get_retries_transient_http_failures(monkeypatch) -> None:
     second.status_code = 200
     second.reason = "OK"
     second.headers = {"X-RateLimit-Resource": "search", "X-RateLimit-Remaining": "10"}
-    second.json.return_value = {"items": []}
-    second.raise_for_status.return_value = None
+    second.json = MagicMock(return_value={"items": []})
 
     calls = [first, second]
 
-    def fake_get(url: str, params=None, timeout: int = 0):
+    def fake_get(*_args, **_kwargs):
         return calls.pop(0)
 
     monkeypatch.setattr(client._session, "get", fake_get)
@@ -366,10 +363,9 @@ def test_rest_post_retries_timeout(monkeypatch) -> None:
     success.status_code = 200
     success.reason = "OK"
     success.headers = {"X-RateLimit-Resource": "core", "X-RateLimit-Remaining": "100"}
-    success.json.return_value = {"number": 123}
-    success.raise_for_status.return_value = None
+    success.json = MagicMock(return_value={"number": 123})
 
-    def fake_post(url: str, json=None, timeout: int = 0):
+    def fake_post(*_args, **_kwargs):
         post_calls["count"] += 1
         if post_calls["count"] == 1:
             raise requests.Timeout("slow")

@@ -11,6 +11,7 @@ import colorlog
 
 
 def setup_logging(level: int = logging.INFO) -> None:
+    """Configure colorized console logging for scan operators."""
     handler = colorlog.StreamHandler()
     handler.setFormatter(
         colorlog.ColoredFormatter(

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import dataclasses
 import json
 import logging
 from pathlib import Path
@@ -31,7 +30,7 @@ def append_reports(reports: list[RepoReport], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as handle:
         for report in reports:
-            handle.write(json.dumps(dataclasses.asdict(report)) + "\n")
+            handle.write(json.dumps(report.to_row()) + "\n")
     _log.info("Appended %d repo report rows to %s", len(reports), path)
 
 
@@ -40,7 +39,7 @@ def append_findings(findings: list[RepoFinding], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as handle:
         for finding in findings:
-            handle.write(json.dumps(dataclasses.asdict(finding)) + "\n")
+            handle.write(json.dumps(finding.to_row()) + "\n")
     _log.info("Appended %d finding rows to %s", len(findings), path)
 
 

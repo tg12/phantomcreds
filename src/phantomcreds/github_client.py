@@ -107,7 +107,6 @@ class GitHubClient:
         return RepoMetadata(
             full_name=repo_full_name,
             description=(str(data.get("description")) if data.get("description") else None),
-            html_url=str(data["html_url"]),
             default_branch=str(data.get("default_branch", "main")),
             stargazers_count=int(data.get("stargazers_count", 0)),
             created_at=str(data.get("created_at", "")),
