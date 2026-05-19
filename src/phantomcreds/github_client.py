@@ -13,12 +13,14 @@ import requests
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from phantomcreds.config import GITHUB_API_BASE
-from phantomcreds.exceptions import RateLimitError
+from phantomcreds.exceptions import RateLimitError, TransientGitHubError
 from phantomcreds.models import CodeSearchHit, RepoMetadata
 
 _log = logging.getLogger(__name__)
 
 _DEFAULT_RATE_LIMIT_PAUSE_THRESHOLD = 150
+_HTTP_TIMEOUT_SECONDS = 30
+_TRANSIENT_HTTP_STATUS_CODES: frozenset[int] = frozenset({429, 500, 502, 503, 504})
 _RATE_LIMIT_PAUSE_THRESHOLDS: dict[str, int] = {
     "search": 5,
     "code_search": 2,
@@ -252,26 +254,40 @@ class GitHubClient:
         return None
 
     @retry(
-        retry=retry_if_exception_type(requests.ConnectionError),
+        retry=retry_if_exception_type(
+            (RateLimitError, TransientGitHubError, requests.ConnectionError, requests.Timeout)
+        ),
         wait=wait_exponential(multiplier=1, min=2, max=30),
         stop=stop_after_attempt(4),
     )
     def _rest_get(self, url: str, params: dict[str, Any] | None = None) -> Any:
-        resp = self._session.get(url, params=params, timeout=30)
+        resp = self._session.get(url, params=params, timeout=_HTTP_TIMEOUT_SECONDS)
         self._check_rate_limit(resp)
+        self._raise_for_retryable_status(resp)
         resp.raise_for_status()
         return resp.json()
 
     @retry(
-        retry=retry_if_exception_type(requests.ConnectionError),
+        retry=retry_if_exception_type(
+            (RateLimitError, TransientGitHubError, requests.ConnectionError, requests.Timeout)
+        ),
         wait=wait_exponential(multiplier=1, min=2, max=30),
         stop=stop_after_attempt(4),
     )
     def _rest_post(self, url: str, payload: dict[str, Any]) -> Any:
-        resp = self._session.post(url, json=payload, timeout=30)
+        resp = self._session.post(url, json=payload, timeout=_HTTP_TIMEOUT_SECONDS)
         self._check_rate_limit(resp)
+        self._raise_for_retryable_status(resp)
         resp.raise_for_status()
         return resp.json()
+
+    def _raise_for_retryable_status(self, resp: requests.Response) -> None:
+        if resp.status_code not in _TRANSIENT_HTTP_STATUS_CODES:
+            return
+        resource = resp.headers.get("X-RateLimit-Resource", "core")
+        message = f"{resp.reason or 'retryable response'} on {resource}"
+        _log.warning("Transient GitHub response %d for %s", resp.status_code, resource)
+        raise TransientGitHubError(resp.status_code, message)
 
     def _check_rate_limit(self, resp: requests.Response) -> None:
         resource = resp.headers.get("X-RateLimit-Resource", "core")
@@ -282,7 +298,7 @@ class GitHubClient:
             resource,
             _DEFAULT_RATE_LIMIT_PAUSE_THRESHOLD,
         )
-        if remaining < pause_threshold:
+        if 0 < remaining < pause_threshold:
             wait_s = max(0, reset_at - int(time.time())) + 5
             reset_at_text = datetime.fromtimestamp(reset_at, tz=UTC).isoformat()
             _log.warning(
@@ -294,5 +310,13 @@ class GitHubClient:
                 wait_s,
             )
             time.sleep(wait_s)
-        if resp.status_code == 403 and remaining == 0:
+        if resp.status_code in {403, 429} and remaining == 0:
+            reset_at_text = datetime.fromtimestamp(reset_at, tz=UTC).isoformat()
+            _log.warning(
+                "Rate limit exhausted for %s (%d/%d remaining, reset at %s)",
+                resource,
+                remaining,
+                limit,
+                reset_at_text,
+            )
             raise RateLimitError(reset_at)

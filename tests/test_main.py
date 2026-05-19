@@ -6,6 +6,10 @@ from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import pytest
+import requests
+
+from phantomcreds.exceptions import RateLimitError, TransientGitHubError
 from phantomcreds.github_client import GitHubClient
 from phantomcreds.main import (
     _candidate_score,
@@ -236,6 +240,90 @@ def test_rate_limit_check_sleeps_when_code_search_bucket_is_nearly_empty(
     client._check_rate_limit(response)
 
     assert sleep_calls == [15]
+
+
+def test_rate_limit_check_raises_on_hard_429_without_sleep(monkeypatch) -> None:
+    client = GitHubClient("test-token")
+    response = MagicMock()
+    response.headers = {
+        "X-RateLimit-Resource": "code_search",
+        "X-RateLimit-Limit": "10",
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "2000000000",
+    }
+    response.status_code = 429
+
+    sleep_calls: list[int] = []
+    monkeypatch.setattr("phantomcreds.github_client.time.sleep", sleep_calls.append)
+
+    with pytest.raises(RateLimitError) as exc_info:
+        client._check_rate_limit(response)
+    assert exc_info.value.reset_at == 2000000000
+    assert sleep_calls == []
+
+
+def test_raise_for_retryable_status_raises_transient_error() -> None:
+    client = GitHubClient("test-token")
+    response = MagicMock()
+    response.status_code = 503
+    response.reason = "Service Unavailable"
+    response.headers = {"X-RateLimit-Resource": "search"}
+
+    with pytest.raises(TransientGitHubError) as exc_info:
+        client._raise_for_retryable_status(response)
+    assert exc_info.value.status_code == 503
+
+
+def test_rest_get_retries_transient_http_failures(monkeypatch) -> None:
+    client = GitHubClient("test-token")
+    first = MagicMock()
+    first.status_code = 503
+    first.reason = "Service Unavailable"
+    first.headers = {"X-RateLimit-Resource": "search", "X-RateLimit-Remaining": "10"}
+    second = MagicMock()
+    second.status_code = 200
+    second.reason = "OK"
+    second.headers = {"X-RateLimit-Resource": "search", "X-RateLimit-Remaining": "10"}
+    second.json.return_value = {"items": []}
+    second.raise_for_status.return_value = None
+
+    calls = [first, second]
+
+    def fake_get(url: str, params=None, timeout: int = 0):
+        return calls.pop(0)
+
+    monkeypatch.setattr(client._session, "get", fake_get)
+    monkeypatch.setattr(client, "_check_rate_limit", lambda response: None)
+
+    result = client._rest_get("https://example.com")
+
+    assert result == {"items": []}
+    assert calls == []
+
+
+def test_rest_post_retries_timeout(monkeypatch) -> None:
+    client = GitHubClient("test-token")
+    post_calls = {"count": 0}
+    success = MagicMock()
+    success.status_code = 200
+    success.reason = "OK"
+    success.headers = {"X-RateLimit-Resource": "core", "X-RateLimit-Remaining": "100"}
+    success.json.return_value = {"number": 123}
+    success.raise_for_status.return_value = None
+
+    def fake_post(url: str, json=None, timeout: int = 0):
+        post_calls["count"] += 1
+        if post_calls["count"] == 1:
+            raise requests.Timeout("slow")
+        return success
+
+    monkeypatch.setattr(client._session, "post", fake_post)
+    monkeypatch.setattr(client, "_check_rate_limit", lambda response: None)
+
+    result = client._rest_post("https://example.com", {"title": "x"})
+
+    assert result == {"number": 123}
+    assert post_calls["count"] == 2
 
 
 def test_process_candidates_continues_after_repo_failure(monkeypatch) -> None:
