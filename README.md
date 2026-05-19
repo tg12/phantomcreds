@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-19 | 52 | 21 | 14 | 16 | 7 | 1 |
+| 2026-05-19 | 55 | 21 | 14 | 16 | 7 | 1 |
 | 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
 <!-- STATS:END -->
 
@@ -139,7 +139,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33504 | 2026-05-19 |
+| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33511 | 2026-05-19 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 85 | 2026-05-19 |
 | HsnSaboor/CLIProxyAPIPlus | 1.000 | 8 | report_only | 64 | 2026-05-19 |
 | Finesssee/ProxyPilot | 1.000 | 8 | report_only | 221 | 2026-05-18 |
