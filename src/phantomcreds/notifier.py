@@ -12,7 +12,8 @@ from phantomcreds.models import RepoFinding, RepoReport
 
 _log = logging.getLogger(__name__)
 
-_ISSUE_TITLE = "[phantomcreds] Credential-handling risks detected in this repository"
+_SECRETS_ISSUE_TITLE = "[phantomcreds] Exposed secrets detected in this repository"
+_RISKS_ISSUE_TITLE = "[phantomcreds] Credential-handling risks detected in this repository"
 _ISSUE_MARKER = "<!-- phantomcreds:issue -->"
 _PROJECT_URL = "https://github.com/tg12/phantomcreds"
 _CREATOR_NAME = "James Sawyer"
@@ -107,6 +108,12 @@ Show the exact files changed and include a short verification checklist for the 
 """
 
 
+def _issue_title(findings: list[RepoFinding]) -> str:
+    if any(finding.finding_type == "exposed_secret" for finding in findings):
+        return _SECRETS_ISSUE_TITLE
+    return _RISKS_ISSUE_TITLE
+
+
 def _issue_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     finding_types = ", ".join(sorted({finding.finding_type for finding in findings}))
     sections = "\n".join(_finding_markdown(finding) for finding in findings)
@@ -196,11 +203,12 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
         ]
         if not repo_findings:
             continue
+        issue_title = _issue_title(repo_findings)
         try:
-            existing = client.find_open_issue(report.full_name, _ISSUE_TITLE, _ISSUE_MARKER)
+            existing = client.find_open_issue(report.full_name, issue_title, _ISSUE_MARKER)
             if existing is None:
                 number = client.create_issue(
-                    report.full_name, _ISSUE_TITLE, _issue_body(report, repo_findings), []
+                    report.full_name, issue_title, _issue_body(report, repo_findings), []
                 )
                 _log.info("Created issue #%d on %s", number, report.full_name)
             else:

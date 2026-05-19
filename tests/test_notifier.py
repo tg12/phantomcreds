@@ -116,6 +116,10 @@ def test_create_issue_when_no_open_thread_exists() -> None:
             "<!-- phantomcreds:issue -->",
         )
     ]
+    assert (
+        client.created[0][1]
+        == "[phantomcreds] Credential-handling risks detected in this repository"
+    )
     assert "<!-- phantomcreds:issue -->" in client.created[0][2]
     assert "<!-- phantomcreds:scan:2026-05-18 -->" in client.created[0][2]
     assert "Created by [James Sawyer](https://github.com/tg12)" in client.created[0][2]
@@ -157,6 +161,14 @@ def test_issue_body_includes_secret_indicators_and_llm_fix_guide() -> None:
     client = FakeClient(existing_issue=None)
     notify_all(client, [_report()], _secret_findings())
 
+    assert client.find_calls == [
+        (
+            "owner/repo",
+            "[phantomcreds] Exposed secrets detected in this repository",
+            "<!-- phantomcreds:issue -->",
+        )
+    ]
+    assert client.created[0][1] == "[phantomcreds] Exposed secrets detected in this repository"
     body = client.created[0][2]
     assert "Exposed secret indicators" in body
     assert "OPENAI_API_KEY" in body
