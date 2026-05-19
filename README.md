@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-19 | 47 | 20 | 14 | 16 | 7 | 1 |
+| 2026-05-19 | 52 | 21 | 14 | 16 | 7 | 1 |
 | 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
 <!-- STATS:END -->
 
@@ -139,7 +139,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33492 | 2026-05-19 |
+| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33504 | 2026-05-19 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 85 | 2026-05-19 |
 | HsnSaboor/CLIProxyAPIPlus | 1.000 | 8 | report_only | 64 | 2026-05-19 |
 | Finesssee/ProxyPilot | 1.000 | 8 | report_only | 221 | 2026-05-18 |
@@ -149,7 +149,7 @@ The data model is structured so those questions can be answered from the ledger 
 | rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-18 |
 | Sastraaaa/proxypilot | 1.000 | 7 | file_issue | 0 | 2026-04-29 |
 | leic4u/CLIProxyAPIPlus | 1.000 | 6 | file_issue | 2 | 2026-05-19 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 696 | 2026-05-19 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 698 | 2026-05-19 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-12 |
 | tg12/phantomcreds | 0.770 | 3 | report_only | 0 | 2026-05-19 |
 | Teraflop-Inc/dev-agent-lens | 0.770 | 3 | file_issue | 67 | 2026-05-18 |
@@ -158,6 +158,7 @@ The data model is structured so those questions can be answered from the ledger 
 | tuxevil/pi-antigravity-rotator | 0.390 | 2 | watch | 9 | 2026-05-19 |
 | tachibanayu24/claude-code-remote | 0.390 | 2 | watch | 0 | 2026-05-17 |
 | tranhailong012/windsurf-tools | 0.390 | 2 | report_only | 2 | 2026-05-19 |
+| vaishnavan59/codex-account-orchestrator | 0.390 | 2 | watch | 0 | 2026-05-19 |
 | Vexa-ai/vexa | 0.350 | 1 | file_issue | 2065 | 2026-05-19 |
 <!-- REPO_STATS:END -->
 
