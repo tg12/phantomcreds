@@ -15,6 +15,8 @@ _log = logging.getLogger(__name__)
 _SECRETS_ISSUE_TITLE = "[phantomcreds] Exposed secrets detected in this repository"
 _RISKS_ISSUE_TITLE = "[phantomcreds] Credential-handling risks detected in this repository"
 _ISSUE_MARKER = "<!-- phantomcreds:issue -->"
+_SECRETS_ISSUE_MARKER = "<!-- phantomcreds:issue:secrets -->"
+_RISKS_ISSUE_MARKER = "<!-- phantomcreds:issue:risks -->"
 _PROJECT_URL = "https://github.com/tg12/phantomcreds"
 _CREATOR_NAME = "James Sawyer"
 _CREATOR_URL = "https://github.com/tg12"
@@ -30,7 +32,7 @@ class IssueClient(Protocol):
         self,
         owner_repo: str,
         title_fragment: str,
-        body_marker: str | None = None,
+        body_markers: tuple[str, ...] | None = None,
     ) -> int | None: ...
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int: ...
@@ -80,7 +82,7 @@ def _llm_fix_guide(findings: list[RepoFinding]) -> str:
 
 Recommended remediation order:
 1. Revoke or rotate the exposed credential(s): `{indicator_text}`.
-2. Remove the committed secret material from the current branch and replace it with environment-variable or secret-manager loading.
+2. Remove the committed secret material from the current default branch and replace it with environment-variable or secret-manager loading.
 3. If the secret existed in prior commits, rewrite history or invalidate the old credential so historical clones are harmless.
 4. Add secret-bearing files to `.gitignore` and provide a safe template file such as `.env.example` instead of live credentials.
 
@@ -91,6 +93,7 @@ Remove the exposed credential material from this repository without breaking run
 Replace committed secrets with environment-variable loading or secret-manager integration.
 Add or update ignore rules so secret-bearing files are not recommitted.
 Preserve existing behavior, but migrate any checked-in .env, private-key, or service-account material to safe templates.
+Assume the scanner evidence came from current files on the default branch, not from a full git-history scan.
 Show the exact files changed and include a short post-fix verification checklist.
 ```
 """
@@ -114,6 +117,12 @@ def _issue_title(findings: list[RepoFinding]) -> str:
     return _RISKS_ISSUE_TITLE
 
 
+def _issue_markers(findings: list[RepoFinding]) -> tuple[str, str]:
+    if any(finding.finding_type == "exposed_secret" for finding in findings):
+        return (_ISSUE_MARKER, _SECRETS_ISSUE_MARKER)
+    return (_ISSUE_MARKER, _RISKS_ISSUE_MARKER)
+
+
 def _issue_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     finding_types = ", ".join(sorted({finding.finding_type for finding in findings}))
     sections = "\n".join(_finding_markdown(finding) for finding in findings)
@@ -125,6 +134,7 @@ def _issue_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     )
     return f"""\
 {_ISSUE_MARKER}
+{_issue_markers(findings)[1]}
 {_scan_marker(report.scan_date)}
 
 ## Credential-handling risk report for `{report.full_name}`
@@ -145,6 +155,9 @@ Detected finding types: `{finding_types}`
 {sections}
 
 {_llm_fix_guide(findings)}
+
+This report is based on current files fetched from the repository's default branch at scan time.
+It does not by itself prove that older commits are clean or compromised.
 
 ---
 
@@ -204,8 +217,9 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
         if not repo_findings:
             continue
         issue_title = _issue_title(repo_findings)
+        issue_markers = _issue_markers(repo_findings)
         try:
-            existing = client.find_open_issue(report.full_name, issue_title, _ISSUE_MARKER)
+            existing = client.find_open_issue(report.full_name, issue_title, issue_markers)
             if existing is None:
                 number = client.create_issue(
                     report.full_name, issue_title, _issue_body(report, repo_findings), []

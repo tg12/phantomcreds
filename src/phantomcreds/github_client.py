@@ -235,7 +235,7 @@ class GitHubClient:
         self,
         owner_repo: str,
         title_fragment: str,
-        body_marker: str | None = None,
+        body_markers: tuple[str, ...] | None = None,
     ) -> int | None:
         """Return the first matching open issue for phantomcreds-owned threads."""
         for page in range(1, 5):
@@ -248,7 +248,9 @@ class GitHubClient:
             for item in items:
                 title = str(item.get("title", ""))
                 if title_fragment in title:
-                    if body_marker is not None and body_marker not in str(item.get("body", "")):
+                    if body_markers is not None and not any(
+                        marker in str(item.get("body", "")) for marker in body_markers
+                    ):
                         continue
                     return int(item["number"])
         return None

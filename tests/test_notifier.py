@@ -18,15 +18,15 @@ class FakeClient:
         self.comments = comments or []
         self.created: list[tuple[str, str, str, list[str]]] = []
         self.added_comments: list[tuple[str, int, str]] = []
-        self.find_calls: list[tuple[str, str, str | None]] = []
+        self.find_calls: list[tuple[str, str, tuple[str, ...] | None]] = []
 
     def find_open_issue(
         self,
         owner_repo: str,
         title_fragment: str,
-        body_marker: str | None = None,
+        body_markers: tuple[str, ...] | None = None,
     ) -> int | None:
-        self.find_calls.append((owner_repo, title_fragment, body_marker))
+        self.find_calls.append((owner_repo, title_fragment, body_markers))
         return self.existing_issue
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
@@ -113,7 +113,7 @@ def test_create_issue_when_no_open_thread_exists() -> None:
         (
             "owner/repo",
             "[phantomcreds] Credential-handling risks detected in this repository",
-            "<!-- phantomcreds:issue -->",
+            ("<!-- phantomcreds:issue -->", "<!-- phantomcreds:issue:risks -->"),
         )
     ]
     assert (
@@ -121,6 +121,7 @@ def test_create_issue_when_no_open_thread_exists() -> None:
         == "[phantomcreds] Credential-handling risks detected in this repository"
     )
     assert "<!-- phantomcreds:issue -->" in client.created[0][2]
+    assert "<!-- phantomcreds:issue:risks -->" in client.created[0][2]
     assert "<!-- phantomcreds:scan:2026-05-18 -->" in client.created[0][2]
     assert "Created by [James Sawyer](https://github.com/tg12)" in client.created[0][2]
     assert "[Project repo](https://github.com/tg12/phantomcreds)" in client.created[0][2]
@@ -165,13 +166,15 @@ def test_issue_body_includes_secret_indicators_and_llm_fix_guide() -> None:
         (
             "owner/repo",
             "[phantomcreds] Exposed secrets detected in this repository",
-            "<!-- phantomcreds:issue -->",
+            ("<!-- phantomcreds:issue -->", "<!-- phantomcreds:issue:secrets -->"),
         )
     ]
     assert client.created[0][1] == "[phantomcreds] Exposed secrets detected in this repository"
     body = client.created[0][2]
+    assert "<!-- phantomcreds:issue:secrets -->" in body
     assert "Exposed secret indicators" in body
     assert "OPENAI_API_KEY" in body
     assert "OPENSSH PRIVATE KEY" in body
     assert "LLM Fix Guide" in body
     assert "Revoke or rotate the exposed credential" in body
+    assert "current files fetched from the repository's default branch" in body
