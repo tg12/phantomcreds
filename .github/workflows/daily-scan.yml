@@ -6,7 +6,10 @@ concurrency:
 
 on:
   schedule:
-    - cron: "0 6,7 * * *"
+    # GitHub Actions cron is UTC-only. Trigger at both 06:00 and 07:00 UTC,
+    # then use the active London UTC offset to select the correct one for 07:00 local time.
+    - cron: "0 6 * * *"
+    - cron: "0 7 * * *"
   workflow_dispatch:
     inputs:
       debug:
@@ -34,25 +37,40 @@ jobs:
       - name: Check London run window
         id: schedule_gate
         run: |
-          current_hour=$(TZ=Europe/London date +%H)
-          echo "current_hour=${current_hour}" >> "${GITHUB_OUTPUT}"
-          if [ "${current_hour}" != "07" ]; then
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "london_offset=manual" >> "${GITHUB_OUTPUT}"
+            echo "should_run=true" >> "${GITHUB_OUTPUT}"
+            echo "Proceeding with non-scheduled run."
+            exit 0
+          fi
+
+          london_offset=$(TZ=Europe/London date +%z)
+          scheduled_cron="${{ github.event.schedule }}"
+          should_run=false
+
+          if [ "${london_offset}" = "+0100" ] && [ "${scheduled_cron}" = "0 6 * * *" ]; then
+            should_run=true
+          elif [ "${london_offset}" = "+0000" ] && [ "${scheduled_cron}" = "0 7 * * *" ]; then
+            should_run=true
+          fi
+
+          echo "london_offset=${london_offset}" >> "${GITHUB_OUTPUT}"
+          echo "should_run=${should_run}" >> "${GITHUB_OUTPUT}"
+
+          if [ "${should_run}" != "true" ]; then
             echo "Skipping scheduled run outside 07:00 Europe/London."
           else
-            echo "Proceeding with 07:00 Europe/London run."
+            echo "Proceeding with 07:00 Europe/London run via ${scheduled_cron}."
           fi
-          # exit 0 here does NOT stop subsequent steps — the if: conditions on
-          # each downstream step read current_hour from GITHUB_OUTPUT and gate
-          # execution there. This step only populates the output variable.
 
       - name: Stop early outside London run window
-        if: github.event_name == 'schedule' && steps.schedule_gate.outputs.current_hour != '07'
+        if: github.event_name == 'schedule' && steps.schedule_gate.outputs.should_run != 'true'
         run: |
           echo "Outside 07:00 Europe/London window — skipping scan."
           exit 0
 
       - name: Set up Python 3.14
-        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: "3.14"
@@ -61,7 +79,7 @@ jobs:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Install dependencies
-        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
         run: pip install -e .[dev]
 
       - name: Run tests
@@ -69,13 +87,13 @@ jobs:
         run: pytest
 
       - name: Run scan
-        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: python -m phantomcreds.main
 
       - name: Commit results
-        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
         run: |
           git config user.name "phantomcreds[bot]"
           git config user.email "phantomcreds[bot]@users.noreply.github.com"
