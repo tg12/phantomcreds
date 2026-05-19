@@ -55,6 +55,44 @@ _SECRET_FILE_NAMES: frozenset[str] = frozenset(
         "id_ed25519",
     }
 )
+_NON_LIVE_SECRET_SEGMENTS: frozenset[str] = frozenset(
+    {
+        "doc",
+        "docs",
+        "example",
+        "examples",
+        "fixture",
+        "fixtures",
+        "mock",
+        "mocks",
+        "sample",
+        "samples",
+        "spec",
+        "specs",
+        "test",
+        "tests",
+        "testdata",
+    }
+)
+_NON_LIVE_SECRET_SUFFIXES: tuple[str, ...] = (
+    ".example",
+    ".sample",
+    ".spec.js",
+    ".spec.ts",
+    ".test.js",
+    ".test.ts",
+    "_test.go",
+    "_test.py",
+)
+_NON_LIVE_SECRET_BASENAMES: frozenset[str] = frozenset(
+    {
+        ".env.example",
+        ".env.sample",
+        "env.example",
+        "env.sample",
+        "service-account.example.json",
+    }
+)
 
 _POSTURE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("no_api_key_needed", re.compile(r"no api key needed", re.IGNORECASE)),
@@ -65,6 +103,14 @@ _POSTURE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
 
 _TOKEN_SERIALIZATION_RE = re.compile(
     r"SaveTokenToFile|access_token|refresh_token|id_token|cookie|session", re.IGNORECASE
+)
+_PERSISTENCE_WRITE_RE = re.compile(
+    r"SaveTokenToFile|write(?:File|_text)?|json\.dump",
+    re.IGNORECASE,
+)
+_SEARCH_QUERY_LINE_RE = re.compile(
+    r"language:[A-Za-z]+|token-persistence-|session-persistence-|auth-import-|shared-provider-",
+    re.IGNORECASE,
 )
 _LOCAL_MIRROR_RE = re.compile(
     r"mirror(?:ed)? to a local workspace|spool|auths|pgstore|objectstore", re.IGNORECASE
@@ -275,6 +321,77 @@ def _collect_refs(path: str, content: str, pattern: re.Pattern[str], limit: int 
     return refs
 
 
+def _collect_persistence_refs(path: str, content: str, limit: int = 3) -> list[str]:
+    sink_lines = {
+        lineno
+        for lineno, line in enumerate(content.splitlines(), 1)
+        if _PERSISTENCE_WRITE_RE.search(line) and not _SEARCH_QUERY_LINE_RE.search(line)
+    }
+    if not sink_lines:
+        return []
+
+    refs: list[str] = []
+    for lineno, line in enumerate(content.splitlines(), 1):
+        if _SEARCH_QUERY_LINE_RE.search(line):
+            continue
+        if not any(abs(lineno - sink_lineno) <= 3 for sink_lineno in sink_lines):
+            continue
+        if _TOKEN_SERIALIZATION_RE.search(line):
+            snippet = line.strip()
+            if len(snippet) > 120:
+                snippet = snippet[:117] + "..."
+            refs.append(f"{path}:{lineno} - {snippet}")
+            if len(refs) >= limit:
+                break
+    return refs
+
+
+def _path_segments(path: str) -> set[str]:
+    return {segment.lower() for segment in path.split("/") if segment}
+
+
+def _basename(path: str) -> str:
+    return path.rsplit("/", 1)[-1].lower()
+
+
+def _is_non_live_secret_path(path: str) -> bool:
+    lower_path = path.lower()
+    basename = _basename(path)
+    if _path_segments(path) & _NON_LIVE_SECRET_SEGMENTS:
+        return True
+    if basename in _NON_LIVE_SECRET_BASENAMES:
+        return True
+    if basename.startswith("test_"):
+        return True
+    return lower_path.endswith(_NON_LIVE_SECRET_SUFFIXES)
+
+
+def _is_code_like_path(path: str) -> bool:
+    return path.lower().endswith(
+        (
+            ".cfg",
+            ".conf",
+            ".go",
+            ".ini",
+            ".java",
+            ".js",
+            ".json",
+            ".jsx",
+            ".kt",
+            ".php",
+            ".py",
+            ".rb",
+            ".rs",
+            ".sh",
+            ".toml",
+            ".ts",
+            ".tsx",
+            ".yaml",
+            ".yml",
+        )
+    )
+
+
 def _find_matching_files(
     files: dict[str, str], pattern: re.Pattern[str], paths: Iterable[str] | None = None
 ) -> list[str]:
@@ -300,6 +417,9 @@ def _is_redacted_example_line(line: str) -> bool:
 
 
 def _collect_private_key_evidence(path: str, content: str) -> list[str]:
+    if _is_non_live_secret_path(path):
+        return []
+
     evidence: list[str] = []
     for lineno, line in enumerate(content.splitlines(), 1):
         if _is_redacted_example_line(line):
@@ -318,6 +438,8 @@ def _collect_private_key_evidence(path: str, content: str) -> list[str]:
 def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list[str]:
     evidence: list[str] = []
     if limit <= 0:
+        return evidence
+    if _is_non_live_secret_path(path):
         return evidence
 
     for lineno, line in enumerate(content.splitlines(), 1):
@@ -432,7 +554,15 @@ def _detect_harvest_posture(
 def _detect_credential_persistence(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    evidence = _find_matching_files(files, _TOKEN_SERIALIZATION_RE)
+    evidence: list[str] = []
+    for path, content in files.items():
+        if _is_non_live_secret_path(path) or not _is_code_like_path(path):
+            continue
+        if not _TOKEN_SERIALIZATION_RE.search(content):
+            continue
+        if not _PERSISTENCE_WRITE_RE.search(content):
+            continue
+        evidence.extend(_collect_persistence_refs(path, content))
     if len(evidence) < 2:
         return []
     return [

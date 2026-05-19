@@ -284,4 +284,9 @@ Operational difference from GitHub Actions:
 
 If a repo is repeatedly benign but matches the search posture, add it to [`data/allowlist.txt`](data/allowlist.txt), one `owner/repo` per line. Allowlisted repos are skipped entirely in future runs.
 
+The scanner also applies built-in context filters before raising secret findings:
+- redacted evidence snippets are ignored
+- test, fixture, sample, example, and docs paths are not treated as live secret exposure
+- credential-persistence findings require nearby write or serialization behavior, not just words like `session` or `cookie`
+
 This is a repo-level scanner. It does not store individual user identities, and it does not attempt attribution beyond public repository content.

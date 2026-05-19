@@ -219,3 +219,53 @@ def test_callback_exposure_detected(repo_metadata: RepoMetadata) -> None:
     )
     assert report.classification == "watchlist"
     assert any(finding.finding_type == "callback_exposure" for finding in findings)
+
+
+def test_non_live_secret_contexts_do_not_trigger_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "tests/test_heuristics.py": (
+                'OPENAI_API_KEY="sk-proj-abcdefghijklmnopqrstuvwxyz123456"\n'
+                "-----BEGIN OPENSSH PRIVATE KEY-----\n"
+                "dummy\n"
+                "-----END OPENSSH PRIVATE KEY-----\n"
+            ),
+            "fixtures/service-account.example.json": (
+                '{\n'
+                '  "type": "service_account",\n'
+                '  "private_key": "-----BEGIN PRIVATE KEY-----\\nABC\\n-----END PRIVATE KEY-----\\n"\n'
+                "}\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
+    assert report.issue_worthy_count == 0
+
+
+def test_docs_and_query_strings_do_not_trigger_credential_persistence(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "README.md": (
+                "This scanner avoids flagging every repo mentioning token, cookie, or OAuth.\n"
+                "The repository documents detection trade-offs rather than unsafe storage.\n"
+            ),
+            "src/phantomcreds/config.py": (
+                '"auth file" OR "session export" OR "cookie login" OR "token store"\n'
+                '"use your own session" OR "browser cookies" OR "import cookies"\n'
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert "credential_persistence" not in {finding.finding_type for finding in findings}
+    assert report.finding_count == 0
