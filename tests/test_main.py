@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -17,6 +18,7 @@ from phantomcreds.main import (
     _is_text_like_path,
     _parse_github_timestamp,
     _process_candidates,
+    _recent_commit_source_labels,
     _resolve_runtime_options,
     _select_paths,
     _select_secret_sweep_paths,
@@ -28,9 +30,20 @@ from phantomcreds.models import RepoFinding, RepoMetadata, RepoReport
 class FakeClient:
     def __init__(self, metadata_by_repo: dict[str, RepoMetadata]) -> None:
         self.metadata_by_repo = metadata_by_repo
+        self.recent_commit_paths_by_repo: dict[str, set[str]] = {}
 
     def get_repo_metadata(self, repo_full_name: str) -> RepoMetadata:
         return self.metadata_by_repo[repo_full_name]
+
+    def list_recent_commit_paths(
+        self,
+        repo_full_name: str,
+        *,
+        lookback_days: int,
+        max_commits: int,
+    ) -> set[str]:
+        del lookback_days, max_commits
+        return self.recent_commit_paths_by_repo.get(repo_full_name, set())
 
 
 def _metadata(
@@ -81,11 +94,56 @@ def test_filter_recent_candidates_keeps_recent_pushes_and_prefers_signal_count()
     candidates, metadata_by_repo = _filter_recent_candidates(
         client,
         candidate_sources,
+        defaultdict(set),
         now=datetime(2026, 5, 18, 12, 0, tzinfo=UTC),
     )
 
     assert candidates == ["owner/fresh-high-signal", "owner/fresh-low-signal"]
     assert set(metadata_by_repo) == set(candidate_sources)
+
+
+def test_recent_commit_source_labels_detect_code_hit_and_secret_paths() -> None:
+    labels = _recent_commit_source_labels(
+        {"src/app.py", ".env.example", "docs/notes.md"},
+        {"src/app.py"},
+    )
+
+    assert labels == {"recent-commit-code-hit", "recent-commit-secret-path"}
+
+
+def test_filter_recent_candidates_uses_recent_commit_signals_to_reorder() -> None:
+    candidate_sources = {
+        "owner/code-hit-only": {"repo-query", "code-query"},
+        "owner/secret-touch": {"repo-query", "code-query"},
+    }
+    client = FakeClient(
+        {
+            "owner/code-hit-only": _metadata(
+                "owner/code-hit-only",
+                pushed_at="2026-05-18T11:30:00Z",
+            ),
+            "owner/secret-touch": _metadata(
+                "owner/secret-touch",
+                pushed_at="2026-05-18T11:29:00Z",
+            ),
+        }
+    )
+    client.recent_commit_paths_by_repo = {
+        "owner/secret-touch": {".env.example"},
+        "owner/code-hit-only": set(),
+    }
+    code_paths = defaultdict(set, {"owner/secret-touch": {"src/app.py"}})
+
+    candidates, _ = _filter_recent_candidates(
+        client,
+        candidate_sources,
+        code_paths,
+        now=datetime(2026, 5, 18, 12, 0, tzinfo=UTC),
+    )
+
+    assert candidates == ["owner/secret-touch", "owner/code-hit-only"]
+    assert "recent-commit-secret-path" in candidate_sources["owner/secret-touch"]
+    assert ".env.example" in code_paths["owner/secret-touch"]
 
 
 def test_source_family_collapses_language_suffixes() -> None:

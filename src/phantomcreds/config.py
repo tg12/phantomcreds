@@ -64,6 +64,16 @@ CODE_SEARCH_QUERIES: Final[tuple[tuple[str, str], ...]] = (
     ("secret-path-terraform-credentials", '"app.terraform.io" "token" filename:credentials.tfrc.json'),
     ("secret-path-service-account", '"private_key" "client_email" filename:service-account.json'),
     ("secret-path-private-key", '"BEGIN OPENSSH PRIVATE KEY"'),
+    ("secret-path-env-example", '"OPENAI_API_KEY" filename:.env.example'),
+    ("secret-path-anthropic-env", '"ANTHROPIC_API_KEY" filename:.env'),
+    ("secret-path-openrouter-env", '"OPENROUTER_API_KEY" filename:.env'),
+    ("secret-path-groq-env", '"GROQ_API_KEY" filename:.env'),
+    ("secret-path-deepseek-env", '"DEEPSEEK_API_KEY" filename:.env'),
+    ("secret-path-perplexity-env", '"PERPLEXITY_API_KEY" filename:.env'),
+    ("secret-path-gemini-env", '"GEMINI_API_KEY" OR "GOOGLE_API_KEY" filename:.env'),
+    ("secret-path-database-url", '"DATABASE_URL=" "postgres://"'),
+    ("secret-path-mongodb-url", '"mongodb+srv://"'),
+    ("secret-path-slack-webhook", '"hooks.slack.com/services/"'),
 )
 
 README_CANDIDATE_PATHS: Final[tuple[str, ...]] = (
@@ -172,11 +182,14 @@ MAX_REPO_RESULTS_PER_QUERY: Final[int] = 30
 MAX_CODE_RESULTS_PER_QUERY: Final[int] = 40
 MAX_DISCOVERY_CANDIDATES: Final[int] = 160
 MAX_CANDIDATES_PER_SCAN: Final[int] = 100
+MAX_RECENT_COMMIT_REVIEW_CANDIDATES: Final[int] = 30
 MAX_FILES_PER_REPO: Final[int] = 18
 MAX_SECRET_SWEEP_FILES_PER_REPO: Final[int] = 80
 MAX_ISSUES_PER_SCAN: Final[int] = 10
 FILE_FETCH_WORKERS: Final[int] = 8
 RECENT_PUSH_WINDOW_HOURS: Final[int] = 72
+RECENT_COMMIT_LOOKBACK_DAYS: Final[int] = 7
+MAX_RECENT_COMMITS_TO_CHECK: Final[int] = 15
 
 SCORE_HIGH_RISK: Final[float] = 0.65
 SCORE_WATCHLIST: Final[float] = 0.20

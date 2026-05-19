@@ -6,7 +6,7 @@ import base64
 import logging
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import requests
@@ -116,6 +116,42 @@ class GitHubClient:
             archived=bool(data.get("archived", False)),
             fork=bool(data.get("fork", False)),
         )
+
+    def list_recent_commit_paths(
+        self,
+        repo_full_name: str,
+        *,
+        lookback_days: int,
+        max_commits: int,
+    ) -> set[str]:
+        """Return file paths touched by recent commits on the default branch."""
+        metadata = self.get_repo_metadata(repo_full_name)
+        since = (datetime.now(UTC) - timedelta(days=lookback_days)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        commits = self._rest_get(
+            f"{GITHUB_API_BASE}/repos/{repo_full_name}/commits",
+            params={
+                "sha": metadata.default_branch,
+                "since": since,
+                "per_page": max_commits,
+            },
+        )
+        if not isinstance(commits, list) or not commits:
+            return set()
+
+        paths: set[str] = set()
+        for commit in commits[:max_commits]:
+            sha = str(commit.get("sha", "")).strip()
+            if not sha:
+                continue
+            details = self._rest_get(f"{GITHUB_API_BASE}/repos/{repo_full_name}/commits/{sha}")
+            files = details.get("files", [])
+            if not isinstance(files, list):
+                continue
+            for file_info in files:
+                path = str(file_info.get("filename", "")).strip()
+                if path:
+                    paths.add(path)
+        return paths
 
     def get_repo_tree(self, repo_full_name: str, ref: str) -> list[str]:
         """Fetch the recursive path list for the default branch, if available."""

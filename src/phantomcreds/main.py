@@ -18,7 +18,10 @@ from phantomcreds.config import (
     MAX_CODE_RESULTS_PER_QUERY,
     MAX_DISCOVERY_CANDIDATES,
     MAX_FILES_PER_REPO,
+    MAX_RECENT_COMMIT_REVIEW_CANDIDATES,
     MAX_REPO_RESULTS_PER_QUERY,
+    MAX_RECENT_COMMITS_TO_CHECK,
+    RECENT_COMMIT_LOOKBACK_DAYS,
     MAX_SECRET_SWEEP_FILES_PER_REPO,
     PRIORITY_PATH_SUFFIXES,
     README_CANDIDATE_PATHS,
@@ -256,9 +259,70 @@ def _candidate_score(
     return score, pushed_at, repo_full_name.lower()
 
 
+def _matches_secret_candidate_path(path: str) -> bool:
+    lower_path = path.lower()
+    basename = lower_path.rsplit("/", 1)[-1]
+    secret_candidate_names = {candidate.lower() for candidate in SECRET_CANDIDATE_PATHS}
+    secret_candidate_suffixes = tuple(suffix.lower() for suffix in SECRET_CANDIDATE_SUFFIXES)
+    return (
+        lower_path in secret_candidate_names
+        or basename in secret_candidate_names
+        or any(
+            lower_path.endswith(suffix) or basename.endswith(suffix)
+            for suffix in secret_candidate_suffixes
+        )
+    )
+
+
+def _recent_commit_source_labels(
+    recent_commit_paths: set[str],
+    code_hits: set[str],
+) -> set[str]:
+    labels: set[str] = set()
+    if recent_commit_paths & code_hits:
+        labels.add("recent-commit-code-hit")
+    if any(_matches_secret_candidate_path(path) for path in recent_commit_paths):
+        labels.add("recent-commit-secret-path")
+    return labels
+
+
+def _enrich_recent_candidates_with_commit_signals(
+    client: GitHubClient,
+    candidates: list[str],
+    candidate_sources: dict[str, set[str]],
+    code_paths: dict[str, set[str]],
+) -> None:
+    reviewed_repos = candidates[:MAX_RECENT_COMMIT_REVIEW_CANDIDATES]
+    for repo_full_name in reviewed_repos:
+        try:
+            recent_commit_paths = client.list_recent_commit_paths(
+                repo_full_name,
+                lookback_days=RECENT_COMMIT_LOOKBACK_DAYS,
+                max_commits=MAX_RECENT_COMMITS_TO_CHECK,
+            )
+        except Exception:
+            _log.exception("Failed to inspect recent commits for %s", repo_full_name)
+            continue
+
+        commit_labels = _recent_commit_source_labels(
+            recent_commit_paths,
+            code_paths.get(repo_full_name, set()),
+        )
+        if not commit_labels:
+            continue
+        candidate_sources[repo_full_name].update(commit_labels)
+        code_paths[repo_full_name].update(recent_commit_paths)
+        _log.info(
+            "Recent commit signals for %s: %s",
+            repo_full_name,
+            ", ".join(sorted(commit_labels)),
+        )
+
+
 def _filter_recent_candidates(
     client: GitHubClient,
     candidate_sources: dict[str, set[str]],
+    code_paths: dict[str, set[str]],
     now: datetime,
 ) -> tuple[list[str], dict[str, RepoMetadata]]:
     cutoff = now - timedelta(hours=RECENT_PUSH_WINDOW_HOURS)
@@ -273,6 +337,17 @@ def _filter_recent_candidates(
             continue
         recent_candidates.append(repo_full_name)
 
+    preliminarily_ranked = sorted(
+        recent_candidates,
+        key=lambda repo: _candidate_score(repo, candidate_sources[repo], metadata_by_repo[repo]),
+        reverse=True,
+    )
+    _enrich_recent_candidates_with_commit_signals(
+        client,
+        preliminarily_ranked,
+        candidate_sources,
+        code_paths,
+    )
     ranked = sorted(
         recent_candidates,
         key=lambda repo: _candidate_score(repo, candidate_sources[repo], metadata_by_repo[repo]),
@@ -489,7 +564,12 @@ def main() -> None:
     initial_candidates = _prioritize_candidates(candidate_sources)
     _log.info("Initial candidate repos selected: %d", len(initial_candidates))
     recent_sources = {repo: candidate_sources[repo] for repo in initial_candidates}
-    candidates, metadata_by_repo = _filter_recent_candidates(client, recent_sources, now)
+    candidates, metadata_by_repo = _filter_recent_candidates(
+        client,
+        recent_sources,
+        code_paths,
+        now,
+    )
     _log.info(
         "Recent candidate repos selected: %d within last %d hours",
         len(candidates),
