@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-05-20 | 30 | 14 | 11 | 14 | 5 | 0 |
 | 2026-05-19 | 55 | 21 | 14 | 16 | 7 | 1 |
 | 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
 <!-- STATS:END -->
@@ -139,27 +140,20 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33511 | 2026-05-19 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 85 | 2026-05-19 |
-| HsnSaboor/CLIProxyAPIPlus | 1.000 | 8 | report_only | 64 | 2026-05-19 |
-| Finesssee/ProxyPilot | 1.000 | 8 | report_only | 221 | 2026-05-18 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 88 | 2026-05-20 |
+| HsnSaboor/CLIProxyAPIPlus | 1.000 | 8 | report_only | 65 | 2026-05-19 |
+| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33678 | 2026-05-20 |
+| Finesssee/ProxyPilot | 1.000 | 8 | report_only | 223 | 2026-05-20 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-19 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-19 |
 | 6enta0/CPAplus | 1.000 | 7 | file_issue | 12 | 2026-05-19 |
-| chainreactors/EvilProxy | 1.000 | 7 | report_only | 14 | 2026-05-19 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-18 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-18 |
 | Sastraaaa/proxypilot | 1.000 | 7 | file_issue | 0 | 2026-04-29 |
 | leic4u/CLIProxyAPIPlus | 1.000 | 6 | file_issue | 2 | 2026-05-19 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 698 | 2026-05-19 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 705 | 2026-05-20 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-12 |
-| tg12/phantomcreds | 0.770 | 3 | report_only | 0 | 2026-05-19 |
-| Teraflop-Inc/dev-agent-lens | 0.770 | 3 | file_issue | 67 | 2026-05-18 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 146 | 2026-05-19 |
-| GboyCode/CodexAuth | 0.390 | 2 | watch | 0 | 2026-05-19 |
-| tuxevil/pi-antigravity-rotator | 0.390 | 2 | watch | 9 | 2026-05-19 |
-| tachibanayu24/claude-code-remote | 0.390 | 2 | watch | 0 | 2026-05-17 |
-| tranhailong012/windsurf-tools | 0.390 | 2 | report_only | 2 | 2026-05-19 |
-| vaishnavan59/codex-account-orchestrator | 0.390 | 2 | watch | 0 | 2026-05-19 |
-| Vexa-ai/vexa | 0.350 | 1 | file_issue | 2065 | 2026-05-19 |
+| sameencai/KarvisForYou | 0.560 | 2 | file_issue | 116 | 2026-05-19 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11807 | 2026-05-20 |
+| rush86999/atom | 0.350 | 1 | file_issue | 751 | 2026-05-19 |
 <!-- REPO_STATS:END -->
 
 ---
