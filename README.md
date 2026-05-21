@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-05-21 | 33 | 18 | 12 | 17 | 7 | 0 |
 | 2026-05-20 | 30 | 14 | 11 | 14 | 5 | 0 |
 | 2026-05-19 | 55 | 21 | 14 | 16 | 7 | 1 |
 | 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
@@ -140,20 +141,24 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 88 | 2026-05-20 |
-| HsnSaboor/CLIProxyAPIPlus | 1.000 | 8 | report_only | 65 | 2026-05-19 |
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33678 | 2026-05-20 |
-| Finesssee/ProxyPilot | 1.000 | 8 | report_only | 223 | 2026-05-20 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-19 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-19 |
-| 6enta0/CPAplus | 1.000 | 7 | file_issue | 12 | 2026-05-19 |
-| Sastraaaa/proxypilot | 1.000 | 7 | file_issue | 0 | 2026-04-29 |
-| leic4u/CLIProxyAPIPlus | 1.000 | 6 | file_issue | 2 | 2026-05-19 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 705 | 2026-05-20 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 89 | 2026-05-21 |
+| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 33902 | 2026-05-21 |
+| Finesssee/ProxyPilot | 1.000 | 8 | report_only | 225 | 2026-05-20 |
+| leic4u/CLIProxyAPIPlus | 1.000 | 7 | file_issue | 2 | 2026-05-20 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-20 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-20 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 2 | 2026-05-21 |
+| CodexNexor/VoltGate | 1.000 | 7 | report_only | 4 | 2026-05-20 |
+| 6enta0/CPAplus | 1.000 | 7 | file_issue | 14 | 2026-05-20 |
+| daishuge/playful-proxy-api-panel | 1.000 | 7 | report_only | 41 | 2026-05-21 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 710 | 2026-05-21 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-12 |
+| PlanExeOrg/PlanExe | 0.580 | 2 | file_issue | 380 | 2026-05-21 |
 | sameencai/KarvisForYou | 0.560 | 2 | file_issue | 116 | 2026-05-19 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11807 | 2026-05-20 |
-| rush86999/atom | 0.350 | 1 | file_issue | 751 | 2026-05-19 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 148 | 2026-05-20 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11827 | 2026-05-21 |
+| Zhu-junwei/AnMe | 0.390 | 2 | watch | 28 | 2026-05-21 |
+| rush86999/atom | 0.350 | 1 | file_issue | 751 | 2026-05-20 |
 <!-- REPO_STATS:END -->
 
 ---
