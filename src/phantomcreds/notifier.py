@@ -247,7 +247,7 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
                 _log.info("Commented on %s#%d", report.full_name, existing)
         except requests.HTTPError as exc:
             status = exc.response.status_code if exc.response is not None else 0
-            if status in (404, 410, 422):
+            if status in (403, 404, 410, 422):
                 _log.info("Skipping issue notification for %s (HTTP %d)", report.full_name, status)
                 continue
             raise

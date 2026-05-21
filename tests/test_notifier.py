@@ -6,6 +6,11 @@
 
 from __future__ import annotations
 
+from unittest.mock import MagicMock
+
+import pytest
+import requests
+
 from phantomcreds.models import RepoFinding, RepoReport
 from phantomcreds.notifier import notify_all
 
@@ -165,6 +170,35 @@ def test_skip_duplicate_same_day_comment() -> None:
     notify_all(client, [_report()], _findings())
     assert not client.created
     assert not client.added_comments
+
+
+def _http_error(status: int) -> requests.HTTPError:
+    resp = MagicMock(spec=requests.Response)
+    resp.status_code = status
+    return requests.HTTPError(response=resp)
+
+
+def test_403_on_create_issue_is_skipped_not_fatal() -> None:
+    """A 403 means the token has no write access to the target repo; skip it."""
+    client = FakeClient(existing_issue=None)
+    client.create_issue = MagicMock(side_effect=_http_error(403))  # type: ignore[method-assign]
+    notify_all(client, [_report()], _findings())
+    assert not client.added_comments
+
+
+@pytest.mark.parametrize("status", [404, 410, 422])
+def test_non_fatal_http_errors_are_skipped(status: int) -> None:
+    client = FakeClient(existing_issue=None)
+    client.create_issue = MagicMock(side_effect=_http_error(status))  # type: ignore[method-assign]
+    notify_all(client, [_report()], _findings())
+    assert not client.added_comments
+
+
+def test_500_on_create_issue_propagates() -> None:
+    client = FakeClient(existing_issue=None)
+    client.create_issue = MagicMock(side_effect=_http_error(500))  # type: ignore[method-assign]
+    with pytest.raises(requests.HTTPError):
+        notify_all(client, [_report()], _findings())
 
 
 def test_report_only_repo_does_not_notify() -> None:
