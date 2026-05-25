@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 0 |
 | 2026-05-24 | 33 | 17 | 11 | 14 | 5 | 1 |
 | 2026-05-23 | 33 | 18 | 14 | 17 | 9 | 0 |
 | 2026-05-22 | 34 | 15 | 13 | 14 | 7 | 0 |
@@ -145,22 +146,25 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | leic4u/CLIProxyAPIPlus | 1.000 | 8 | report_only | 2 | 2026-05-22 |
-| fxzer/CLIProxyAPI | 1.000 | 8 | report_only | 0 | 2026-05-21 |
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 34466 | 2026-05-24 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-23 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-23 |
+| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 34655 | 2026-05-25 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-24 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-24 |
 | 6enta0/CPAplus | 1.000 | 7 | file_issue | 16 | 2026-05-24 |
+| nextransit/CLIProxyAPI | 1.000 | 7 | report_only | 1 | 2026-05-23 |
 | Sastraaaa/proxypilot | 1.000 | 7 | file_issue | 0 | 2026-04-29 |
-| daishuge/playful-proxy-api-panel | 1.000 | 7 | report_only | 42 | 2026-05-23 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 719 | 2026-05-24 |
+| daishuge/playful-proxy-api-panel | 1.000 | 7 | report_only | 43 | 2026-05-25 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 730 | 2026-05-25 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-12 |
-| jlcodes99/cockpit-tools | 0.770 | 3 | file_issue | 8972 | 2026-05-24 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11869 | 2026-05-24 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-05-22 |
+| jlcodes99/cockpit-tools | 0.770 | 3 | file_issue | 9154 | 2026-05-25 |
+| SylphAI-Inc/AdalFlow | 0.560 | 2 | file_issue | 4148 | 2026-05-25 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 149 | 2026-05-24 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11886 | 2026-05-25 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 2 | 2026-05-24 |
 | WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-05-24 |
-| winstonwilliamsiii/BBBot | 0.350 | 1 | file_issue | 2 | 2026-05-22 |
-| Cjota221/vexxcrm | 0.350 | 1 | file_issue | 0 | 2026-05-21 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-05-22 |
+| winstonwilliamsiii/BBBot | 0.350 | 1 | file_issue | 2 | 2026-05-24 |
+| YukiYonekura-321/famdish-backend-rails | 0.350 | 1 | file_issue | 1 | 2026-03-29 |
+| XNet-NGO/aiope | 0.350 | 1 | file_issue | 11 | 2026-05-22 |
 <!-- REPO_STATS:END -->
 
 ---
