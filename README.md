@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-29 | 40 | 19 | 16 | 19 | 9 | 3 |
+| 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 2 |
 | 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 0 |
 | 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 0 |
 | 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 0 |
@@ -148,24 +148,24 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| jeffnash/CLIProxyAPI | 1.000 | 8 | report_only | 0 | 2026-05-29 |
-| NguyenSiTrung/CLIProxyAPI | 1.000 | 8 | report_only | 1 | 2026-05-27 |
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 35333 | 2026-05-29 |
-| fxzer/CLIProxyAPI | 1.000 | 8 | report_only | 0 | 2026-05-27 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 111 | 2026-05-29 |
-| lzt404/CLIProxyAPI-RUM | 1.000 | 8 | report_only | 0 | 2026-05-29 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-28 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-28 |
-| 6enta0/CPAplus | 1.000 | 7 | file_issue | 16 | 2026-05-27 |
+| jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-29 |
+| NguyenSiTrung/CLIProxyAPI | 1.000 | 7 | report_only | 1 | 2026-05-27 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 35344 | 2026-05-29 |
 | Zeuyel/Proxy-me | 1.000 | 7 | report_only | 1 | 2026-05-29 |
-| Sastraaaa/proxypilot | 1.000 | 7 | file_issue | 0 | 2026-04-29 |
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 2 | 2026-05-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 759 | 2026-05-29 |
+| fxzer/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-27 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 111 | 2026-05-29 |
+| lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-05-29 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-28 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-28 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 16 | 2026-05-27 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 6 | report_only | 2 | 2026-05-29 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 760 | 2026-05-29 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-28 |
-| jlcodes99/cockpit-tools | 0.770 | 3 | file_issue | 9621 | 2026-05-29 |
-| kunish/wheel | 0.770 | 3 | file_issue | 1 | 2026-04-29 |
 | SylphAI-Inc/AdalFlow | 0.560 | 2 | file_issue | 4153 | 2026-05-29 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11917 | 2026-05-29 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11919 | 2026-05-29 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | watch | 9634 | 2026-05-29 |
+| kunish/wheel | 0.390 | 2 | watch | 1 | 2026-04-29 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 381 | 2026-05-28 |
 <!-- REPO_STATS:END -->
 
