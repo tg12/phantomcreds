@@ -331,6 +331,33 @@ _CONNECTION_STRING_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
         ),
     ),
 )
+_PLACEHOLDER_CONNECTION_USERS: frozenset[str] = frozenset(
+    {"user", "username", "example", "demo", "test", "admin", "root", "postgres"}
+)
+_PLACEHOLDER_CONNECTION_PASSWORDS: frozenset[str] = frozenset(
+    {
+        "password",
+        "pass",
+        "postgres",
+        "postgresql",
+        "secret",
+        "changeme",
+        "example",
+        "demo",
+        "test",
+        "admin",
+        "root",
+    }
+)
+_PLACEHOLDER_CONNECTION_HOSTS: tuple[str, ...] = (
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+    "db",
+    "db.example.com",
+    "example.com",
+    "example.local",
+)
 _PYPI_PASSWORD_RE = re.compile(r"password\s*[:=]\s*(?P<password>\S+)", re.IGNORECASE)
 _PYPI_USERNAME_RE = re.compile(r"username\s*[:=]\s*(?P<username>\S+)", re.IGNORECASE)
 _DOCKER_AUTH_RE = re.compile(r'"auth"\s*:\s*"(?P<auth>[A-Za-z0-9+/=]{16,})"', re.IGNORECASE)
@@ -455,6 +482,33 @@ def _is_placeholder_secret_value(secret: str) -> bool:
     if secret_value in _KNOWN_EXAMPLE_SECRET_VALUES:
         return True
     return _PLACEHOLDER_SECRET_RE.search(secret_value) is not None
+
+
+def _looks_like_placeholder_connection(match: re.Match[str], path: str) -> bool:
+    password = match.group("password").strip()
+    if _is_placeholder_secret_value(password):
+        return True
+    if not _is_env_template_path(path):
+        return False
+
+    user = match.group("user").strip().lower()
+    normalized_password = password.strip("\"'").lower()
+    host = match.group("host").strip().lower().split("/", 1)[0]
+    host_name = host.split(":", 1)[0]
+
+    host_is_placeholder = (
+        host_name in _PLACEHOLDER_CONNECTION_HOSTS
+        or host.startswith("localhost:")
+        or host.startswith("127.0.0.1:")
+        or host.startswith("0.0.0.0:")
+    )
+    user_is_placeholder = user in _PLACEHOLDER_CONNECTION_USERS or user.startswith("{")
+    password_is_placeholder = (
+        normalized_password in _PLACEHOLDER_CONNECTION_PASSWORDS
+        or normalized_password.startswith("{")
+        or normalized_password.endswith("}")
+    )
+    return host_is_placeholder and user_is_placeholder and password_is_placeholder
 
 
 def _is_code_like_path(path: str) -> bool:
@@ -596,7 +650,7 @@ def _collect_connection_string_evidence(path: str, content: str, limit: int) -> 
             match = pattern.search(line)
             if not match:
                 continue
-            if _is_placeholder_secret_value(match.group("password")):
+            if _looks_like_placeholder_connection(match, path):
                 continue
             evidence.append(f"{path}:{lineno} - [REDACTED:{_redact_connection_string(match)}]")
             break

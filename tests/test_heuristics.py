@@ -309,6 +309,46 @@ def test_exposed_secret_detects_netrc_aws_pairs_and_connection_strings(
     assert "postgres://scanner:[REDACTED:" in joined
 
 
+def test_env_template_placeholder_connection_string_does_not_trigger_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.example": (
+                "DATABASE_URL=postgres://user:password@localhost:5432/cliproxy\n"
+            ),
+            "deploy/.env.template": (
+                "MONGODB_URL=mongodb://user:password@db.example.com:27017/app\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
+
+
+def test_env_template_real_connection_string_still_triggers_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.example": (
+                "DATABASE_URL=postgres://scanner:topsecretpass@db.prod.internal:5432/app\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert ".env.example:1 - [REDACTED:postgres://scanner:[REDACTED:" in exposed.evidence[0]
+
+
 def test_exposed_secret_detects_pypirc_docker_and_terraform_credentials(
     repo_metadata: RepoMetadata,
 ) -> None:
