@@ -11,7 +11,7 @@ IssueAction = Literal["file_issue", "report_only", "watch"]
 Severity = Literal["high", "medium", "low"]
 
 
-def _report_row(report: "RepoReport") -> dict[str, object]:
+def _report_row(report: RepoReport) -> dict[str, object]:
     """Return a stable JSON-serializable row for repo reports."""
     return {
         "full_name": report.full_name,
@@ -29,7 +29,7 @@ def _report_row(report: "RepoReport") -> dict[str, object]:
     }
 
 
-def _finding_row(finding: "RepoFinding") -> dict[str, object]:
+def _finding_row(finding: RepoFinding) -> dict[str, object]:
     """Return a stable JSON-serializable row for findings."""
     return {
         "repo_full_name": finding.repo_full_name,
