@@ -128,7 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
-| 2026-05-29 | 35 | 16 | 13 | 16 | 7 | 2 |
+| 2026-05-29 | 40 | 19 | 16 | 19 | 9 | 3 |
 | 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 0 |
 | 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 0 |
 | 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 0 |
@@ -150,20 +150,23 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | jeffnash/CLIProxyAPI | 1.000 | 8 | report_only | 0 | 2026-05-29 |
 | NguyenSiTrung/CLIProxyAPI | 1.000 | 8 | report_only | 1 | 2026-05-27 |
-| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 35328 | 2026-05-29 |
+| router-for-me/CLIProxyAPI | 1.000 | 8 | report_only | 35333 | 2026-05-29 |
 | fxzer/CLIProxyAPI | 1.000 | 8 | report_only | 0 | 2026-05-27 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 8 | report_only | 111 | 2026-05-29 |
+| lzt404/CLIProxyAPI-RUM | 1.000 | 8 | report_only | 0 | 2026-05-29 |
 | kdjahdiel-code/c-pipe-engine | 1.000 | 7 | file_issue | 0 | 2026-05-28 |
 | rituprodhan-ops/c-channel-engine | 1.000 | 7 | file_issue | 0 | 2026-05-28 |
 | 6enta0/CPAplus | 1.000 | 7 | file_issue | 16 | 2026-05-27 |
 | Zeuyel/Proxy-me | 1.000 | 7 | report_only | 1 | 2026-05-29 |
 | Sastraaaa/proxypilot | 1.000 | 7 | file_issue | 0 | 2026-04-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 758 | 2026-05-29 |
-| jlcodes99/cockpit-tools | 0.770 | 3 | file_issue | 9614 | 2026-05-29 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 2 | 2026-05-29 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 759 | 2026-05-29 |
+| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-05-28 |
+| jlcodes99/cockpit-tools | 0.770 | 3 | file_issue | 9621 | 2026-05-29 |
 | kunish/wheel | 0.770 | 3 | file_issue | 1 | 2026-04-29 |
-| PlanExeOrg/PlanExe | 0.580 | 2 | file_issue | 381 | 2026-05-28 |
 | SylphAI-Inc/AdalFlow | 0.560 | 2 | file_issue | 4153 | 2026-05-29 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11915 | 2026-05-29 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11917 | 2026-05-29 |
+| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 381 | 2026-05-28 |
 <!-- REPO_STATS:END -->
 
 ---
