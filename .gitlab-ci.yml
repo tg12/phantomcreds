@@ -54,15 +54,15 @@ publish-results:
   before_script:
     - apt-get update -qq && apt-get install -y -qq git
   script:
-    - git config user.name "GitLab CI"
-    - git config user.email "ci@gitlab.local"
-    - git add data/ README.md
     - |
+      git config user.name "GitLab CI"
+      git config user.email "ci@gitlab.local"
+      git add data/ README.md
       if git diff --staged --quiet; then
         echo "No scan output changes"
         exit 0
       fi
-    - git commit -m "scan: $(date -u +%Y-%m-%d) [skip ci]"
-    - git remote set-url origin "http://oauth2:${GITLAB_TOKEN}@gitlab.local/ops/phantomcreds.git"
-    - git pull --rebase origin "${CI_COMMIT_REF_NAME}"
-    - git push origin HEAD:"${CI_COMMIT_REF_NAME}"
+      git commit -m "scan: $(date -u +%Y-%m-%d) [skip ci]"
+      git remote set-url origin "http://oauth2:${GITLAB_TOKEN}@gitlab.local/ops/phantomcreds.git"
+      git pull --rebase origin "${CI_COMMIT_REF_NAME}"
+      git push origin HEAD:"${CI_COMMIT_REF_NAME}"
