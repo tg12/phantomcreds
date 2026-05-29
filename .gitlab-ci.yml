@@ -1,0 +1,68 @@
+default:
+  image: python:3.14-slim
+
+stages:
+  - validate
+  - scan
+  - publish
+
+variables:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PYTHONUNBUFFERED: "1"
+
+validate:
+  stage: validate
+  before_script:
+    - pip install -e .[dev]
+  script:
+    - ruff check src tests
+    - pylint src/phantomcreds tests
+    - vulture src tests
+    - pytest
+
+scan:
+  stage: scan
+  needs:
+    - validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$RUN_SCAN == "1"'
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq git
+    - pip install -e .[dev]
+    - test -n "$GITHUB_PAT"
+    - export GH_TOKEN="$GITHUB_PAT"
+  script:
+    - python -m phantomcreds.main
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - data/repos.jsonl
+      - data/findings.jsonl
+      - README.md
+
+publish-results:
+  stage: publish
+  needs:
+    - scan
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$RUN_SCAN == "1"'
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq git
+  script:
+    - git config user.name "GitLab CI"
+    - git config user.email "ci@gitlab.local"
+    - git add data/ README.md
+    - |
+      if git diff --staged --quiet; then
+        echo "No scan output changes"
+        exit 0
+      fi
+    - git commit -m "scan: $(date -u +%Y-%m-%d) [skip ci]"
+    - git remote set-url origin "http://oauth2:${GITLAB_TOKEN}@gitlab.local/ops/phantomcreds.git"
+    - git pull --rebase origin "${CI_COMMIT_REF_NAME}"
+    - git push origin HEAD:"${CI_COMMIT_REF_NAME}"
