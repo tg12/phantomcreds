@@ -96,6 +96,10 @@ _NON_LIVE_SECRET_BASENAMES: frozenset[str] = frozenset(
         "service-account.example.json",
     }
 )
+_ENV_TEMPLATE_PATH_RE = re.compile(
+    r"(^|/)\.env(?:[._-][^/]+)*[._-](?:example|sample|template)(?:\.[^/]+)?$",
+    re.IGNORECASE,
+)
 
 _POSTURE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("no_api_key_needed", re.compile(r"no api key needed", re.IGNORECASE)),
@@ -337,8 +341,33 @@ _TERRAFORM_TOKEN_RE = re.compile(
 )
 _TERRAFORM_HOST_RE = re.compile(r"app\.terraform\.io|atlas\.hashicorp\.com", re.IGNORECASE)
 _PLACEHOLDER_SECRET_RE = re.compile(
-    r"(example|changeme|your[_-]?(?:key|token)|placeholder|dummy|test[-_]?(?:key|token)|xxxxx+|<[^>]+>)",
-    re.IGNORECASE,
+    r"""
+    (
+        example
+        |changeme
+        |placeholder
+        |dummy
+        |fake
+        |replace(?:[_-]?with)?
+        |test[-_]?(?:key|token|secret)
+        |your[_-]?(?:api[_-]?)?(?:key|token|secret|password)
+        |your[_-]?(?:openai|anthropic|openrouter|deepseek|groq|perplexity|gemini)[_-]?(?:api[_-]?)?(?:key|token)?
+        |xxxxx+
+        |<[^>]+>
+    )
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+_KNOWN_EXAMPLE_SECRET_VALUES: frozenset[str] = frozenset(
+    {
+        "AKIAIOSFODNN7EXAMPLE",
+        "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "AIzaSyAa8yy0GdcGPHdtA0830d4aREzXgBo38a4",
+        "AIzaSyD-9tSrke72I6ox-F7kQQJoGGlzSyJJIvw",
+        "key-3ax6xnjp29jd6fds4gc373sgvjxteol0",
+        "sk_live_4eC39HqLyjWDarjtT1zdp7dc",
+        "xoxb-1234567890-abcdefghijklmnopqrstuvwx",
+    }
 )
 _MAX_EXPOSED_SECRET_EVIDENCE = 12
 
@@ -400,6 +429,10 @@ def _basename(path: str) -> str:
     return path.rsplit("/", 1)[-1].lower()
 
 
+def _is_env_template_path(path: str) -> bool:
+    return _ENV_TEMPLATE_PATH_RE.search(path) is not None
+
+
 def _is_non_live_secret_path(path: str, allow_template_basename: bool = False) -> bool:
     lower_path = path.lower()
     basename = _basename(path)
@@ -413,6 +446,15 @@ def _is_non_live_secret_path(path: str, allow_template_basename: bool = False) -
     if allow_template_basename and template_basename:
         return False
     return lower_path.endswith(_NON_LIVE_SECRET_SUFFIXES)
+
+
+def _is_placeholder_secret_value(secret: str) -> bool:
+    secret_value = secret.strip().strip("\"'")
+    if not secret_value:
+        return True
+    if secret_value in _KNOWN_EXAMPLE_SECRET_VALUES:
+        return True
+    return _PLACEHOLDER_SECRET_RE.search(secret_value) is not None
 
 
 def _is_code_like_path(path: str) -> bool:
@@ -493,7 +535,7 @@ def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[str]:
         if not match:
             continue
         password = match.group("password").strip()
-        if _PLACEHOLDER_SECRET_RE.search(password):
+        if _is_placeholder_secret_value(password):
             continue
         machine = match.group("machine").strip()
         login = match.group("login").strip()
@@ -519,7 +561,7 @@ def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[str]
         secret_match = _AWS_CREDENTIAL_SECRET_RE.search(line)
         if secret_match:
             secret_value = secret_match.group("secret").strip()
-            if not _PLACEHOLDER_SECRET_RE.search(secret_value):
+            if not _is_placeholder_secret_value(secret_value):
                 secret_matches[lineno] = secret_value
 
     if not key_matches or not secret_matches:
@@ -554,7 +596,7 @@ def _collect_connection_string_evidence(path: str, content: str, limit: int) -> 
             match = pattern.search(line)
             if not match:
                 continue
-            if _PLACEHOLDER_SECRET_RE.search(match.group("password")):
+            if _is_placeholder_secret_value(match.group("password")):
                 continue
             evidence.append(f"{path}:{lineno} - [REDACTED:{_redact_connection_string(match)}]")
             break
@@ -581,7 +623,7 @@ def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[str]:
         if not password_match:
             continue
         password = password_match.group("password").strip().strip("\"'")
-        if _PLACEHOLDER_SECRET_RE.search(password):
+        if _is_placeholder_secret_value(password):
             continue
         password_matches[lineno] = password
 
@@ -619,7 +661,7 @@ def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[s
         if not match:
             continue
         auth_value = match.group("auth").strip()
-        if _PLACEHOLDER_SECRET_RE.search(auth_value) or not _looks_like_docker_auth(auth_value):
+        if _is_placeholder_secret_value(auth_value) or not _looks_like_docker_auth(auth_value):
             continue
         evidence.append(f"{path}:{lineno} - auth=[REDACTED:{_redact_secret(auth_value)}]")
         if len(evidence) >= limit:
@@ -643,7 +685,7 @@ def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> li
         if not match:
             continue
         token = match.group("token").strip()
-        if _PLACEHOLDER_SECRET_RE.search(token):
+        if _is_placeholder_secret_value(token):
             continue
         evidence.append(f"{path}:{lineno} - token=[REDACTED:{_redact_secret(token)}]")
         if len(evidence) >= limit:
@@ -687,7 +729,9 @@ def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list
             if not match:
                 continue
             secret_value = match.group(2).strip()
-            if _PLACEHOLDER_SECRET_RE.search(secret_value):
+            if _is_placeholder_secret_value(secret_value):
+                continue
+            if _is_env_template_path(path) and _is_placeholder_secret_value(line):
                 continue
             redacted = _redact_secret(secret_value)
             evidence.append(f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]")

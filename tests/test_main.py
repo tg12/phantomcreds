@@ -23,6 +23,7 @@ from phantomcreds.main import (
     _candidate_score,
     _filter_recent_candidates,
     _is_text_like_path,
+    _matches_secret_candidate_path,
     _parse_github_timestamp,
     _process_candidates,
     _recent_commit_source_labels,
@@ -110,7 +111,7 @@ def test_filter_recent_candidates_keeps_recent_pushes_and_prefers_signal_count()
 
 def test_recent_commit_source_labels_detect_code_hit_and_secret_paths() -> None:
     labels = _recent_commit_source_labels(
-        {"src/app.py", ".env.example", "docs/notes.md"},
+        {"src/app.py", ".env.docker-example", "docs/notes.md"},
         {"src/app.py"},
     )
 
@@ -198,6 +199,12 @@ def test_select_paths_prioritizes_secret_candidate_files() -> None:
     assert ".env.production" in paths
     assert "terraform.tfvars" in paths
     assert "config.json" in paths
+
+
+def test_matches_secret_candidate_path_recognizes_variant_env_templates() -> None:
+    assert _matches_secret_candidate_path(".env.docker-example") is True
+    assert _matches_secret_candidate_path("config/.env.template") is True
+    assert _matches_secret_candidate_path("ops/.env.sample") is True
 
 
 def test_is_text_like_path_filters_binary_and_vendor_content() -> None:

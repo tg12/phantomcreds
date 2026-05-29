@@ -168,6 +168,50 @@ def test_exposed_secret_ignores_placeholder_keys_inside_env_example_files(
     assert not findings
 
 
+def test_exposed_secret_ignores_provider_placeholder_keys_inside_env_templates(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.docker-example": 'OPENAI_API_KEY="sk-YOUR_OPENAI_API_KEY"\n',
+            ".env.developer-example": 'ANTHROPIC_API_KEY="sk-ant-YOUR_ANTHROPIC_API_KEY"\n',
+            "deploy/.env.template": 'OPENROUTER_API_KEY="sk-or-v1-YOUR_OPENROUTER_API_KEY"\n',
+            "ops/.env.sample": 'DEEPSEEK_API_KEY="sk-YOUR_DEEPSEEK_API_KEY"\n',
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
+
+
+def test_exposed_secret_detects_real_provider_keys_inside_variant_env_templates(
+    repo_metadata: RepoMetadata,
+) -> None:
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".env.docker-example": (
+                'OPENAI_API_KEY="sk-proj-abcdefghijklmnopqrstuvwxyz123456"\n'
+            ),
+            "deploy/.env.template": (
+                'OPENROUTER_API_KEY="sk-or-v1-abcdefghijklmnopqrstuvwxyz123456"\n'
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "file_issue"
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    joined = "\n".join(exposed.evidence)
+    assert ".env.docker-example:1 - OPENAI_API_KEY=[REDACTED:" in joined
+    assert "deploy/.env.template:1 - OPENROUTER_API_KEY=[REDACTED:" in joined
+    assert "abcdefghijklmnopqrstuvwxyz123456" not in joined
+
+
 def test_exposed_secret_detects_cloud_keys_and_private_key_blocks(
     repo_metadata: RepoMetadata,
 ) -> None:

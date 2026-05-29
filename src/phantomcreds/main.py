@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
@@ -19,13 +20,13 @@ from phantomcreds.config import (
     MAX_DISCOVERY_CANDIDATES,
     MAX_FILES_PER_REPO,
     MAX_RECENT_COMMIT_REVIEW_CANDIDATES,
-    MAX_REPO_RESULTS_PER_QUERY,
     MAX_RECENT_COMMITS_TO_CHECK,
-    RECENT_COMMIT_LOOKBACK_DAYS,
+    MAX_REPO_RESULTS_PER_QUERY,
     MAX_SECRET_SWEEP_FILES_PER_REPO,
     PRIORITY_PATH_SUFFIXES,
     README_CANDIDATE_PATHS,
     README_PATH,
+    RECENT_COMMIT_LOOKBACK_DAYS,
     RECENT_PUSH_WINDOW_HOURS,
     REPO_SEARCH_QUERIES,
     REPORTS_FILE,
@@ -125,6 +126,10 @@ _SKIP_TEXT_SWEEP_SEGMENTS: frozenset[str] = frozenset(
         "target",
         "vendor",
     }
+)
+_ENV_TEMPLATE_PATH_RE = re.compile(
+    r"(^|/)\.env(?:[._-][^/]+)*[._-](?:example|sample|template)(?:\.[^/]+)?$",
+    re.IGNORECASE,
 )
 _LANGUAGE_SUFFIXES: frozenset[str] = frozenset(
     {
@@ -266,6 +271,8 @@ def _matches_secret_candidate_path(path: str) -> bool:
     basename = lower_path.rsplit("/", 1)[-1]
     secret_candidate_names = {candidate.lower() for candidate in SECRET_CANDIDATE_PATHS}
     secret_candidate_suffixes = tuple(suffix.lower() for suffix in SECRET_CANDIDATE_SUFFIXES)
+    if _ENV_TEMPLATE_PATH_RE.search(lower_path):
+        return True
     return (
         lower_path in secret_candidate_names
         or basename in secret_candidate_names
