@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-05-31 | 29 | 16 | 12 | 15 | 8 | 0 |
 | 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 1 |
 | 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 2 |
 | 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 0 |
@@ -149,23 +150,21 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-30 |
+| jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-31 |
 | leic4u/CLIProxyAPIPlus | 1.000 | 7 | report_only | 3 | 2026-05-29 |
-| lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-05-29 |
-| fxzer/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-05-27 |
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 35434 | 2026-05-30 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 16 | 2026-05-27 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-29 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-29 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 115 | 2026-05-31 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 35510 | 2026-05-31 |
+| lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-05-30 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-05-30 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-05-30 |
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 6 | report_only | 2 | 2026-05-29 |
 | Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-05-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 764 | 2026-05-30 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 763 | 2026-05-31 |
 | Tatsumaki123123/cliproxyapi | 1.000 | 5 | file_issue | 0 | 2026-05-28 |
-| SylphAI-Inc/AdalFlow | 0.560 | 2 | file_issue | 4154 | 2026-05-30 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11923 | 2026-05-30 |
-| kunish/wheel | 0.390 | 2 | watch | 1 | 2026-04-29 |
+| SylphAI-Inc/AdalFlow | 0.560 | 2 | file_issue | 4155 | 2026-05-30 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 11929 | 2026-05-31 |
 | vlad-levchenko/claude-skills | 0.390 | 2 | watch | 0 | 2026-05-30 |
-| winstonwilliamsiii/BBBot | 0.350 | 1 | file_issue | 2 | 2026-05-29 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 381 | 2026-05-28 |
 <!-- REPO_STATS:END -->
 
