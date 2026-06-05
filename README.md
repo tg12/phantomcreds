@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-05 | 38 | 12 | 8 | 10 | 5 | 0 |
 | 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 1 |
 | 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 0 |
 | 2026-06-02 | 31 | 17 | 11 | 14 | 7 | 0 |
@@ -154,19 +155,18 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 122 | 2026-06-04 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 2 | 2026-06-02 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 130 | 2026-06-05 |
+| jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-04 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 36103 | 2026-06-05 |
 | leic4u/CLIProxyAPIPlus | 1.000 | 7 | report_only | 3 | 2026-06-02 |
-| jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-03 |
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 35992 | 2026-06-04 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-06-03 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-06-03 |
-| tqobqbq/cpa_lz | 1.000 | 6 | report_only | 0 | 2026-06-01 |
-| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| Tatsumaki123123/cliproxyapi | 1.000 | 5 | file_issue | 0 | 2026-06-03 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 775 | 2026-06-04 |
-| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-02 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | watch | 10139 | 2026-06-04 |
-| vlad-levchenko/claude-skills | 0.390 | 2 | watch | 0 | 2026-06-03 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-06-04 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-06-04 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 775 | 2026-06-05 |
+| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1173 | 2026-06-04 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | watch | 10225 | 2026-06-05 |
+| youssefvdel/qwen-gate | 0.390 | 2 | watch | 9 | 2026-06-05 |
+| arc53/DocsGPT | 0.350 | 1 | file_issue | 17922 | 2026-06-05 |
 <!-- REPO_STATS:END -->
 
 ---
