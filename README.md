@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 1 |
 | 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 0 |
 | 2026-06-07 | 33 | 15 | 11 | 13 | 6 | 0 |
 | 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 0 |
@@ -158,22 +159,22 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
+| jay6697117/CLIProxyAPIPlus | 1.000 | 7 | report_only | 7 | 2026-06-09 |
 | lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-06-08 |
+| NguyenSiTrung/CLIProxyAPI | 1.000 | 7 | report_only | 1 | 2026-06-08 |
 | jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-06 |
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 36514 | 2026-06-08 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-06-07 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-06-07 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 36824 | 2026-06-09 |
+| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-06-08 |
+| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-06-08 |
 | 6enta0/CPAplus | 1.000 | 6 | file_issue | 16 | 2026-06-07 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 44 | 2026-06-07 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 778 | 2026-06-08 |
-| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 781 | 2026-06-09 |
 | XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 153 | 2026-06-06 |
-| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1173 | 2026-06-04 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12000 | 2026-06-08 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | watch | 10547 | 2026-06-08 |
-| yasyf/cc-pool | 0.390 | 2 | watch | 0 | 2026-06-08 |
-| youssefvdel/qwen-gate | 0.390 | 2 | watch | 21 | 2026-06-08 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12016 | 2026-06-09 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | watch | 10825 | 2026-06-09 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 3 | 2026-06-08 |
+| youssefvdel/qwen-gate | 0.390 | 2 | watch | 26 | 2026-06-08 |
+| VeriTeknik/pluggedin-app | 0.350 | 1 | file_issue | 94 | 2026-06-07 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 382 | 2026-06-07 |
 <!-- REPO_STATS:END -->
 
