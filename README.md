@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 1 |
 | 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 0 |
 | 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 1 |
 | 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 0 |
@@ -160,24 +161,24 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| jay6697117/CLIProxyAPIPlus | 1.000 | 7 | report_only | 7 | 2026-06-09 |
+| jay6697117/CLIProxyAPIPlus | 1.000 | 7 | report_only | 7 | 2026-06-11 |
 | lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-06-08 |
-| NguyenSiTrung/CLIProxyAPI | 1.000 | 7 | report_only | 1 | 2026-06-08 |
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 37036 | 2026-06-10 |
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-10 |
-| kdjahdiel-code/c-pipe-engine | 1.000 | 6 | file_issue | 0 | 2026-06-09 |
-| rituprodhan-ops/c-channel-engine | 1.000 | 6 | file_issue | 0 | 2026-06-09 |
+| NguyenSiTrung/CLIProxyAPI | 1.000 | 7 | report_only | 1 | 2026-06-08 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 37155 | 2026-06-11 |
+| fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-06-11 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
 | daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 45 | 2026-06-10 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 784 | 2026-06-10 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 785 | 2026-06-11 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
 | waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-10 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 153 | 2026-06-06 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12035 | 2026-06-10 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11009 | 2026-06-10 |
+| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1173 | 2026-06-10 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11105 | 2026-06-11 |
+| cybha22/Cybx-GateawayQue | 0.390 | 2 | watch | 22 | 2026-06-11 |
+| zcz-user/codex-auth-session-refresh | 0.390 | 2 | watch | 1 | 2026-06-10 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 3 | 2026-06-08 |
-| youssefvdel/qwen-gate | 0.390 | 2 | watch | 31 | 2026-06-10 |
+| youssefvdel/qwen-gate | 0.390 | 2 | watch | 36 | 2026-06-11 |
 | winstonwilliamsiii/BBBot | 0.350 | 1 | file_issue | 2 | 2026-06-08 |
-| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 381 | 2026-06-09 |
 <!-- REPO_STATS:END -->
 
 ---
