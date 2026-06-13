@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
 | 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 1 |
 | 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 1 |
 | 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 0 |
@@ -162,21 +163,21 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
+| zsecducna/cli-cache-proxy-api | 1.000 | 8 | report_only | 0 | 2026-06-12 |
 | jay6697117/CLIProxyAPIPlus | 1.000 | 7 | report_only | 7 | 2026-06-11 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 136 | 2026-06-11 |
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-10 |
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 37268 | 2026-06-12 |
-| zsecducna/cli-cache-proxy-api | 1.000 | 7 | report_only | 0 | 2026-06-12 |
+| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 37369 | 2026-06-13 |
 | fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-06-11 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-06-12 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-06-13 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
 | daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 45 | 2026-06-10 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 787 | 2026-06-12 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 788 | 2026-06-12 |
 | waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-12 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12075 | 2026-06-13 |
 | zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1174 | 2026-06-12 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12058 | 2026-06-12 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11202 | 2026-06-12 |
-| kunish/wheel | 0.390 | 2 | watch | 1 | 2026-04-29 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11273 | 2026-06-13 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 3 | 2026-06-12 |
 | zcz-user/codex-auth-session-refresh | 0.390 | 2 | watch | 1 | 2026-06-10 |
 <!-- REPO_STATS:END -->
 
