@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 0 |
 | 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 0 |
 | 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
 | 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 1 |
@@ -164,19 +165,17 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| zsecducna/cli-cache-proxy-api | 1.000 | 8 | report_only | 0 | 2026-06-12 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 140 | 2026-06-13 |
-| router-for-me/CLIProxyAPI | 1.000 | 7 | report_only | 37447 | 2026-06-14 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-06-13 |
+| jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-14 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 45 | 2026-06-10 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 787 | 2026-06-14 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 792 | 2026-06-15 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
-| waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-14 |
-| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1174 | 2026-06-12 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12083 | 2026-06-14 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11327 | 2026-06-14 |
+| waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-15 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 156 | 2026-06-12 |
+| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1175 | 2026-06-15 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11509 | 2026-06-16 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 3 | 2026-06-14 |
+| wego11ya/codex-session-export | 0.390 | 2 | watch | 0 | 2026-06-15 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 92 | 2026-06-15 |
 <!-- REPO_STATS:END -->
 
 ---
