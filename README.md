@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 0 |
 | 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 0 |
 | 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 0 |
 | 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
@@ -166,16 +167,18 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-14 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-15 |
+| nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 1 | 2026-06-15 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 792 | 2026-06-15 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
-| waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-15 |
+| waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-16 |
 | XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 156 | 2026-06-12 |
-| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1175 | 2026-06-15 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11509 | 2026-06-16 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 3 | 2026-06-14 |
+| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1177 | 2026-06-17 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11630 | 2026-06-17 |
+| polarisagi/hermes | 0.390 | 2 | watch | 1 | 2026-06-17 |
+| wamunyima3/Relay | 0.390 | 2 | watch | 2 | 2026-06-17 |
 | wego11ya/codex-session-export | 0.390 | 2 | watch | 0 | 2026-06-15 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 92 | 2026-06-15 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 94 | 2026-06-17 |
 <!-- REPO_STATS:END -->
 
 ---
