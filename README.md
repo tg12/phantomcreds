@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 0 |
 | 2026-06-18 | 38 | 14 | 5 | 9 | 4 | 0 |
 | 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 0 |
 | 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 0 |
@@ -142,22 +143,21 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 0 |
 | 2026-06-05 | 38 | 12 | 8 | 10 | 5 | 0 |
 | 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 1 |
-| 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 0 |
+| 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 1 |
 | 2026-06-02 | 31 | 17 | 11 | 14 | 7 | 0 |
 | 2026-06-01 | 30 | 19 | 12 | 16 | 8 | 0 |
 | 2026-05-31 | 29 | 16 | 12 | 15 | 8 | 0 |
 | 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 1 |
-| 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 2 |
+| 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 3 |
 | 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 0 |
-| 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 0 |
-| 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 0 |
+| 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 1 |
+| 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 1 |
 | 2026-05-24 | 33 | 17 | 11 | 14 | 5 | 1 |
 | 2026-05-23 | 33 | 18 | 14 | 17 | 9 | 0 |
-| 2026-05-22 | 34 | 15 | 13 | 14 | 7 | 0 |
-| 2026-05-21 | 33 | 18 | 12 | 17 | 7 | 0 |
+| 2026-05-22 | 34 | 15 | 13 | 14 | 7 | 1 |
+| 2026-05-21 | 33 | 18 | 12 | 17 | 7 | 3 |
 | 2026-05-20 | 30 | 14 | 11 | 14 | 5 | 0 |
-| 2026-05-19 | 55 | 21 | 14 | 16 | 7 | 1 |
-| 2026-05-18 | 115 | 69 | 45 | 46 | 28 | 45 |
+| 2026-05-19 | 55 | 21 | 14 | 16 | 7 | 14 |
 <!-- STATS:END -->
 
 ---
@@ -167,20 +167,16 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-15 |
 | jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-17 |
-| nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 1 | 2026-06-15 |
+| lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-06-19 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-15 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-06-19 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 794 | 2026-06-18 |
+| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-06-18 |
+| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
 | waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-16 |
-| zylos-ai/zylos-core | 0.410 | 2 | file_issue | 1147 | 2026-06-17 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11742 | 2026-06-18 |
-| polarisagi/hermes | 0.390 | 2 | watch | 2 | 2026-06-18 |
-| Reedtrullz/hermes-antigravity-auth | 0.390 | 2 | watch | 1 | 2026-06-18 |
-| wamunyima3/Relay | 0.390 | 2 | watch | 2 | 2026-06-17 |
-| wego11ya/codex-session-export | 0.390 | 2 | watch | 0 | 2026-06-15 |
-| winstonwilliamsiii/BBBot | 0.350 | 1 | file_issue | 2 | 2026-06-15 |
-| yfge/ai-video-studio | 0.350 | 1 | file_issue | 40 | 2026-06-17 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11799 | 2026-06-19 |
+| Youyou972/codex-relay | 0.390 | 2 | watch | 0 | 2026-06-18 |
 <!-- REPO_STATS:END -->
 
 ---
