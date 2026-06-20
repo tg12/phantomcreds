@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-20 | 30 | 13 | 8 | 9 | 5 | 0 |
 | 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 0 |
 | 2026-06-18 | 38 | 14 | 5 | 9 | 4 | 0 |
 | 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 0 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-05-23 | 33 | 18 | 14 | 17 | 9 | 0 |
 | 2026-05-22 | 34 | 15 | 13 | 14 | 7 | 1 |
 | 2026-05-21 | 33 | 18 | 12 | 17 | 7 | 3 |
-| 2026-05-20 | 30 | 14 | 11 | 14 | 5 | 0 |
-| 2026-05-19 | 55 | 21 | 14 | 16 | 7 | 14 |
+| 2026-05-20 | 30 | 14 | 11 | 14 | 5 | 11 |
 <!-- STATS:END -->
 
 ---
@@ -168,15 +168,18 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | jeffnash/CLIProxyAPI | 1.000 | 7 | report_only | 0 | 2026-06-17 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-20 |
 | lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-06-19 |
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-15 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 147 | 2026-06-20 |
 | 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-06-19 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-06-18 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 799 | 2026-06-20 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
-| waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-16 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11799 | 2026-06-19 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11836 | 2026-06-20 |
+| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-19 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-06-19 |
 | Youyou972/codex-relay | 0.390 | 2 | watch | 0 | 2026-06-18 |
+| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 385 | 2026-06-19 |
 <!-- REPO_STATS:END -->
 
 ---
