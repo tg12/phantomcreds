@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-22 | 23 | 13 | 5 | 8 | 4 | 1 |
 | 2026-06-21 | 20 | 12 | 6 | 8 | 4 | 0 |
 | 2026-06-20 | 30 | 13 | 8 | 9 | 5 | 0 |
 | 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 0 |
@@ -155,9 +156,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 1 |
 | 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 1 |
 | 2026-05-24 | 33 | 17 | 11 | 14 | 5 | 1 |
-| 2026-05-23 | 33 | 18 | 14 | 17 | 9 | 0 |
-| 2026-05-22 | 34 | 15 | 13 | 14 | 7 | 2 |
-| 2026-05-21 | 33 | 18 | 12 | 17 | 7 | 12 |
+| 2026-05-23 | 33 | 18 | 14 | 17 | 9 | 1 |
+| 2026-05-22 | 34 | 15 | 13 | 14 | 7 | 13 |
 <!-- STATS:END -->
 
 ---
@@ -167,18 +167,19 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| lzt404/CLIProxyAPI-RUM | 1.000 | 7 | report_only | 1 | 2026-06-19 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-20 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 148 | 2026-06-20 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-06-19 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 801 | 2026-06-20 |
-| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-07 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12135 | 2026-06-21 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11871 | 2026-06-21 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-21 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 804 | 2026-06-22 |
+| xang1234/stock-screener | 0.790 | 3 | file_issue | 161 | 2026-06-22 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 157 | 2026-06-21 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12141 | 2026-06-22 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 11917 | 2026-06-22 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-22 |
 | WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-19 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-06-19 |
-| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 385 | 2026-06-19 |
+| williamcachamwri/zalo-tg | 0.390 | 2 | watch | 252 | 2026-06-21 |
+| vxcontrol/pentagi | 0.350 | 1 | file_issue | 17880 | 2026-06-22 |
 <!-- REPO_STATS:END -->
 
 ---
