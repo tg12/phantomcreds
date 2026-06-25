@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 1 |
 | 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 0 |
 | 2026-06-23 | 24 | 10 | 3 | 5 | 2 | 0 |
 | 2026-06-22 | 23 | 13 | 5 | 8 | 4 | 1 |
@@ -155,9 +156,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 1 |
 | 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 4 |
 | 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 0 |
-| 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 3 |
-| 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 1 |
-| 2026-05-24 | 33 | 17 | 11 | 14 | 5 | 11 |
+| 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 4 |
+| 2026-05-25 | 39 | 20 | 11 | 17 | 5 | 11 |
 <!-- STATS:END -->
 
 ---
@@ -167,16 +167,18 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
+| Finesssee/ProxyPilot | 1.000 | 7 | report_only | 244 | 2026-06-24 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 3 | 2026-06-20 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 807 | 2026-06-23 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 811 | 2026-06-25 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-21 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 546 | 2026-06-23 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 157 | 2026-06-21 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12158 | 2026-06-24 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12014 | 2026-06-24 |
-| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-23 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-06-23 |
-| analytiq-hub/doc-router | 0.350 | 1 | file_issue | 25 | 2026-06-23 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 547 | 2026-06-24 |
+| winstonwilliamsiii/BBBot | 0.560 | 2 | file_issue | 2 | 2026-06-24 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12172 | 2026-06-25 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12060 | 2026-06-25 |
+| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-24 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-06-25 |
+| Scopeo/draftnrun | 0.350 | 1 | file_issue | 30 | 2026-06-24 |
 <!-- REPO_STATS:END -->
 
 ---
