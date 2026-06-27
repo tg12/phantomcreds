@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 0 |
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 0 |
 | 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 1 |
 | 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 0 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-05-31 | 29 | 16 | 12 | 15 | 8 | 0 |
 | 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 2 |
 | 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 4 |
-| 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 0 |
-| 2026-05-26 | 34 | 19 | 13 | 16 | 6 | 13 |
+| 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 13 |
 <!-- STATS:END -->
 
 ---
@@ -168,17 +168,19 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | zsecducna/cli-cache-proxy-api | 1.000 | 7 | report_only | 2 | 2026-06-25 |
+| fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-06-26 |
 | daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 47 | 2026-06-21 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 820 | 2026-06-26 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 825 | 2026-06-27 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-21 |
 | yanzhi0922/remote-code-rust | 0.620 | 3 | file_issue | 3 | 2026-06-24 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 548 | 2026-06-25 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 158 | 2026-06-26 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12187 | 2026-06-26 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12119 | 2026-06-26 |
-| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-24 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 157 | 2026-06-27 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12192 | 2026-06-27 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12159 | 2026-06-27 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-06-25 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-25 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-27 |
+| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-24 |
+| VeriTeknik/pluggedin-app | 0.350 | 1 | file_issue | 97 | 2026-06-27 |
+| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 385 | 2026-06-26 |
 <!-- REPO_STATS:END -->
 
 ---
