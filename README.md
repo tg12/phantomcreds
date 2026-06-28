@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
 | 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 0 |
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 0 |
 | 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 1 |
@@ -153,11 +154,10 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 1 |
 | 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 1 |
 | 2026-06-02 | 31 | 17 | 11 | 14 | 7 | 0 |
-| 2026-06-01 | 30 | 19 | 12 | 16 | 8 | 0 |
+| 2026-06-01 | 30 | 19 | 12 | 16 | 8 | 1 |
 | 2026-05-31 | 29 | 16 | 12 | 15 | 8 | 0 |
 | 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 2 |
-| 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 4 |
-| 2026-05-27 | 36 | 17 | 13 | 14 | 5 | 13 |
+| 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 14 |
 <!-- STATS:END -->
 
 ---
@@ -172,13 +172,12 @@ The data model is structured so those questions can be answered from the ledger 
 | daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 47 | 2026-06-21 |
 | kittors/CliRelay | 1.000 | 5 | file_issue | 825 | 2026-06-27 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-21 |
-| yanzhi0922/remote-code-rust | 0.620 | 3 | file_issue | 3 | 2026-06-24 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 549 | 2026-06-27 |
+| waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-27 |
 | XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 157 | 2026-06-27 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12192 | 2026-06-27 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12159 | 2026-06-27 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-06-25 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12196 | 2026-06-28 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12192 | 2026-06-28 |
 | zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-27 |
-| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-06-24 |
 | VeriTeknik/pluggedin-app | 0.350 | 1 | file_issue | 97 | 2026-06-27 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 385 | 2026-06-26 |
 <!-- REPO_STATS:END -->
