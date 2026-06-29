@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 0 |
 | 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
 | 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 0 |
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 0 |
@@ -146,7 +147,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 1 |
 | 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 1 |
 | 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 0 |
-| 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 1 |
+| 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 2 |
 | 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 0 |
 | 2026-06-07 | 33 | 15 | 11 | 13 | 6 | 0 |
 | 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 0 |
@@ -154,10 +155,9 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 1 |
 | 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 1 |
 | 2026-06-02 | 31 | 17 | 11 | 14 | 7 | 0 |
-| 2026-06-01 | 30 | 19 | 12 | 16 | 8 | 1 |
-| 2026-05-31 | 29 | 16 | 12 | 15 | 8 | 0 |
-| 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 2 |
-| 2026-05-29 | 41 | 19 | 14 | 17 | 9 | 14 |
+| 2026-06-01 | 30 | 19 | 12 | 16 | 8 | 2 |
+| 2026-05-31 | 29 | 16 | 12 | 15 | 8 | 2 |
+| 2026-05-30 | 31 | 18 | 12 | 16 | 8 | 12 |
 <!-- STATS:END -->
 
 ---
@@ -167,17 +167,15 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| zsecducna/cli-cache-proxy-api | 1.000 | 7 | report_only | 2 | 2026-06-25 |
 | fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-06-26 |
 | daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 47 | 2026-06-21 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 825 | 2026-06-27 |
-| traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-21 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
 | BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 549 | 2026-06-27 |
+| vg1372/auth_token_cookie_demo | 0.560 | 2 | file_issue | 0 | 2026-06-28 |
 | waylandun/tokenStore | 0.560 | 2 | file_issue | 0 | 2026-06-27 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 157 | 2026-06-27 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12196 | 2026-06-28 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12192 | 2026-06-28 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12227 | 2026-06-29 |
 | zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-27 |
+| xjoker/codex-switch | 0.390 | 2 | report_only | 49 | 2026-06-29 |
 | VeriTeknik/pluggedin-app | 0.350 | 1 | file_issue | 97 | 2026-06-27 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 385 | 2026-06-26 |
 <!-- REPO_STATS:END -->
