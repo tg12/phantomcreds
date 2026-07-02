@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-02 | 29 | 8 | 4 | 5 | 3 | 0 |
 | 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 1 |
 | 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 0 |
 | 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 0 |
@@ -155,9 +156,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 1 |
 | 2026-06-05 | 38 | 12 | 8 | 10 | 5 | 0 |
 | 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 2 |
-| 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 1 |
-| 2026-06-02 | 31 | 17 | 11 | 14 | 7 | 0 |
-| 2026-06-01 | 30 | 19 | 12 | 16 | 8 | 12 |
+| 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 2 |
+| 2026-06-02 | 31 | 17 | 11 | 14 | 7 | 11 |
 <!-- STATS:END -->
 
 ---
@@ -168,16 +168,11 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 5 | 2026-07-01 |
-| daishuge/playful-proxy-api-panel | 1.000 | 6 | report_only | 47 | 2026-06-21 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 830 | 2026-07-01 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 833 | 2026-07-02 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 2 | 2026-06-21 |
-| ywddd/cpa-self-use | 1.000 | 5 | file_issue | 0 | 2026-06-25 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 548 | 2026-06-30 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12236 | 2026-07-01 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12329 | 2026-07-01 |
-| Zbrooklyn/cofounder-relay | 0.390 | 2 | watch | 0 | 2026-06-30 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-06-30 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12248 | 2026-07-02 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12389 | 2026-07-02 |
 | yzxoi/session-exporter | 0.390 | 2 | watch | 0 | 2026-06-30 |
 | wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 103 | 2026-07-01 |
 <!-- REPO_STATS:END -->
