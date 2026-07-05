@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-05 | 32 | 13 | 5 | 8 | 5 | 0 |
 | 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 1 |
 | 2026-07-02 | 29 | 8 | 4 | 5 | 3 | 0 |
 | 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 1 |
@@ -154,10 +155,9 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 2 |
 | 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 0 |
 | 2026-06-07 | 33 | 15 | 11 | 13 | 6 | 0 |
-| 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 2 |
-| 2026-06-05 | 38 | 12 | 8 | 10 | 5 | 0 |
-| 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 2 |
-| 2026-06-03 | 30 | 15 | 12 | 13 | 8 | 12 |
+| 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 3 |
+| 2026-06-05 | 38 | 12 | 8 | 10 | 5 | 1 |
+| 2026-06-04 | 32 | 13 | 11 | 11 | 5 | 11 |
 <!-- STATS:END -->
 
 ---
@@ -167,18 +167,19 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 5 | 2026-07-03 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 8 | 2026-07-05 |
 | shinmentakezo07/tono | 1.000 | 7 | report_only | 0 | 2026-07-03 |
 | 6enta0/CPAplus | 1.000 | 6 | file_issue | 18 | 2026-07-04 |
-| router-for-me/CLIProxyAPI | 1.000 | 6 | report_only | 39127 | 2026-07-04 |
 | ywddd/cpa-self-use | 1.000 | 6 | report_only | 0 | 2026-07-03 |
-| kittors/CliRelay | 1.000 | 5 | file_issue | 836 | 2026-07-03 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12277 | 2026-07-04 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12555 | 2026-07-04 |
+| kittors/CliRelay | 1.000 | 5 | file_issue | 837 | 2026-07-05 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 548 | 2026-06-30 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12284 | 2026-07-05 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12628 | 2026-07-05 |
+| Y006/codex-session-export-cli | 0.390 | 2 | watch | 0 | 2026-07-05 |
 | zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-04 |
 | Zbrooklyn/cofounder-relay | 0.390 | 2 | watch | 0 | 2026-07-03 |
 | wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 104 | 2026-07-04 |
-| Vexa-ai/vexa | 0.350 | 1 | file_issue | 2254 | 2026-07-04 |
+| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 386 | 2026-06-30 |
 <!-- REPO_STATS:END -->
 
 ---
