@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 1 |
 | 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 0 |
 | 2026-07-05 | 32 | 13 | 5 | 8 | 5 | 0 |
 | 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 1 |
@@ -152,12 +153,11 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
 | 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 1 |
 | 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 1 |
-| 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 0 |
+| 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 1 |
 | 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 2 |
 | 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 0 |
 | 2026-06-07 | 33 | 15 | 11 | 13 | 6 | 1 |
-| 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 4 |
-| 2026-06-05 | 38 | 12 | 8 | 10 | 5 | 8 |
+| 2026-06-06 | 34 | 15 | 10 | 12 | 5 | 10 |
 <!-- STATS:END -->
 
 ---
@@ -167,17 +167,21 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 19 | 2026-07-06 |
-| jeffnash/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-07-07 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-07-06 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 19 | 2026-07-07 |
+| leic4u/CLIProxyAPIPlus | 1.000 | 6 | report_only | 3 | 2026-07-06 |
+| jeffnash/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-07-08 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
 | BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 548 | 2026-07-05 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 159 | 2026-07-03 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12849 | 2026-07-07 |
-| wamunyima3/relay | 0.390 | 2 | watch | 5 | 2026-07-06 |
-| Zbrooklyn/cofounder-relay | 0.390 | 2 | watch | 0 | 2026-07-06 |
-| Y006/codex-session-export-cli | 0.390 | 2 | watch | 0 | 2026-07-05 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 106 | 2026-07-06 |
-| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 387 | 2026-07-06 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 12899 | 2026-07-08 |
+| zain-cs/rag-chatbots | 0.390 | 2 | watch | 0 | 2026-07-08 |
+| Y006/codex-session-export-cli | 0.390 | 2 | watch | 0 | 2026-07-08 |
+| za3ter123/remote-claude | 0.390 | 2 | watch | 0 | 2026-07-08 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-08 |
+| Zbrooklyn/cofounder-relay | 0.390 | 2 | watch | 0 | 2026-07-07 |
+| xjoker/codex-switch | 0.390 | 2 | report_only | 50 | 2026-07-08 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 106 | 2026-07-08 |
+| VoidNxSEC/sentinel | 0.350 | 1 | file_issue | 0 | 2026-07-07 |
 <!-- REPO_STATS:END -->
 
 ---
