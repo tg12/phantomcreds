@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 1 |
 | 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 0 |
 | 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 1 |
 | 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 0 |
@@ -152,12 +153,11 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 0 |
 | 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 0 |
 | 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
-| 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 1 |
+| 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 2 |
 | 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 1 |
 | 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 1 |
 | 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 2 |
-| 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 0 |
-| 2026-06-07 | 33 | 15 | 11 | 13 | 6 | 11 |
+| 2026-06-08 | 38 | 17 | 10 | 14 | 5 | 10 |
 <!-- STATS:END -->
 
 ---
@@ -167,19 +167,18 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| kittors/CliRelay | 1.000 | 6 | report_only | 844 | 2026-07-10 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 19 | 2026-07-07 |
-| router-for-me/CLIProxyAPI | 1.000 | 6 | report_only | 39724 | 2026-07-10 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 549 | 2026-07-09 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12337 | 2026-07-10 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13063 | 2026-07-10 |
-| zhenyu666-debug/xiaohongshu-Loop | 0.390 | 2 | watch | 0 | 2026-07-10 |
-| valyrium/valyrium | 0.390 | 2 | watch | 1 | 2026-07-10 |
-| Zbrooklyn/cofounder-relay | 0.390 | 2 | watch | 0 | 2026-07-09 |
-| xaxixak/orz-discord-relay-ws | 0.390 | 2 | watch | 0 | 2026-07-09 |
-| Y006/codex-session-export-cli | 0.390 | 2 | watch | 0 | 2026-07-08 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 110 | 2026-07-10 |
-| VoidNxSEC/sentinel | 0.350 | 1 | file_issue | 0 | 2026-07-07 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 169 | 2026-07-11 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-07-11 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 845 | 2026-07-11 |
+| waylandun/tokenStore | 0.770 | 3 | file_issue | 0 | 2026-07-11 |
+| xang1234/stock-screener | 0.580 | 2 | file_issue | 198 | 2026-07-11 |
+| arc53/DocsGPT | 0.560 | 2 | file_issue | 17978 | 2026-07-11 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 550 | 2026-07-10 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13114 | 2026-07-11 |
+| valyrium/valyrium | 0.390 | 2 | watch | 1 | 2026-07-11 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-11 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1392 | 2026-07-10 |
+| vxcontrol/pentagi | 0.350 | 1 | file_issue | 19818 | 2026-07-11 |
 <!-- REPO_STATS:END -->
 
 ---
