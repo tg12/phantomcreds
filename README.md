@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
 | 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 1 |
 | 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 1 |
 | 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 0 |
@@ -151,13 +152,12 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 1 |
 | 2026-06-18 | 38 | 14 | 5 | 9 | 4 | 0 |
 | 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 1 |
-| 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 0 |
+| 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 1 |
 | 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 0 |
 | 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
-| 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 2 |
-| 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 1 |
-| 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 3 |
-| 2026-06-09 | 33 | 17 | 10 | 14 | 6 | 10 |
+| 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 3 |
+| 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 2 |
+| 2026-06-10 | 36 | 18 | 10 | 15 | 8 | 10 |
 <!-- STATS:END -->
 
 ---
@@ -167,21 +167,20 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 7 | report_only | 171 | 2026-07-12 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 850 | 2026-07-14 |
 | 6enta0/CPAplus | 1.000 | 6 | file_issue | 21 | 2026-07-12 |
-| kittors/CliRelay | 1.000 | 6 | report_only | 847 | 2026-07-12 |
-| nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 1 | 2026-07-12 |
-| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| jeffnash/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-07-10 |
-| max-ramas/rms-mail-public | 0.770 | 3 | file_issue | 22 | 2026-07-11 |
-| waylandun/tokenStore | 0.770 | 3 | file_issue | 0 | 2026-07-11 |
-| xang1234/stock-screener | 0.580 | 2 | file_issue | 198 | 2026-07-11 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 551 | 2026-07-11 |
-| arc53/DocsGPT | 0.560 | 2 | file_issue | 17979 | 2026-07-12 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13161 | 2026-07-12 |
+| jeffnash/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-07-13 |
+| max-ramas/rms-mail-public | 0.770 | 3 | file_issue | 22 | 2026-07-14 |
+| xang1234/stock-screener | 0.580 | 2 | file_issue | 201 | 2026-07-14 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 552 | 2026-07-12 |
+| dimagi/open-chat-studio | 0.560 | 2 | file_issue | 43 | 2026-07-14 |
+| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-07-13 |
+| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 161 | 2026-07-12 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13371 | 2026-07-14 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-07-12 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-11 |
-| vxcontrol/pentagi | 0.350 | 1 | file_issue | 20024 | 2026-07-12 |
+| Ylianst/MeshCentral | 0.390 | 2 | watch | 6884 | 2026-07-14 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 114 | 2026-07-13 |
+| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 388 | 2026-07-09 |
 <!-- REPO_STATS:END -->
 
 ---
