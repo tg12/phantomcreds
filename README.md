@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 1 |
 | 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 0 |
 | 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
 | 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 1 |
@@ -150,14 +151,13 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-22 | 23 | 13 | 5 | 8 | 4 | 1 |
 | 2026-06-21 | 20 | 12 | 6 | 8 | 4 | 0 |
 | 2026-06-20 | 30 | 13 | 8 | 9 | 5 | 0 |
-| 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 1 |
+| 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 2 |
 | 2026-06-18 | 38 | 14 | 5 | 9 | 4 | 0 |
 | 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 1 |
 | 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 1 |
-| 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 0 |
+| 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 1 |
 | 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 0 |
-| 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 3 |
-| 2026-06-11 | 37 | 18 | 10 | 13 | 7 | 10 |
+| 2026-06-12 | 36 | 16 | 10 | 13 | 8 | 10 |
 <!-- STATS:END -->
 
 ---
@@ -167,19 +167,18 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| kittors/CliRelay | 1.000 | 6 | report_only | 852 | 2026-07-15 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 21 | 2026-07-12 |
+| HsnSaboor/CLIProxyAPIPlus | 1.000 | 6 | report_only | 78 | 2026-07-15 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 855 | 2026-07-16 |
+| fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-07-16 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| jeffnash/CLIProxyAPI | 1.000 | 6 | report_only | 0 | 2026-07-13 |
 | ywddd/cpa-self-use | 1.000 | 6 | report_only | 0 | 2026-07-15 |
-| xang1234/stock-screener | 0.580 | 2 | file_issue | 201 | 2026-07-14 |
-| dimagi/open-chat-studio | 0.560 | 2 | file_issue | 43 | 2026-07-15 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 553 | 2026-07-15 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 161 | 2026-07-12 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12367 | 2026-07-15 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13487 | 2026-07-15 |
+| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-07-15 |
+| dimagi/open-chat-studio | 0.560 | 2 | file_issue | 43 | 2026-07-16 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13580 | 2026-07-16 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-07-16 |
 | valyrium/valyrium | 0.390 | 2 | watch | 1 | 2026-07-15 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 115 | 2026-07-14 |
+| Zbrooklyn/cofounder-relay | 0.390 | 2 | watch | 0 | 2026-07-15 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1412 | 2026-07-16 |
 <!-- REPO_STATS:END -->
 
 ---
