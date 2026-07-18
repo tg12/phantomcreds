@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-17 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 1 |
 | 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 0 |
@@ -144,7 +145,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 0 |
 | 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 0 |
 | 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
-| 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 0 |
+| 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 1 |
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 0 |
 | 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 1 |
 | 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 0 |
@@ -154,10 +155,9 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-20 | 30 | 13 | 8 | 9 | 5 | 0 |
 | 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 2 |
 | 2026-06-18 | 38 | 14 | 5 | 9 | 4 | 0 |
-| 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 1 |
+| 2026-06-17 | 31 | 13 | 5 | 8 | 4 | 2 |
 | 2026-06-16 | 29 | 11 | 4 | 7 | 2 | 1 |
-| 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 1 |
-| 2026-06-13 | 35 | 16 | 10 | 13 | 8 | 10 |
+| 2026-06-14 | 32 | 13 | 8 | 11 | 6 | 8 |
 <!-- STATS:END -->
 
 ---
@@ -167,16 +167,16 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| HsnSaboor/CLIProxyAPIPlus | 1.000 | 6 | report_only | 79 | 2026-07-16 |
+| HsnSaboor/CLIProxyAPIPlus | 1.000 | 6 | report_only | 79 | 2026-07-17 |
 | kittors/CliRelay | 1.000 | 6 | report_only | 856 | 2026-07-17 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
 | fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-07-16 |
 | ywddd/cpa-self-use | 1.000 | 6 | report_only | 0 | 2026-07-17 |
-| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-07-16 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13657 | 2026-07-17 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-07-16 |
+| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-07-17 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 13715 | 2026-07-18 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-07-18 |
 | wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 117 | 2026-07-17 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1416 | 2026-07-17 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1418 | 2026-07-18 |
 <!-- REPO_STATS:END -->
 
 ---
