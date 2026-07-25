@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-25 | 34 | 15 | 6 | 12 | 6 | 0 |
 | 2026-07-24 | 37 | 15 | 5 | 12 | 6 | 0 |
 | 2026-07-22 | 40 | 15 | 6 | 11 | 6 | 0 |
 | 2026-07-20 | 27 | 14 | 5 | 10 | 6 | 0 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-23 | 24 | 10 | 3 | 5 | 2 | 0 |
 | 2026-06-22 | 23 | 13 | 5 | 8 | 4 | 1 |
 | 2026-06-21 | 20 | 12 | 6 | 8 | 4 | 0 |
-| 2026-06-20 | 30 | 13 | 8 | 9 | 5 | 2 |
-| 2026-06-19 | 29 | 10 | 7 | 8 | 5 | 7 |
+| 2026-06-20 | 30 | 13 | 8 | 9 | 5 | 8 |
 <!-- STATS:END -->
 
 ---
@@ -167,21 +167,21 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 8 | report_only | 9 | 2026-07-24 |
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 22 | 2026-07-24 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 8 | report_only | 9 | 2026-07-25 |
+| nextransit/CLIProxyAPI | 1.000 | 6 | report_only | 1 | 2026-07-24 |
 | HsnSaboor/CLIProxyAPIPlus | 1.000 | 6 | report_only | 81 | 2026-07-23 |
-| kittors/CliRelay | 1.000 | 6 | report_only | 868 | 2026-07-23 |
-| ywddd/cpa-self-use | 1.000 | 6 | report_only | 0 | 2026-07-23 |
-| xang1234/stock-screener | 0.580 | 2 | file_issue | 252 | 2026-07-24 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 554 | 2026-07-22 |
-| arc53/DocsGPT | 0.560 | 2 | file_issue | 18013 | 2026-07-24 |
-| ybszm/langgraph-go | 0.560 | 2 | file_issue | 0 | 2026-07-22 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 869 | 2026-07-24 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 22 | 2026-07-25 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
+| arc53/DocsGPT | 0.560 | 2 | file_issue | 18017 | 2026-07-25 |
+| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-07-24 |
 | xiao-dan-1/gorkreg | 0.410 | 2 | file_issue | 0 | 2026-07-24 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12409 | 2026-07-24 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14236 | 2026-07-24 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 4 | 2026-07-23 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-23 |
-| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 390 | 2026-07-24 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12410 | 2026-07-25 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14308 | 2026-07-25 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-25 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-24 |
+| strnad/CrewAI-Studio | 0.350 | 1 | file_issue | 1324 | 2026-07-25 |
+| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 391 | 2026-07-25 |
 <!-- REPO_STATS:END -->
 
 ---
