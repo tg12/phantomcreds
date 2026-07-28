@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 0 |
 | 2026-07-27 | 35 | 12 | 5 | 10 | 3 | 0 |
 | 2026-07-26 | 32 | 16 | 7 | 13 | 5 | 0 |
 | 2026-07-25 | 34 | 15 | 6 | 12 | 6 | 0 |
@@ -141,7 +142,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 0 |
 | 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
 | 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 2 |
-| 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 1 |
+| 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 2 |
 | 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 0 |
 | 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 1 |
 | 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 1 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 2 |
 | 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 1 |
 | 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 1 |
-| 2026-06-23 | 24 | 10 | 3 | 5 | 2 | 0 |
-| 2026-06-22 | 23 | 13 | 5 | 8 | 4 | 5 |
+| 2026-06-23 | 24 | 10 | 3 | 5 | 2 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -167,17 +167,15 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 8 | report_only | 9 | 2026-07-25 |
 | 6enta0/CPAplus | 1.000 | 6 | file_issue | 22 | 2026-07-26 |
-| kittors/CliRelay | 1.000 | 6 | report_only | 875 | 2026-07-27 |
-| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-07-16 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 878 | 2026-07-28 |
 | BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 555 | 2026-07-25 |
-| arc53/DocsGPT | 0.560 | 2 | file_issue | 18105 | 2026-07-27 |
-| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-07-27 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14529 | 2026-07-27 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-27 |
-| strnad/CrewAI-Studio | 0.350 | 1 | file_issue | 1326 | 2026-07-26 |
+| arc53/DocsGPT | 0.560 | 2 | file_issue | 18142 | 2026-07-28 |
+| zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-07-27 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14616 | 2026-07-28 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-28 |
+| Youkamii/switcher | 0.390 | 2 | watch | 0 | 2026-07-28 |
+| xiaolizi0v0/CliProxy | 0.390 | 2 | watch | 0 | 2026-07-28 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 391 | 2026-07-25 |
 <!-- REPO_STATS:END -->
 
