@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 0 |
 | 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 0 |
 | 2026-07-27 | 35 | 12 | 5 | 10 | 3 | 0 |
 | 2026-07-26 | 32 | 16 | 7 | 13 | 5 | 0 |
@@ -155,9 +156,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
 | 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 1 |
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 2 |
-| 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 1 |
-| 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 1 |
-| 2026-06-23 | 24 | 10 | 3 | 5 | 2 | 3 |
+| 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 2 |
+| 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -167,16 +167,14 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| 6enta0/CPAplus | 1.000 | 6 | file_issue | 22 | 2026-07-26 |
-| kittors/CliRelay | 1.000 | 6 | report_only | 878 | 2026-07-28 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 876 | 2026-07-28 |
 | BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 555 | 2026-07-25 |
-| arc53/DocsGPT | 0.560 | 2 | file_issue | 18142 | 2026-07-28 |
-| zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-07-27 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14616 | 2026-07-28 |
+| zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-07-29 |
+| arc53/DocsGPT | 0.560 | 2 | file_issue | 18174 | 2026-07-29 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12436 | 2026-07-29 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14686 | 2026-07-29 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-28 |
-| Youkamii/switcher | 0.390 | 2 | watch | 0 | 2026-07-28 |
-| xiaolizi0v0/CliProxy | 0.390 | 2 | watch | 0 | 2026-07-28 |
-| PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 391 | 2026-07-25 |
+| Youkamii/switcher | 0.390 | 2 | watch | 0 | 2026-07-29 |
 <!-- REPO_STATS:END -->
 
 ---
