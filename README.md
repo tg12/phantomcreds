@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-30 | 30 | 10 | 3 | 5 | 6 | 0 |
 | 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 0 |
 | 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 0 |
 | 2026-07-27 | 35 | 12 | 5 | 10 | 3 | 0 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
 | 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 1 |
 | 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 2 |
-| 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 2 |
-| 2026-06-24 | 22 | 10 | 3 | 7 | 2 | 3 |
+| 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 5 |
 <!-- STATS:END -->
 
 ---
@@ -167,14 +167,16 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| kittors/CliRelay | 1.000 | 6 | report_only | 876 | 2026-07-28 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 555 | 2026-07-25 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-07-29 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 211 | 2026-07-30 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 876 | 2026-07-30 |
 | zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-07-29 |
-| arc53/DocsGPT | 0.560 | 2 | file_issue | 18174 | 2026-07-29 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12436 | 2026-07-29 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14686 | 2026-07-29 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-28 |
-| Youkamii/switcher | 0.390 | 2 | watch | 0 | 2026-07-29 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12442 | 2026-07-30 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2797 | 2026-07-30 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14753 | 2026-07-30 |
+| wamunyima3/relay | 0.390 | 2 | watch | 5 | 2026-07-30 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-30 |
+| y0av/giverny | 0.390 | 2 | report_only | 0 | 2026-07-30 |
 <!-- REPO_STATS:END -->
 
 ---
