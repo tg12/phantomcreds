@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-07-31 | 34 | 14 | 6 | 9 | 5 | 0 |
 | 2026-07-30 | 30 | 10 | 3 | 5 | 6 | 0 |
 | 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 0 |
 | 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 0 |
@@ -152,12 +153,11 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 3 |
 | 2026-07-02 | 29 | 8 | 4 | 5 | 3 | 0 |
 | 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 1 |
-| 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 0 |
-| 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 0 |
+| 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 1 |
+| 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 1 |
 | 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
 | 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 1 |
-| 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 2 |
-| 2026-06-25 | 25 | 12 | 5 | 9 | 4 | 5 |
+| 2026-06-26 | 29 | 12 | 4 | 8 | 4 | 4 |
 <!-- STATS:END -->
 
 ---
@@ -168,15 +168,19 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-07-29 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 211 | 2026-07-30 |
-| kittors/CliRelay | 1.000 | 6 | report_only | 876 | 2026-07-30 |
-| zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-07-29 |
-| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12442 | 2026-07-30 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2797 | 2026-07-30 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14753 | 2026-07-30 |
+| 6enta0/CPAplus | 1.000 | 6 | file_issue | 22 | 2026-07-30 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 212 | 2026-07-31 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 878 | 2026-07-31 |
+| fxzer/cpa-core | 1.000 | 6 | file_issue | 0 | 2026-07-16 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 556 | 2026-07-30 |
+| zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-07-31 |
+| Wei-Shaw/claude-relay-service | 0.410 | 2 | report_only | 12449 | 2026-07-31 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2799 | 2026-07-31 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 14858 | 2026-07-31 |
 | wamunyima3/relay | 0.390 | 2 | watch | 5 | 2026-07-30 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-30 |
-| y0av/giverny | 0.390 | 2 | report_only | 0 | 2026-07-30 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-07-31 |
 <!-- REPO_STATS:END -->
 
 ---
