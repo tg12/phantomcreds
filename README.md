@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 0 |
 | 2026-08-03 | 35 | 11 | 2 | 7 | 2 | 0 |
 | 2026-07-31 | 34 | 14 | 6 | 9 | 5 | 0 |
 | 2026-07-30 | 30 | 10 | 3 | 5 | 6 | 0 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 1 |
 | 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 1 |
 | 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 1 |
-| 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 0 |
-| 2026-06-27 | 34 | 14 | 5 | 10 | 4 | 5 |
+| 2026-06-28 | 32 | 13 | 5 | 11 | 4 | 5 |
 <!-- STATS:END -->
 
 ---
@@ -168,15 +168,19 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-03 |
-| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 555 | 2026-08-01 |
-| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-08-02 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 216 | 2026-08-04 |
+| kittors/CliRelay | 1.000 | 6 | report_only | 881 | 2026-08-04 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46127 | 2026-08-04 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 556 | 2026-08-03 |
+| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-08-04 |
 | XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 160 | 2026-07-23 |
 | zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-08-02 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2805 | 2026-08-03 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15034 | 2026-08-03 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2806 | 2026-08-04 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15095 | 2026-08-04 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-07-30 |
 | WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-08-02 |
+| strnad/CrewAI-Studio | 0.350 | 1 | file_issue | 1333 | 2026-08-03 |
+| VeriTeknik/pluggedin-app | 0.350 | 1 | file_issue | 97 | 2026-08-02 |
 | PlanExeOrg/PlanExe | 0.200 | 1 | file_issue | 394 | 2026-08-02 |
 <!-- REPO_STATS:END -->
 
