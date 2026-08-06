@@ -1,4 +1,10 @@
 # False-positive allowlist -- one GitHub repo per line.
-# Repos listed here are excluded from future phantomcreds scans.
+# Repos listed here are excluded from future phantomcreds scans and from external
+# issue filing. The list is checked at scan time and re-checked at notify time.
 # Add entries only after reviewing a false-positive report via the issue tracker.
 # Format: owner/repo, one per line, no leading/trailing whitespace, no quotes.
+#
+# Self-exclusion: the scanner's own detector definitions are credential-shaped by
+# construction, so scanning this repo or its forks produces evidence about the
+# patterns rather than about any credential.
+tg12/phantomcreds

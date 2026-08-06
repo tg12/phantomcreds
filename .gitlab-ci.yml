@@ -13,9 +13,14 @@ variables:
 validate:
   stage: validate
   before_script:
+    # Fails in seconds on a syntax error rather than after the environment is built.
+    - python -m compileall -q src tests
     - pip install -e .[dev]
+    - python -c "import phantomcreds.main"
   script:
     - ruff check src tests
+    - black --check src tests
+    - mypy src
     - pylint src/phantomcreds tests
     - vulture src tests
     - pytest

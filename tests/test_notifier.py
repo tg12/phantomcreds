@@ -1,4 +1,5 @@
 """Tests for issue-creation and update etiquette."""
+
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 # pylint: disable=unused-argument
@@ -6,12 +7,14 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock
 
 import pytest
 import requests
 
-from phantomcreds.models import RepoFinding, RepoReport
+from phantomcreds.config import MAX_ISSUES_PER_ROLLING_WINDOW, ROLLING_ISSUE_WINDOW_HOURS
+from phantomcreds.models import NotificationRecord, RepoFinding, RepoReport
 from phantomcreds.notifier import notify_all
 
 SCAN_DATE = "2026-05-18"
@@ -24,22 +27,26 @@ class FakeClient:
         self,
         existing_issue: int | None = None,
         comments: list[str] | None = None,
+        existing_state: str = "open",
     ) -> None:
         self.existing_issue = existing_issue
+        self.existing_state = existing_state
         self.comments = comments or []
         self.created: list[tuple[str, str, str, list[str]]] = []
         self.added_comments: list[tuple[str, int, str]] = []
         self.find_calls: list[tuple[str, str, tuple[str, ...] | None]] = []
 
-    def find_open_issue(
+    def find_issue(
         self,
         owner_repo: str,
         title_fragment: str,
         body_markers: tuple[str, ...] | None = None,
-    ) -> int | None:
-        """Return the configured open issue number, if any."""
+    ) -> tuple[int, str] | None:
+        """Return the configured issue number and state, if any."""
         self.find_calls.append((owner_repo, title_fragment, body_markers))
-        return self.existing_issue
+        if self.existing_issue is None:
+            return None
+        return self.existing_issue, self.existing_state
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
         """Record created issues and return a synthetic issue number."""
@@ -128,15 +135,21 @@ def _secret_findings() -> list[RepoFinding]:
 
 def test_create_issue_when_no_open_thread_exists() -> None:
     client = FakeClient(existing_issue=None)
-    notify_all(client, [_report()], _findings())
+    records = notify_all(client, [_report()], _findings(), allowlist=set())
     assert len(client.created) == 1
-    assert client.find_calls == [
-        (
-            "owner/repo",
-            "[phantomcreds] Credential-handling risks detected in this repository",
-            ("<!-- phantomcreds:issue -->", "<!-- phantomcreds:issue:risks -->"),
-        )
-    ]
+    assert [record.event for record in records] == ["created"]
+    # Looked up once, then re-checked immediately before creating.
+    assert (
+        client.find_calls
+        == [
+            (
+                "owner/repo",
+                "[phantomcreds] Credential-handling risks detected in this repository",
+                ("<!-- phantomcreds:issue -->", "<!-- phantomcreds:issue:risks -->"),
+            )
+        ]
+        * 2
+    )
     assert (
         client.created[0][1]
         == "[phantomcreds] Credential-handling risks detected in this repository"
@@ -151,7 +164,7 @@ def test_create_issue_when_no_open_thread_exists() -> None:
 
 def test_comment_existing_issue_when_open_thread_exists() -> None:
     client = FakeClient(existing_issue=77, comments=[])
-    notify_all(client, [_report()], _findings())
+    notify_all(client, [_report()], _findings(), allowlist=set())
     assert not client.created
     assert len(client.added_comments) == 1
     assert client.added_comments[0][1] == 77
@@ -167,7 +180,7 @@ def test_skip_duplicate_same_day_comment() -> None:
         existing_issue=77,
         comments=["<!-- phantomcreds:scan:2026-05-18 -->\nprevious update"],
     )
-    notify_all(client, [_report()], _findings())
+    notify_all(client, [_report()], _findings(), allowlist=set())
     assert not client.created
     assert not client.added_comments
 
@@ -182,7 +195,7 @@ def test_403_on_create_issue_is_skipped_not_fatal() -> None:
     """A 403 means the token has no write access to the target repo; skip it."""
     client = FakeClient(existing_issue=None)
     client.create_issue = MagicMock(side_effect=_http_error(403))  # type: ignore[method-assign]
-    notify_all(client, [_report()], _findings())
+    notify_all(client, [_report()], _findings(), allowlist=set())
     assert not client.added_comments
 
 
@@ -190,7 +203,7 @@ def test_403_on_create_issue_is_skipped_not_fatal() -> None:
 def test_non_fatal_http_errors_are_skipped(status: int) -> None:
     client = FakeClient(existing_issue=None)
     client.create_issue = MagicMock(side_effect=_http_error(status))  # type: ignore[method-assign]
-    notify_all(client, [_report()], _findings())
+    notify_all(client, [_report()], _findings(), allowlist=set())
     assert not client.added_comments
 
 
@@ -198,27 +211,31 @@ def test_500_on_create_issue_propagates() -> None:
     client = FakeClient(existing_issue=None)
     client.create_issue = MagicMock(side_effect=_http_error(500))  # type: ignore[method-assign]
     with pytest.raises(requests.HTTPError):
-        notify_all(client, [_report()], _findings())
+        notify_all(client, [_report()], _findings(), allowlist=set())
 
 
 def test_report_only_repo_does_not_notify() -> None:
     client = FakeClient(existing_issue=None)
-    notify_all(client, [_report(action="report_only")], _findings())
+    notify_all(client, [_report(action="report_only")], _findings(), allowlist=set())
     assert not client.created
     assert not client.added_comments
 
 
 def test_issue_body_includes_secret_indicators_and_llm_fix_guide() -> None:
     client = FakeClient(existing_issue=None)
-    notify_all(client, [_report()], _secret_findings())
+    notify_all(client, [_report()], _secret_findings(), allowlist=set())
 
-    assert client.find_calls == [
-        (
-            "owner/repo",
-            "[phantomcreds] Exposed secrets detected in this repository",
-            ("<!-- phantomcreds:issue -->", "<!-- phantomcreds:issue:secrets -->"),
-        )
-    ]
+    assert (
+        client.find_calls
+        == [
+            (
+                "owner/repo",
+                "[phantomcreds] Exposed secrets detected in this repository",
+                ("<!-- phantomcreds:issue -->", "<!-- phantomcreds:issue:secrets -->"),
+            )
+        ]
+        * 2
+    )
     assert client.created[0][1] == "[phantomcreds] Exposed secrets detected in this repository"
     body = client.created[0][2]
     assert "<!-- phantomcreds:issue:secrets -->" in body
@@ -228,3 +245,71 @@ def test_issue_body_includes_secret_indicators_and_llm_fix_guide() -> None:
     assert "LLM Fix Guide" in body
     assert "Revoke or rotate the exposed credential" in body
     assert "current files fetched from the repository's default branch" in body
+
+
+def test_issue_body_documents_how_to_opt_out() -> None:
+    client = FakeClient(existing_issue=None)
+    notify_all(client, [_report()], _findings(), allowlist=set())
+    body = client.created[0][2]
+    assert "Stop this bot contacting this repository" in body
+    assert "no-phantomcreds" in body
+    assert ".github/phantomcreds-opt-out" in body
+    assert "closed phantomcreds issue is treated as a refusal" in body
+
+
+def test_closed_prior_issue_is_never_refiled_or_commented() -> None:
+    client = FakeClient(existing_issue=77, existing_state="closed")
+    records = notify_all(client, [_report()], _findings(), allowlist=set())
+    assert not client.created
+    assert not client.added_comments
+    assert [record.event for record in records] == ["skipped_closed"]
+
+
+def test_allowlisted_repo_is_not_contacted_even_when_scored_file_issue() -> None:
+    client = FakeClient(existing_issue=None)
+    records = notify_all(client, [_report()], _findings(), allowlist={"owner/repo"})
+    assert not client.created
+    assert not client.added_comments
+    assert [record.event for record in records] == ["blocked_allowlist"]
+
+
+def test_rolling_window_ceiling_blocks_new_issues() -> None:
+    now = datetime.now(UTC)
+    prior = [
+        NotificationRecord(
+            repo_full_name=f"other/repo{index}",
+            event="created",
+            issue_number=index,
+            title="[phantomcreds] Exposed secrets detected in this repository",
+            scan_date=SCAN_DATE,
+            recorded_at=(now - timedelta(hours=1)).isoformat(),
+        )
+        for index in range(MAX_ISSUES_PER_ROLLING_WINDOW)
+    ]
+    client = FakeClient(existing_issue=None)
+    records = notify_all(
+        client, [_report()], _findings(), allowlist=set(), prior_notifications=prior
+    )
+    assert not client.created
+    assert [record.event for record in records] == ["blocked_rate_limit"]
+
+
+def test_rolling_window_ignores_notifications_outside_the_window() -> None:
+    stale = datetime.now(UTC) - timedelta(hours=ROLLING_ISSUE_WINDOW_HOURS + 1)
+    prior = [
+        NotificationRecord(
+            repo_full_name=f"other/repo{index}",
+            event="created",
+            issue_number=index,
+            title="[phantomcreds] Exposed secrets detected in this repository",
+            scan_date=SCAN_DATE,
+            recorded_at=stale.isoformat(),
+        )
+        for index in range(MAX_ISSUES_PER_ROLLING_WINDOW + 5)
+    ]
+    client = FakeClient(existing_issue=None)
+    records = notify_all(
+        client, [_report()], _findings(), allowlist=set(), prior_notifications=prior
+    )
+    assert len(client.created) == 1
+    assert [record.event for record in records] == ["created"]

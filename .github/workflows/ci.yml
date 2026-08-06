@@ -1,0 +1,58 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: phantomcreds-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      # Runs before dependency installation so a syntax error fails in seconds
+      # instead of after a full environment build.
+      - name: Compile check
+        run: python -m compileall -q src tests
+
+      - name: Install dependencies
+        run: pip install -e .[dev]
+
+      - name: Import smoke check
+        run: python -c "import phantomcreds.main"
+
+      - name: Ruff
+        run: ruff check src tests
+
+      - name: Black
+        run: black --check src tests
+
+      - name: Mypy
+        run: mypy src
+
+      - name: Pylint
+        run: pylint src/phantomcreds tests
+
+      - name: Vulture
+        run: vulture src tests
+
+      - name: Pytest
+        run: pytest

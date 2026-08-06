@@ -41,6 +41,8 @@ It is built around one premise: operator trust is the product. If the scanner ca
 5. Writes append-only ledgers to this repo:
    - [`data/repos.jsonl`](data/repos.jsonl) for per-repo scan outcomes
    - [`data/findings.jsonl`](data/findings.jsonl) for concrete findings with evidence
+   - [`data/notifications.jsonl`](data/notifications.jsonl) for every external-contact
+     decision, including the ones that were blocked and why
 6. Updates the README dashboard automatically
 7. Opens or updates one issue per target repo **only** when the findings are specific and fixable
 8. Leaves overt abuse-oriented repos as `report_only` records instead of spamming them with issues
@@ -222,6 +224,24 @@ The data model is structured so those questions can be answered from the ledger 
 }
 ```
 
+**notifications.jsonl** - one row per external-contact decision:
+
+```json
+{
+  "repo_full_name": "owner/repo",
+  "event": "created",
+  "issue_number": 42,
+  "title": "[phantomcreds] Exposed secrets detected in this repository",
+  "scan_date": "2026-08-06",
+  "recorded_at": "2026-08-06T07:03:11.482913+00:00"
+}
+```
+
+`event` is one of `created`, `commented`, `skipped_closed`, `skipped_duplicate`,
+`blocked_allowlist`, or `blocked_rate_limit`. Blocked decisions are recorded so the
+reason a repo was *not* contacted is auditable, and `created` rows are what the rolling
+24-hour ceiling counts.
+
 ---
 
 ## Setup
@@ -232,14 +252,33 @@ This repo commits its own ledgers back to `main` after each successful scan.
 
 ### 2. Add a GitHub PAT secret
 
-Create a **classic** Personal Access Token with scopes:
+Use a **fine-grained** Personal Access Token, scoped to the repositories you intend to
+contact, with:
 
-- `public_repo`
-- `read:user`
+- Repository access: **Only select repositories**
+- Repository permissions: **Issues: Read and write**, **Metadata: Read-only**
+- An expiry, re-approved on rotation
 
 Add it as `GH_TOKEN` under:
 
 **Settings -> Secrets and variables -> Actions -> New repository secret**
+
+A **classic** token with `public_repo` also works and is what broad discovery needs,
+but be clear about what it means: `public_repo` grants issue-creation rights on *every
+public repository on GitHub*, so the blast radius of a scorer bug or a leaked CI secret
+is the entire platform rather than the day's candidate set. The scanner has three
+independent controls that do not depend on the token being narrow:
+
+- `MAX_ISSUES_PER_SCAN` (10) caps one run
+- `MAX_ISSUES_PER_ROLLING_WINDOW` (15 per 24h, counted from
+  [`data/notifications.jsonl`](data/notifications.jsonl)) caps all runs and all repos,
+  and is enforced outside the heuristic scorer
+- [`data/allowlist.txt`](data/allowlist.txt) is re-checked at notify time, not only at
+  scan time
+
+Prefer the fine-grained token unless platform-wide discovery is a hard requirement. If
+it is, a GitHub App installation is the better long-term model: installation is granted
+and revoked per-repository by the target maintainer.
 
 ### 3. Enable Actions
 
@@ -287,7 +326,17 @@ Useful local overrides:
 - `PHANTOMCREDS_UPDATE_README=0|1`
 - `PHANTOMCREDS_REPORTS_FILE=/tmp/repos.jsonl`
 - `PHANTOMCREDS_FINDINGS_FILE=/tmp/findings.jsonl`
+- `PHANTOMCREDS_NOTIFICATIONS_FILE=/tmp/notifications.jsonl`
 - `PHANTOMCREDS_README_PATH=/tmp/README.md`
+
+Local mode intentionally does **not** redirect the notification ledger: the rolling
+24-hour issue ceiling is always counted against `data/notifications.jsonl`, so a local
+run cannot be used to reset it.
+
+Do not run the GitHub Actions and GitLab pipelines against the same target set
+concurrently. There is no cross-system lock, so the pre-create re-check narrows but does
+not eliminate the duplicate-issue race between two independent CI backends. Within
+GitHub Actions the `concurrency` group already serializes scheduled and dispatched runs.
 
 Operational difference from GitHub Actions:
 - same discovery, fetch, scoring, and notification code paths
@@ -297,15 +346,58 @@ Operational difference from GitHub Actions:
 
 ---
 
+## Opting out before you are ever contacted
+
+This tool contacts maintainers who did not ask for it. That is worth stating plainly
+rather than burying. There is no pre-scan handshake with GitHub's search API, so the
+honest control available is a **pre-emptive, documented opt-out that takes effect before
+analysis** — not only after first contact.
+
+Any one of these excludes a repository. All are checked before files are fetched, so an
+opted-out repo is never analyzed and never appears in the ledger:
+
+| Signal | How |
+|---|---|
+| Repository topic | Add `no-phantomcreds`, `phantomcreds-opt-out`, or `no-automated-issues` |
+| Marker file | Commit an empty `.phantomcreds-opt-out`, `.github/phantomcreds-opt-out`, or `.well-known/phantomcreds-opt-out` |
+| Closing an issue | A closed phantomcreds issue is treated as a refusal. The repo is never re-filed on and never re-commented on, even if the finding persists |
+| Allowlist request | Ask on [the tracker](https://github.com/tg12/phantomcreds/issues) to be added to [`data/allowlist.txt`](data/allowlist.txt) |
+
+Every issue phantomcreds opens carries these instructions in its body.
+
+What this deliberately is **not**: opt-in. Requiring a marker file before scanning would
+reduce the tool to scanning repos that already know about it, which detects nothing.
+The trade made here is that discovery stays broad, external contact is gated hard, and
+withdrawal is cheap, pre-emptive, and permanent.
+
+---
+
 ## False positives and exclusions
 
-If a repo is repeatedly benign but matches the search posture, add it to [`data/allowlist.txt`](data/allowlist.txt), one `owner/repo` per line. Allowlisted repos are skipped entirely in future runs.
+If a repo is repeatedly benign but matches the search posture, add it to [`data/allowlist.txt`](data/allowlist.txt), one `owner/repo` per line. Allowlisted repos are skipped entirely in future runs and are re-checked before any issue is filed.
 
-The scanner also applies built-in context filters before raising secret findings:
+The scanner applies built-in context filters before raising secret findings:
 - redacted evidence snippets are ignored
 - test, fixture, and docs paths are not treated as live secret exposure
 - template files such as `.env.example` remain non-issues when they contain placeholders, but still raise findings if they contain real credential material
 - Docker auth evidence must decode to printable `user:password` material before it is treated as a committed secret
 - credential-persistence findings require nearby write or serialization behavior, not just words like `session` or `cookie`
+- prefix-less patterns (Vercel, Cloudflare, AWS session/secret keys) additionally require the matched value to survive an entropy, digest-shape, and sequential-run check, so a SHA-1 digest or `AKIA1234567890ABCDEF` is not read as a credential
+- connection strings are classified by context: loopback and single-label service hosts, CI workflow definitions, prose files, shell/Compose interpolation, and identical `user:password` pairs are configuration, not exposure
+- a hostname containing regex metacharacters is a detector's own source text, not a DSN
+- OAuth callback findings require callback semantics **and** evidence of host publication, independently. Two containers binding `0.0.0.0` is neither
+
+### What is allowed to reach a maintainer
+
+Two confidence levels are recorded:
+
+| Confidence | Meaning | Can open an issue |
+|---|---|---|
+| `confirmed` | Provider-prefixed token, private-key block, service-account blob, or a credential pair | Yes |
+| `needs_review` | Shape-only match: a bare `scheme://user:password@host` DSN, or a prefix-less token assignment | No |
+
+External contact requires either a `confirmed` secret finding, or at least two distinct
+issue-worthy finding types, or a `high_risk` composite. A lone watchlist-grade regex hit
+is recorded in the ledger and goes no further.
 
 This is a repo-level scanner. It does not store individual user identities, and it does not attempt attribution beyond public repository content.
