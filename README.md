@@ -128,6 +128,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-06 | 34 | 11 | 3 | 6 | 6 | 0 |
 | 2026-08-05 | 38 | 13 | 3 | 7 | 4 | 0 |
 | 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 0 |
 | 2026-08-03 | 35 | 11 | 2 | 7 | 2 | 0 |
@@ -144,7 +145,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-19 | 24 | 8 | 3 | 5 | 3 | 1 |
 | 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-17 | 29 | 10 | 5 | 7 | 4 | 0 |
-| 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 1 |
+| 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 2 |
 | 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 0 |
 | 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
 | 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 2 |
@@ -156,8 +157,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 3 |
 | 2026-07-02 | 29 | 8 | 4 | 5 | 3 | 0 |
 | 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 3 |
-| 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 1 |
-| 2026-06-29 | 29 | 11 | 3 | 8 | 3 | 3 |
+| 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -168,18 +168,16 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-03 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 219 | 2026-08-05 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46219 | 2026-08-05 |
-| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-08-04 |
-| XxxXTeam/codex-proxy | 0.560 | 2 | file_issue | 160 | 2026-07-23 |
-| zhuchunshu/SForum | 0.560 | 2 | file_issue | 199 | 2026-08-02 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2807 | 2026-08-04 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15161 | 2026-08-05 |
-| Youkamii/switcher | 0.390 | 2 | watch | 4 | 2026-08-05 |
-| williamsuchun/relayport | 0.390 | 2 | watch | 0 | 2026-08-05 |
-| WrathZA/github-weld | 0.390 | 2 | watch | 0 | 2026-08-02 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2652 | 2026-08-05 |
-| strnad/CrewAI-Studio | 0.350 | 1 | file_issue | 1333 | 2026-08-03 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 220 | 2026-08-05 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46315 | 2026-08-06 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 556 | 2026-08-05 |
+| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-08-05 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2809 | 2026-08-06 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15245 | 2026-08-06 |
+| y0av/giverny | 0.390 | 2 | report_only | 0 | 2026-08-06 |
+| williamsuchun/relayport | 0.390 | 2 | report_only | 0 | 2026-08-06 |
+| vladkens/twscrape | 0.390 | 2 | watch | 2654 | 2026-08-06 |
+| strnad/CrewAI-Studio | 0.350 | 1 | file_issue | 1334 | 2026-08-06 |
 <!-- REPO_STATS:END -->
 
 ---
