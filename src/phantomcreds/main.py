@@ -23,6 +23,9 @@ from phantomcreds.config import (
     MAX_RECENT_COMMITS_TO_CHECK,
     MAX_REPO_RESULTS_PER_QUERY,
     MAX_SECRET_SWEEP_FILES_PER_REPO,
+    NOTIFICATIONS_FILE,
+    OPT_OUT_MARKER_PATHS,
+    OPT_OUT_TOPICS,
     PRIORITY_PATH_SUFFIXES,
     README_CANDIDATE_PATHS,
     README_PATH,
@@ -39,7 +42,13 @@ from phantomcreds.logging_config import setup_logging
 from phantomcreds.models import RepoFinding, RepoMetadata, RepoReport
 from phantomcreds.notifier import notify_all
 from phantomcreds.reporter import update_readme
-from phantomcreds.storage import append_findings, append_reports, load_allowlist
+from phantomcreds.storage import (
+    append_findings,
+    append_notifications,
+    append_reports,
+    load_allowlist,
+    load_notifications,
+)
 
 _log = logging.getLogger(__name__)
 
@@ -149,6 +158,7 @@ class RuntimeOptions:
 
     reports_path: Path
     findings_path: Path
+    notifications_path: Path
     allowlist_path: Path
     readme_path: Path | None
     notify_external: bool
@@ -184,6 +194,9 @@ def _resolve_runtime_options() -> RuntimeOptions:
         return RuntimeOptions(
             reports_path=output_root / "repos.jsonl",
             findings_path=output_root / "findings.jsonl",
+            # The rolling issue ceiling must be counted against the real ledger even in
+            # local mode, so a local run cannot be used to bypass it.
+            notifications_path=NOTIFICATIONS_FILE,
             allowlist_path=ALLOWLIST_FILE,
             readme_path=None,
             notify_external=_parse_bool_env("PHANTOMCREDS_NOTIFY_EXTERNAL", False),
@@ -192,6 +205,9 @@ def _resolve_runtime_options() -> RuntimeOptions:
     return RuntimeOptions(
         reports_path=Path(os.environ.get("PHANTOMCREDS_REPORTS_FILE", str(REPORTS_FILE))),
         findings_path=Path(os.environ.get("PHANTOMCREDS_FINDINGS_FILE", str(FINDINGS_FILE))),
+        notifications_path=Path(
+            os.environ.get("PHANTOMCREDS_NOTIFICATIONS_FILE", str(NOTIFICATIONS_FILE))
+        ),
         allowlist_path=Path(os.environ.get("PHANTOMCREDS_ALLOWLIST_FILE", str(ALLOWLIST_FILE))),
         readme_path=(
             Path(os.environ.get("PHANTOMCREDS_README_PATH", str(README_PATH)))
@@ -441,6 +457,7 @@ def _write_step_summary(
 ) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
+        _log.debug("GITHUB_STEP_SUMMARY not set; skipping step summary")
         return
 
     high_risk = [report for report in reports if report.classification == "high_risk"]
@@ -497,6 +514,27 @@ def _fetch_repo_files(
     return files
 
 
+def _topic_opt_out(metadata: RepoMetadata) -> str | None:
+    matched = sorted(set(metadata.topics) & OPT_OUT_TOPICS)
+    if matched:
+        return f"repository topic {matched[0]}"
+    return None
+
+
+def _pre_scan_skip_reason(metadata: RepoMetadata, allowlist: set[str]) -> str | None:
+    """Return why a candidate must not be analyzed, or None to proceed."""
+    if metadata.full_name.lower() in allowlist:
+        return "allowlisted"
+    return _topic_opt_out(metadata)
+
+
+def _marker_opt_out(tree_paths: list[str]) -> str | None:
+    matched = sorted({path for path in tree_paths if path in OPT_OUT_MARKER_PATHS})
+    if matched:
+        return f"opt-out marker file {matched[0]}"
+    return None
+
+
 def _scan_repository(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     client: GitHubClient,
     repo_full_name: str,
@@ -504,8 +542,13 @@ def _scan_repository(  # pylint: disable=too-many-arguments,too-many-positional-
     code_hits: set[str],
     discovery_sources: set[str],
     scan_date: str,
-) -> tuple[RepoReport, list[RepoFinding]]:
+) -> tuple[RepoReport, list[RepoFinding]] | None:
+    """Analyze one repository, or return None when the repository opted out."""
     tree_paths = client.get_repo_tree(repo_full_name, metadata.default_branch)
+    marker_reason = _marker_opt_out(tree_paths)
+    if marker_reason is not None:
+        _log.info("Skipping %s: %s", repo_full_name, marker_reason)
+        return None
     selected_paths = _select_paths(tree_paths, code_hits)
     secret_sweep_paths = _select_secret_sweep_paths(tree_paths, selected_paths)
     files = _fetch_repo_files(
@@ -522,7 +565,7 @@ def _scan_repository(  # pylint: disable=too-many-arguments,too-many-positional-
     )
 
 
-def _process_candidates(  # pylint: disable=too-many-arguments,too-many-positional-arguments,broad-exception-caught
+def _process_candidates(  # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,broad-exception-caught
     client: GitHubClient,
     candidates: list[str],
     metadata_by_repo: dict[str, RepoMetadata],
@@ -536,16 +579,18 @@ def _process_candidates(  # pylint: disable=too-many-arguments,too-many-position
     failed_repos: list[str] = []
 
     for repo_full_name in candidates:
-        if repo_full_name.lower() in allowlist:
-            _log.info("Skipping allowlisted repo: %s", repo_full_name)
+        metadata = metadata_by_repo[repo_full_name]
+        skip_reason = _pre_scan_skip_reason(metadata, allowlist)
+        if skip_reason is not None:
+            _log.info("Skipping %s: %s", repo_full_name, skip_reason)
             continue
 
         _log.info("Analyzing %s", repo_full_name)
         try:
-            report, repo_findings = _scan_repository(
+            scan_result = _scan_repository(
                 client,
                 repo_full_name,
-                metadata_by_repo[repo_full_name],
+                metadata,
                 code_paths.get(repo_full_name, set()),
                 candidate_sources[repo_full_name],
                 scan_date,
@@ -555,6 +600,9 @@ def _process_candidates(  # pylint: disable=too-many-arguments,too-many-position
             _log.exception("Failed to analyze %s", repo_full_name)
             continue
 
+        if scan_result is None:
+            continue
+        report, repo_findings = scan_result
         reports.append(report)
         findings.extend(repo_findings)
 
@@ -603,7 +651,14 @@ def main() -> None:
     else:
         _log.info("README update disabled for this run")
     if runtime.notify_external:
-        notify_all(client, reports, findings)
+        notifications = notify_all(
+            client,
+            reports,
+            findings,
+            allowlist=allowlist,
+            prior_notifications=load_notifications(runtime.notifications_path),
+        )
+        append_notifications(notifications, runtime.notifications_path)
     else:
         _log.info("External issue notifications disabled for this run")
     _write_step_summary(reports, findings, scan_date, failed_repo_count=len(failed_repos))

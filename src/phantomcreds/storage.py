@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 
 from phantomcreds.config import ALLOWLIST_FILE
-from phantomcreds.models import RepoFinding, RepoReport
+from phantomcreds.models import NotificationRecord, RepoFinding, RepoReport
 
 _log = logging.getLogger(__name__)
 
@@ -41,6 +41,41 @@ def append_findings(findings: list[RepoFinding], path: Path) -> None:
         for finding in findings:
             handle.write(json.dumps(finding.to_row()) + "\n")
     _log.info("Appended %d finding rows to %s", len(findings), path)
+
+
+def append_notifications(records: list[NotificationRecord], path: Path) -> None:
+    """Append external-contact decisions to the notification ledger."""
+    if not records:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        for record in records:
+            handle.write(json.dumps(record.to_row()) + "\n")
+    _log.info("Appended %d notification rows to %s", len(records), path)
+
+
+def load_notifications(path: Path) -> list[NotificationRecord]:
+    """Load prior notification records, skipping rows that are not well formed."""
+    records: list[NotificationRecord] = []
+    for row in load_all(path):
+        repo_full_name = row.get("repo_full_name")
+        event = row.get("event")
+        recorded_at = row.get("recorded_at")
+        if not isinstance(repo_full_name, str) or not isinstance(event, str):
+            _log.warning("Skipping notification row without repo/event in %s", path)
+            continue
+        issue_number = row.get("issue_number")
+        records.append(
+            NotificationRecord(
+                repo_full_name=repo_full_name,
+                event=event,  # type: ignore[arg-type]
+                issue_number=issue_number if isinstance(issue_number, int) else None,
+                title=str(row.get("title", "")),
+                scan_date=str(row.get("scan_date", "")),
+                recorded_at=str(recorded_at) if isinstance(recorded_at, str) else "",
+            )
+        )
+    return records
 
 
 def load_all(path: Path) -> list[dict[str, object]]:

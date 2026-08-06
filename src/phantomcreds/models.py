@@ -1,4 +1,5 @@
 """Data models for repo-level credential-risk scans."""
+
 # pylint: disable=too-many-instance-attributes
 
 from __future__ import annotations
@@ -9,6 +10,15 @@ from typing import Literal
 Classification = Literal["high_risk", "watchlist", "clean"]
 IssueAction = Literal["file_issue", "report_only", "watch"]
 Severity = Literal["high", "medium", "low"]
+Confidence = Literal["confirmed", "needs_review"]
+NotificationEvent = Literal[
+    "created",
+    "commented",
+    "skipped_closed",
+    "skipped_duplicate",
+    "blocked_allowlist",
+    "blocked_rate_limit",
+]
 
 
 def _report_row(report: RepoReport) -> dict[str, object]:
@@ -44,6 +54,18 @@ def _finding_row(finding: RepoFinding) -> dict[str, object]:
     }
 
 
+def _notification_row(record: NotificationRecord) -> dict[str, object]:
+    """Return a stable JSON-serializable row for notification events."""
+    return {
+        "repo_full_name": record.repo_full_name,
+        "event": record.event,
+        "issue_number": record.issue_number,
+        "title": record.title,
+        "scan_date": record.scan_date,
+        "recorded_at": record.recorded_at,
+    }
+
+
 @dataclass(frozen=True, slots=True)
 class RepoMetadata:
     """Repository metadata needed for scan prioritization and analysis."""
@@ -57,6 +79,7 @@ class RepoMetadata:
     updated_at: str
     archived: bool
     fork: bool
+    topics: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,7 +99,7 @@ class RepoFinding:
     finding_type: str
     title: str
     severity: Severity
-    confidence: str
+    confidence: Confidence
     summary: str
     issue_worthy: bool
     scan_date: str
@@ -107,3 +130,23 @@ class RepoReport:
     def to_row(self) -> dict[str, object]:
         """Return a stable JSON-serializable representation."""
         return _report_row(self)
+
+
+@dataclass(frozen=True, slots=True)
+class NotificationRecord:
+    """One external-contact decision, recorded whether or not contact happened.
+
+    This ledger is the audit trail for issue filing and the input to the rolling
+    cross-repo issue ceiling, which is enforced independently of the heuristic scorer.
+    """
+
+    repo_full_name: str
+    event: NotificationEvent
+    issue_number: int | None
+    title: str
+    scan_date: str
+    recorded_at: str
+
+    def to_row(self) -> dict[str, object]:
+        """Return a stable JSON-serializable representation."""
+        return _notification_row(self)

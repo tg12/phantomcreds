@@ -1,4 +1,5 @@
 """Tests for repo-level credential-risk heuristics."""
+
 # pylint: disable=missing-function-docstring
 # pylint: disable=use-implicit-booleaness-not-comparison
 # pylint: disable=line-too-long
@@ -9,6 +10,12 @@ from phantomcreds.heuristics import analyze_repository
 from phantomcreds.models import RepoMetadata
 
 SCAN_DATE = "2026-05-18"
+
+# Fabricated AWS credential fixtures, concatenated at runtime. Written as single
+# literals they match GitHub's own push-protection pattern, which then blocks pushes to
+# this repository even though the values were never issued by AWS.
+FAKE_AWS_KEY_ID = "AKIA" + "3FKQZ7XN2WYVJ4TQ"
+FAKE_AWS_SECRET = "hV7pQ2xNmR9dLzK4wYb8TfE6" + "uJc1sA3gXn5ZoP0q"
 
 
 def test_clean_repo_stays_clean(repo_metadata: RepoMetadata) -> None:
@@ -193,9 +200,7 @@ def test_exposed_secret_detects_real_provider_keys_inside_variant_env_templates(
     report, findings = analyze_repository(
         metadata=repo_metadata,
         files={
-            ".env.docker-example": (
-                'OPENAI_API_KEY="sk-proj-abcdefghijklmnopqrstuvwxyz123456"\n'
-            ),
+            ".env.docker-example": ('OPENAI_API_KEY="sk-proj-abcdefghijklmnopqrstuvwxyz123456"\n'),
             "deploy/.env.template": (
                 'OPENROUTER_API_KEY="sk-or-v1-abcdefghijklmnopqrstuvwxyz123456"\n'
             ),
@@ -256,11 +261,11 @@ def test_exposed_secret_scans_txt_files_and_additional_ai_keys(
         metadata=repo_metadata,
         files={
             "notes/ops.txt": (
-                "OPENROUTER_API_KEY=sk-or-v1-abcdefghijklmnopqrstuvwxyz123456\n"
-                "GROQ_API_KEY=gsk_abcdefghijklmnopqrstuvwxyz123456\n"
-                "REPLICATE_API_TOKEN=r8_abcdefghijklmnopqrstuvwxyz123456\n"
-                "PERPLEXITY_API_KEY=pplx-abcdefghijklmnopqrstuvwxyz123456\n"
-                "AWS_SESSION_TOKEN=abcdEFGHijklMNOPqrstUVWXyz0123456789+/abcdEFGHijklMNOPqrstUVWXyz0123456789+/==\n"
+                "OPENROUTER_API_KEY=sk-or-v1-T3xQm9ZwK2vLpN8rHdYb4Ec7uJ\n"
+                "GROQ_API_KEY=gsk_T3xQm9ZwK2vLpN8rHdYb4Ec7\n"
+                "REPLICATE_API_TOKEN=r8_T3xQm9ZwK2vLpN8rHdYb4Ec7\n"
+                "PERPLEXITY_API_KEY=pplx-T3xQm9ZwK2vLpN8rHdYb4Ec7\n"
+                "AWS_SESSION_TOKEN=hV7pQ2xNmR9dLzK4wYb8TfE6uJc1sA3gXn5ZoP0qWd2R\n"
             ),
         },
         discovery_sources={"auth-import-posture"},
@@ -272,10 +277,49 @@ def test_exposed_secret_scans_txt_files_and_additional_ai_keys(
     assert len(exposed.evidence) == 5
     assert "5 redacted secret indicators" in exposed.summary
     joined = "\n".join(exposed.evidence)
-    assert "sk-or-v1-abcdefghijklmnopqrstuvwxyz123456" not in joined
-    assert "gsk_abcdefghijklmnopqrstuvwxyz123456" not in joined
-    assert "r8_abcdefghijklmnopqrstuvwxyz123456" not in joined
-    assert "pplx-abcdefghijklmnopqrstuvwxyz123456" not in joined
+    assert "sk-or-v1-T3xQm9ZwK2vLpN8rHdYb4Ec7uJ" not in joined
+    assert "gsk_T3xQm9ZwK2vLpN8rHdYb4Ec7" not in joined
+    assert "r8_T3xQm9ZwK2vLpN8rHdYb4Ec7" not in joined
+    assert "pplx-T3xQm9ZwK2vLpN8rHdYb4Ec7" not in joined
+
+
+def test_sequential_placeholder_tokens_do_not_trigger_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """Prefix-less patterns must not fire on documentation-shaped values."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "notes/ops.txt": (
+                "AWS_SESSION_TOKEN=abcdEFGHijklMNOPqrstUVWXyz0123456789+/abcdEFGH==\n"
+                "VERCEL_TOKEN=1234567890abcdef1234567890\n"
+                "CF_API_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
+
+
+def test_prefixless_token_alone_is_recorded_but_not_issue_worthy(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """A high-entropy value under a token-shaped name has no provider signature."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={"deploy/settings.toml": "VERCEL_TOKEN = 'hV7pQ2xNmR9dLzK4wYb8TfE6'\n"},
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert exposed.confidence == "needs_review"
+    assert exposed.severity == "medium"
+    assert exposed.issue_worthy is False
+    assert report.action == "watch"
 
 
 def test_exposed_secret_detects_netrc_aws_pairs_and_connection_strings(
@@ -284,13 +328,13 @@ def test_exposed_secret_detects_netrc_aws_pairs_and_connection_strings(
     report, findings = analyze_repository(
         metadata=repo_metadata,
         files={
-            ".netrc": "machine api.example.com login deploy password super-secret-password\n",
+            ".netrc": "machine api.acme-corp.io login deploy password super-secret-password\n",
             "infra/credentials": (
-                "aws_access_key_id=AKIA1234567890ABCDEF\n"
-                "aws_secret_access_key=abcdEFGHijklMNOPqrstUVWXyz0123456789+/=\n"
+                f"aws_access_key_id={FAKE_AWS_KEY_ID}\n"
+                f"aws_secret_access_key={FAKE_AWS_SECRET}\n"
             ),
             "config/database.ini": (
-                "DATABASE_URL=postgres://scanner:topsecretpass@db.example.com:5432/app\n"
+                "DATABASE_URL=postgres://scanner:topsecretpass@db.acme-corp.io:5432/app\n"
             ),
         },
         discovery_sources={"auth-import-posture"},
@@ -301,12 +345,120 @@ def test_exposed_secret_detects_netrc_aws_pairs_and_connection_strings(
     exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
     joined = "\n".join(exposed.evidence)
     assert "super-secret-password" not in joined
-    assert "AKIA1234567890ABCDEF" not in joined
-    assert "abcdEFGHijklMNOPqrstUVWXyz0123456789+/=" not in joined
+    assert FAKE_AWS_KEY_ID not in joined
+    assert FAKE_AWS_SECRET not in joined
     assert "topsecretpass" not in joined
-    assert "machine api.example.com login deploy password [REDACTED:" in joined
-    assert "aws_access_key_id=[REDACTED:" in joined
-    assert "postgres://scanner:[REDACTED:" in joined
+    assert "machine api.acme-corp.io login deploy password [REDACTED]" in joined
+    assert "AWS_ACCESS_KEY_ID=[REDACTED:" in joined
+    assert "postgres://scanner:[REDACTED]@db.acme-corp.io:5432/app" in joined
+
+
+def test_aws_pair_evidence_is_not_double_counted(repo_metadata: RepoMetadata) -> None:
+    """The pair detector and the inline detector must not both claim the same line."""
+    _report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "infra/credentials": (
+                f"aws_access_key_id={FAKE_AWS_KEY_ID}\n"
+                f"aws_secret_access_key={FAKE_AWS_SECRET}\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert len(exposed.evidence) == 2
+    assert "2 redacted secret indicators" in exposed.summary
+
+
+def test_documentation_aws_key_id_does_not_trigger_exposed_secret(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """A sequential key ID next to a digest-shaped value is a doc example, not a leak."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "config/aws.ini": (
+                "aws_access_key_id=AKIA1234567890ABCDEF\n"
+                "aws_secret_access_key=da39a3ee5e6b4b0d3255bfef95601890afd80709\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
+
+
+def test_local_ci_and_documentation_dsns_are_not_confirmed_exposures(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """Ephemeral CI credentials, doc examples, and Compose defaults are not exposures."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            ".github/workflows/ci.yml": (
+                "      DATABASE_URL: postgresql://ci:ci@localhost/ci_unused\n"
+            ),
+            ".github/workflows/test.yml": (
+                "      DATABASE_URL: postgresql://scanner:scanner@localhost:5432/scanner\n"
+            ),
+            "CLAUDE.md": "Use `postgresql://user:pass@localhost/appdb` for local runs.\n",
+            "docker-compose.yml": (
+                "      DATABASE_URL: "
+                "postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@postgres:5432/app\n"
+            ),
+        },
+        discovery_sources={"secret-path-gemini-env"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
+
+
+def test_remote_dsn_is_recorded_for_review_but_is_not_issue_worthy(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """A bare scheme://user:password@host shape has no provider-specific structure."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "config/database.ini": (
+                "DATABASE_URL=postgres://svcuser:hV7pQ2xNmR9d@db.prod.acme-corp.io:5432/app\n"
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
+    assert exposed.confidence == "needs_review"
+    assert exposed.issue_worthy is False
+    assert report.action == "watch"
+    assert "hV7pQ2xNmR9d" not in "\n".join(exposed.evidence)
+
+
+def test_detector_regex_source_is_not_captured_as_connection_string_evidence(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """Scanning a fork of this project must not treat its own patterns as evidence."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "detectors.py": (
+                'PAT = re.compile(r"(?P<dsn>mysql://(?P<user>[^:\\s/@]+):'
+                '(?P<password>[^@\\s]+)@(?P<host>[^\\s]+))")\n'
+            ),
+        },
+        discovery_sources={"auth-import-posture"},
+        scan_date=SCAN_DATE,
+    )
+
+    assert report.action == "watch"
+    assert "exposed_secret" not in {finding.finding_type for finding in findings}
 
 
 def test_env_template_placeholder_connection_string_does_not_trigger_exposed_secret(
@@ -315,9 +467,7 @@ def test_env_template_placeholder_connection_string_does_not_trigger_exposed_sec
     report, findings = analyze_repository(
         metadata=repo_metadata,
         files={
-            ".env.example": (
-                "DATABASE_URL=postgres://user:password@localhost:5432/cliproxy\n"
-            ),
+            ".env.example": ("DATABASE_URL=postgres://user:password@localhost:5432/cliproxy\n"),
             "deploy/.env.template": (
                 "MONGODB_URL=mongodb://user:password@db.example.com:27017/app\n"
             ),
@@ -344,9 +494,12 @@ def test_env_template_real_connection_string_still_triggers_exposed_secret(
         scan_date=SCAN_DATE,
     )
 
-    assert report.action == "file_issue"
+    assert report.action == "watch"
     exposed = next(finding for finding in findings if finding.finding_type == "exposed_secret")
-    assert ".env.example:1 - [REDACTED:postgres://scanner:[REDACTED:" in exposed.evidence[0]
+    assert exposed.confidence == "needs_review"
+    assert exposed.evidence[0] == (
+        ".env.example:1 - postgres://scanner:[REDACTED]@db.prod.internal:5432/app"
+    )
 
 
 def test_exposed_secret_detects_pypirc_docker_and_terraform_credentials(
@@ -422,15 +575,96 @@ def test_callback_exposure_detected(repo_metadata: RepoMetadata) -> None:
     report, findings = analyze_repository(
         metadata=repo_metadata,
         files={
-            "docker-compose.yml": 'ports:\n  - "8317:8317"\n  - "8085:8085"\n',
-            "internal/api/handlers/management/auth_files.go": 'addr := fmt.Sprintf("0.0.0.0:%d", port)\n',
-            "internal/auth/codex/oauth_server.go": 'Addr:         fmt.Sprintf(":%d", s.port),\n',
+            "docker-compose.yml": (
+                "services:\n"
+                "  oauth:\n"
+                "    ports:\n"
+                '      - "8085:8085"\n'
+                "    environment:\n"
+                "      OAUTH_CALLBACK_HOST: 0.0.0.0\n"
+                "      OAUTH_REDIRECT_URI: http://0.0.0.0:8085/callback\n"
+            ),
+            "internal/auth/codex/oauth_server.go": (
+                'Addr: fmt.Sprintf("0.0.0.0:%d", s.port),\n'
+                'redirect_uri := "http://0.0.0.0:8085/callback"\n'
+            ),
         },
         discovery_sources={"callback-exposure"},
         scan_date=SCAN_DATE,
     )
     assert report.classification == "watchlist"
     assert any(finding.finding_type == "callback_exposure" for finding in findings)
+
+
+def test_generic_container_binds_are_not_callback_exposure(repo_metadata: RepoMetadata) -> None:
+    """Two unrelated 0.0.0.0 service binds are not a published OAuth callback."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "docker-compose.yml": (
+                "services:\n"
+                "  api:\n"
+                "    environment:\n"
+                "      API_HOST: 0.0.0.0\n"
+                "  hermes:\n"
+                "    expose:\n"
+                '      - "9000"\n'
+                "    environment:\n"
+                "      API_SERVER_HOST: 0.0.0.0\n"
+            ),
+        },
+        discovery_sources={"callback-exposure"},
+        scan_date=SCAN_DATE,
+    )
+    assert report.action == "watch"
+    assert "callback_exposure" not in {finding.finding_type for finding in findings}
+
+
+def test_unpublished_oauth_service_is_not_callback_exposure(repo_metadata: RepoMetadata) -> None:
+    """OAuth semantics without a host-port mapping is not an external exposure."""
+    _report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "docker-compose.yml": (
+                "services:\n"
+                "  oauth:\n"
+                "    expose:\n"
+                '      - "8085"\n'
+                "    environment:\n"
+                "      OAUTH_CALLBACK_HOST: 0.0.0.0\n"
+                "      OAUTH_REDIRECT_URI: http://0.0.0.0:8085/callback\n"
+            ),
+        },
+        discovery_sources={"callback-exposure"},
+        scan_date=SCAN_DATE,
+    )
+    assert "callback_exposure" not in {finding.finding_type for finding in findings}
+
+
+def test_lone_watchlist_finding_does_not_trigger_issue_filing(
+    repo_metadata: RepoMetadata,
+) -> None:
+    """One watchlist-grade finding is recorded, not escalated to a maintainer."""
+    report, findings = analyze_repository(
+        metadata=repo_metadata,
+        files={
+            "docker-compose.yml": (
+                "services:\n"
+                "  oauth:\n"
+                "    ports:\n"
+                '      - "8085:8085"\n'
+                "    environment:\n"
+                "      OAUTH_CALLBACK_HOST: 0.0.0.0\n"
+                "      OAUTH_REDIRECT_URI: http://0.0.0.0:8085/callback\n"
+            ),
+        },
+        discovery_sources={"callback-exposure"},
+        scan_date=SCAN_DATE,
+    )
+    assert [finding.finding_type for finding in findings] == ["callback_exposure"]
+    assert report.classification == "watchlist"
+    assert report.issue_worthy_count == 1
+    assert report.action == "watch"
 
 
 def test_non_live_secret_contexts_do_not_trigger_exposed_secret(

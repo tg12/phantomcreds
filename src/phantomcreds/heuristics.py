@@ -1,12 +1,17 @@
 """Repo-level credential-risk detection and scoring."""
+
 # pylint: disable=line-too-long
 # pylint: disable=too-many-lines
 
 from __future__ import annotations
 
+import math
 import re
 from base64 import b64decode
+from collections import Counter
 from collections.abc import Iterable
+from dataclasses import dataclass
+from itertools import pairwise
 
 from phantomcreds.config import (
     CALLBACK_PATHS,
@@ -17,7 +22,13 @@ from phantomcreds.config import (
     SERVER_PATHS,
     STORE_PATHS,
 )
-from phantomcreds.models import Classification, RepoFinding, RepoMetadata, RepoReport
+from phantomcreds.models import (
+    Classification,
+    IssueAction,
+    RepoFinding,
+    RepoMetadata,
+    RepoReport,
+)
 
 _SECRET_FILE_SUFFIXES: tuple[str, ...] = (
     ".env",
@@ -126,6 +137,22 @@ _RAW_AUTH_FORWARD_RE = re.compile(
     r"cloneHeaders\(headers\)|cloneHeaders\(w\.requestHeaders\)|Authorization", re.IGNORECASE
 )
 _CALLBACK_RE = re.compile(r"0\.0\.0\.0|Addr:\s*fmt\.Sprintf\(\"", re.IGNORECASE)
+# A broad bind is only interesting when the listener is actually an OAuth/callback
+# endpoint. Without this gate any container that sets HOST=0.0.0.0 twice looks like a
+# published OAuth callback, which it is not.
+_OAUTH_CALLBACK_SEMANTIC_RE = re.compile(
+    r"oauth"
+    r"|/callback"
+    r"|callback[_-]?(?:url|uri|server|handler|port|path)"
+    r"|redirect[_-]?uri"
+    r"|authoriz(?:e|ation)[_-]?(?:url|uri|endpoint|server|code)",
+    re.IGNORECASE,
+)
+# Compose host publication: "8080:8080", "127.0.0.1:8080:8080", "8080:8080/tcp".
+_PUBLISHED_PORT_RE = re.compile(
+    r"^\s*-\s*[\"']?(?:\d{1,3}(?:\.\d{1,3}){3}:)?\d{1,5}:\d{1,5}(?:/(?:tcp|udp))?[\"']?\s*$"
+)
+_COMPOSE_BASENAME_RE = re.compile(r"^(?:docker-)?compose(?:[.-][^/]*)?\.ya?ml$", re.IGNORECASE)
 _AUTH_BYPASS_RE = re.compile(r"wrapManagementAuth|/threads|/auth|/settings|/docs")
 _WILDCARD_CORS_RE = re.compile(
     r"Access-Control-Allow-Origin\",\s*\"\*\"|Access-Control-Allow-Origin',\s*'\*'"
@@ -332,14 +359,17 @@ _CONNECTION_STRING_RES: tuple[tuple[str, re.Pattern[str]], ...] = (
     ),
 )
 _PLACEHOLDER_CONNECTION_USERS: frozenset[str] = frozenset(
-    {"user", "username", "example", "demo", "test", "admin", "root", "postgres"}
+    {"user", "username", "example", "demo", "test", "admin", "root", "postgres", "ci", "app"}
 )
 _PLACEHOLDER_CONNECTION_PASSWORDS: frozenset[str] = frozenset(
     {
         "password",
         "pass",
+        "passwd",
         "postgres",
         "postgresql",
+        "mysql",
+        "mongo",
         "secret",
         "changeme",
         "example",
@@ -347,17 +377,49 @@ _PLACEHOLDER_CONNECTION_PASSWORDS: frozenset[str] = frozenset(
         "test",
         "admin",
         "root",
+        "ci",
+        "app",
     }
 )
-_PLACEHOLDER_CONNECTION_HOSTS: tuple[str, ...] = (
-    "localhost",
-    "127.0.0.1",
-    "0.0.0.0",
-    "db",
-    "db.example.com",
-    "example.com",
-    "example.local",
+# Hosts that only resolve inside the machine or the deployment's own network. A DSN
+# pointing at one of these is not a remotely usable credential, so it is treated as
+# local/dev configuration rather than an exposure.
+_LOOPBACK_CONNECTION_HOSTS: frozenset[str] = frozenset(
+    {
+        "localhost",
+        "127.0.0.1",
+        "0.0.0.0",
+        "::1",
+        "host.docker.internal",
+    }
 )
+# RFC 2606 / RFC 6761 reserved names plus the documentation host this project emits.
+_RESERVED_CONNECTION_HOST_SUFFIXES: tuple[str, ...] = (
+    ".example",
+    ".example.com",
+    ".example.net",
+    ".example.org",
+    ".invalid",
+    ".test",
+    "example.com",
+    "example.net",
+    "example.org",
+)
+# Shell, Compose, Helm, and format-string interpolation. Text like
+# "postgresql://${DB_USER:-app}:${DB_PASSWORD}@postgres:5432/app" is configuration,
+# not a credential.
+_INTERPOLATION_RE = re.compile(
+    r"\$\{|\$[A-Za-z_]|\{\{|%\(|%s|<[^>]{1,64}>|\{[A-Za-z_][A-Za-z0-9_]*\}"
+)
+_CI_CONFIG_PATH_RE = re.compile(
+    r"(^|/)(?:\.github/workflows/|\.gitlab-ci\.ya?ml$|\.circleci/|\.travis\.ya?ml$"
+    r"|azure-pipelines[^/]*\.ya?ml$|Jenkinsfile$|\.woodpecker[^/]*|\.drone\.ya?ml$)",
+    re.IGNORECASE,
+)
+_DOC_PATH_RE = re.compile(r"\.(?:md|mdx|markdown|rst|adoc|asciidoc)$", re.IGNORECASE)
+# Hostnames cannot contain regex metacharacters. When they appear, the "DSN" is the
+# source text of a detector pattern, not a connection string.
+_REGEX_SOURCE_CHARS: frozenset[str] = frozenset("()[]{}<>?\\|^*+\"'")
 _PYPI_PASSWORD_RE = re.compile(r"password\s*[:=]\s*(?P<password>\S+)", re.IGNORECASE)
 _PYPI_USERNAME_RE = re.compile(r"username\s*[:=]\s*(?P<username>\S+)", re.IGNORECASE)
 _DOCKER_AUTH_RE = re.compile(r'"auth"\s*:\s*"(?P<auth>[A-Za-z0-9+/=]{16,})"', re.IGNORECASE)
@@ -381,6 +443,10 @@ _PLACEHOLDER_SECRET_RE = re.compile(
         |your[_-]?(?:openai|anthropic|openrouter|deepseek|groq|perplexity|gemini)[_-]?(?:api[_-]?)?(?:key|token)?
         |xxxxx+
         |<[^>]+>
+        |\$\{
+        |\{\{
+        |^\{[A-Za-z_][A-Za-z0-9_]*\}$
+        |\[REDACTED
     )
     """,
     re.IGNORECASE | re.VERBOSE,
@@ -398,6 +464,26 @@ _KNOWN_EXAMPLE_SECRET_VALUES: frozenset[str] = frozenset(
 )
 _MAX_EXPOSED_SECRET_EVIDENCE = 12
 
+# Secret kinds whose match alone is not evidence of a usable credential: patterns with
+# no fixed provider prefix, where the variable name is the only signal, plus the public
+# half of a credential pair. These must survive an additional low-signal check and can
+# never on their own justify contacting a maintainer.
+_WEAK_SECRET_KINDS: frozenset[str] = frozenset(
+    {
+        "aws_access_key_id",
+        "aws_secret_access_key",
+        "aws_session_token",
+        "cloudflare_api_token",
+        "vercel_token",
+    }
+)
+_HEX_DIGEST_RE = re.compile(
+    r"^(?:[0-9a-f]{32}|[0-9a-f]{40}|[0-9a-f]{64}|[0-9a-f]{128})$", re.IGNORECASE
+)
+_MIN_SECRET_ENTROPY_BITS = 3.0
+_MIN_SECRET_ALPHABET_SIZE = 8
+_MAX_SEQUENTIAL_RUN = 8
+
 _TYPE_WEIGHTS: dict[str, float] = {
     "harvest_posture": 0.18,
     "credential_persistence": 0.18,
@@ -408,6 +494,20 @@ _TYPE_WEIGHTS: dict[str, float] = {
     "wildcard_management_cors": 0.20,
     "exposed_secret": 0.35,
 }
+# Findings whose evidence is shape-based rather than structurally distinctive score at
+# half weight, so ambiguous regex hits cannot drag a repo into high_risk on their own.
+_NEEDS_REVIEW_WEIGHT_FACTOR = 0.5
+# Distinct issue-worthy finding types required before a non-high-risk repo is contacted.
+_MIN_CORRELATED_FAMILIES = 2
+
+
+@dataclass(frozen=True, slots=True)
+class _SecretEvidence:
+    """One redacted secret evidence line plus how distinctive its signature is."""
+
+    lineno: int
+    text: str
+    structural: bool
 
 
 def _collect_refs(path: str, content: str, pattern: re.Pattern[str], limit: int = 3) -> list[str]:
@@ -484,31 +584,103 @@ def _is_placeholder_secret_value(secret: str) -> bool:
     return _PLACEHOLDER_SECRET_RE.search(secret_value) is not None
 
 
+def _shannon_entropy(value: str) -> float:
+    """Return Shannon entropy in bits per character for a non-empty string."""
+    if not value:
+        return 0.0
+    counts = Counter(value)
+    length = len(value)
+    return -sum((count / length) * math.log2(count / length) for count in counts.values())
+
+
+def _has_sequential_run(value: str, run_length: int = _MAX_SEQUENTIAL_RUN) -> bool:
+    """Return True when the value contains a long ascending or descending character run.
+
+    Documentation placeholders such as ``AKIA1234567890ABCDEF`` and
+    ``abcdEFGHijklMNOPqrst`` are built from consecutive characters. Randomly generated
+    credentials effectively never contain a run this long.
+    """
+    normalized = value.casefold()
+    if len(normalized) < run_length:
+        return False
+    ascending = 1
+    descending = 1
+    for previous, current in pairwise(normalized):
+        delta = ord(current) - ord(previous)
+        ascending = ascending + 1 if delta == 1 else 1
+        descending = descending + 1 if delta == -1 else 1
+        if ascending >= run_length or descending >= run_length:
+            return True
+    return False
+
+
+def _is_low_signal_secret_value(secret: str) -> bool:
+    """Return True when a prefix-less match is too shapeless to call a credential.
+
+    Filters digest-shaped values (a SHA-1 hex digest is exactly 40 base64-alphabet
+    characters and matches the AWS secret-key pattern), sequential placeholders, and
+    values with too little character diversity to be a generated key.
+    """
+    value = secret.strip().strip("\"'")
+    if not value:
+        return True
+    if _HEX_DIGEST_RE.match(value):
+        return True
+    if _has_sequential_run(value):
+        return True
+    if len(value) >= 16 and len(set(value)) < _MIN_SECRET_ALPHABET_SIZE:
+        return True
+    return _shannon_entropy(value) < _MIN_SECRET_ENTROPY_BITS
+
+
+def _is_regex_source_match(match: re.Match[str]) -> bool:
+    """Return True when a "DSN" is really the source text of a detector pattern.
+
+    phantomcreds scans arbitrary public repositories, including forks of itself and
+    anything that copies these detectors, so its own pattern definitions would
+    otherwise be captured as evidence.
+    """
+    host = match.group("host")
+    return bool(_REGEX_SOURCE_CHARS & set(host)) or "(?P<" in match.group("dsn")
+
+
+def _connection_host_is_non_live(host_value: str) -> bool:
+    host = host_value.strip().lower().split("/", 1)[0].split("?", 1)[0]
+    host_name = host.rsplit(":", 1)[0] if ":" in host else host
+    host_name = host_name.strip("[]")
+    if host_name in _LOOPBACK_CONNECTION_HOSTS:
+        return True
+    if host_name.endswith(_RESERVED_CONNECTION_HOST_SUFFIXES):
+        return True
+    # A single-label host is a Compose/Kubernetes service name ("postgres", "db"),
+    # reachable only from inside the deployment's own network.
+    return "." not in host_name
+
+
 def _looks_like_placeholder_connection(match: re.Match[str], path: str) -> bool:
+    """Return True when a matched DSN is not evidence of a live remote credential."""
+    dsn = match.group("dsn")
+    if _INTERPOLATION_RE.search(dsn):
+        return True
+
     password = match.group("password").strip()
     if _is_placeholder_secret_value(password):
         return True
-    if not _is_env_template_path(path):
-        return False
 
     user = match.group("user").strip().lower()
-    normalized_password = password.strip("\"'").lower()
-    host = match.group("host").strip().lower().split("/", 1)[0]
-    host_name = host.split(":", 1)[0]
-
-    host_is_placeholder = (
-        host_name in _PLACEHOLDER_CONNECTION_HOSTS
-        or host.startswith("localhost:")
-        or host.startswith("127.0.0.1:")
-        or host.startswith("0.0.0.0:")
-    )
-    user_is_placeholder = user in _PLACEHOLDER_CONNECTION_USERS or user.startswith("{")
-    password_is_placeholder = (
-        normalized_password in _PLACEHOLDER_CONNECTION_PASSWORDS
-        or normalized_password.startswith("{")
-        or normalized_password.endswith("}")
-    )
-    return host_is_placeholder and user_is_placeholder and password_is_placeholder
+    normalized_password = password.strip("\"'").lower().rstrip("`")
+    if user and user == normalized_password:
+        return True
+    if (
+        user in _PLACEHOLDER_CONNECTION_USERS
+        and normalized_password in _PLACEHOLDER_CONNECTION_PASSWORDS
+    ):
+        return True
+    if _connection_host_is_non_live(match.group("host")):
+        return True
+    # Credentials in CI definitions belong to ephemeral service containers, and DSNs in
+    # prose are worked examples regardless of where the document sits in the tree.
+    return bool(_CI_CONFIG_PATH_RE.search(path) or _DOC_PATH_RE.search(path))
 
 
 def _is_code_like_path(path: str) -> bool:
@@ -559,10 +731,11 @@ def _redact_secret(secret: str) -> str:
 
 def _redact_connection_string(match: re.Match[str]) -> str:
     user = match.group("user")
-    password = match.group("password")
     host = match.group("host")
     scheme = match.group("dsn").split("://", 1)[0]
-    return f"{scheme}://{user}:[REDACTED:{_redact_secret(password)}]@{host}"
+    # The password is dropped entirely rather than partially redacted: this string is
+    # published in a public issue on somebody else's repository.
+    return f"{scheme}://{user}:[REDACTED]@{host}"
 
 
 def _looks_like_docker_auth(auth_value: str) -> bool:
@@ -579,11 +752,11 @@ def _is_redacted_example_line(line: str) -> bool:
     return "[REDACTED:" in line
 
 
-def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[str]:
+def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for lineno, line in enumerate(content.splitlines(), 1):
         match = _NETRC_RE.search(line)
         if not match:
@@ -594,15 +767,18 @@ def _collect_netrc_evidence(path: str, content: str, limit: int) -> list[str]:
         machine = match.group("machine").strip()
         login = match.group("login").strip()
         evidence.append(
-            f"{path}:{lineno} - machine {machine} login {login} "
-            f"password [REDACTED:{_redact_secret(password)}]"
+            _SecretEvidence(
+                lineno=lineno,
+                text=f"{path}:{lineno} - machine {machine} login {login} password [REDACTED]",
+                structural=True,
+            )
         )
         if len(evidence) >= limit:
             break
     return evidence
 
 
-def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[str]:
+def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
@@ -611,38 +787,63 @@ def _collect_aws_pair_evidence(path: str, content: str, limit: int) -> list[str]
     for lineno, line in enumerate(content.splitlines(), 1):
         key_match = _AWS_CREDENTIAL_ID_RE.search(line)
         if key_match:
-            key_matches[lineno] = key_match.group("id").strip()
+            key_value = key_match.group("id").strip()
+            # Only the 16-character body carries randomness; the AKIA/ASIA/AIDA/AROA
+            # prefix is fixed, so documentation IDs such as AKIA1234567890ABCDEF are
+            # only distinguishable from real ones by the body.
+            if not _is_placeholder_secret_value(key_value) and not _is_low_signal_secret_value(
+                key_value[4:]
+            ):
+                key_matches[lineno] = key_value
         secret_match = _AWS_CREDENTIAL_SECRET_RE.search(line)
         if secret_match:
             secret_value = secret_match.group("secret").strip()
-            if not _is_placeholder_secret_value(secret_value):
+            if not _is_placeholder_secret_value(secret_value) and not _is_low_signal_secret_value(
+                secret_value
+            ):
                 secret_matches[lineno] = secret_value
 
     if not key_matches or not secret_matches:
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for key_lineno, key_value in key_matches.items():
         for secret_lineno, secret_value in secret_matches.items():
             if abs(key_lineno - secret_lineno) > 5:
                 continue
             evidence.append(
-                f"{path}:{key_lineno} - AWS_ACCESS_KEY_ID=[REDACTED:{_redact_secret(key_value)}]"
+                _SecretEvidence(
+                    lineno=key_lineno,
+                    text=(
+                        f"{path}:{key_lineno} - "
+                        f"AWS_ACCESS_KEY_ID=[REDACTED:{_redact_secret(key_value)}]"
+                    ),
+                    structural=True,
+                )
             )
             if len(evidence) >= limit:
                 return evidence
             evidence.append(
-                f"{path}:{secret_lineno} - AWS_SECRET_ACCESS_KEY=[REDACTED:{_redact_secret(secret_value)}]"
+                _SecretEvidence(
+                    lineno=secret_lineno,
+                    text=(
+                        f"{path}:{secret_lineno} - "
+                        f"AWS_SECRET_ACCESS_KEY=[REDACTED:{_redact_secret(secret_value)}]"
+                    ),
+                    structural=True,
+                )
             )
             return evidence[:limit]
     return []
 
 
-def _collect_connection_string_evidence(path: str, content: str, limit: int) -> list[str]:
+def _collect_connection_string_evidence(
+    path: str, content: str, limit: int
+) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for lineno, line in enumerate(content.splitlines(), 1):
         if _is_redacted_example_line(line):
             continue
@@ -650,16 +851,24 @@ def _collect_connection_string_evidence(path: str, content: str, limit: int) -> 
             match = pattern.search(line)
             if not match:
                 continue
-            if _looks_like_placeholder_connection(match, path):
+            if _is_regex_source_match(match) or _looks_like_placeholder_connection(match, path):
                 continue
-            evidence.append(f"{path}:{lineno} - [REDACTED:{_redact_connection_string(match)}]")
+            evidence.append(
+                _SecretEvidence(
+                    lineno=lineno,
+                    text=f"{path}:{lineno} - {_redact_connection_string(match)}",
+                    # A "scheme://user:password@host" shape has no provider-specific
+                    # structure, so it never justifies contacting a maintainer alone.
+                    structural=False,
+                )
+            )
             break
         if len(evidence) >= limit:
             break
     return evidence
 
 
-def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[str]:
+def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
@@ -684,22 +893,35 @@ def _collect_pypirc_evidence(path: str, content: str, limit: int) -> list[str]:
     if not username_matches or not password_matches:
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for username_lineno, username in username_matches.items():
         for password_lineno, password in password_matches.items():
             if abs(username_lineno - password_lineno) > 5:
                 continue
-            evidence.append(f"{path}:{username_lineno} - username={username}")
+            evidence.append(
+                _SecretEvidence(
+                    lineno=username_lineno,
+                    text=f"{path}:{username_lineno} - username={username}",
+                    structural=True,
+                )
+            )
             if len(evidence) >= limit:
                 return evidence
             evidence.append(
-                f"{path}:{password_lineno} - password=[REDACTED:{_redact_secret(password)}]"
+                _SecretEvidence(
+                    lineno=password_lineno,
+                    text=(
+                        f"{path}:{password_lineno} - "
+                        f"password=[REDACTED:{_redact_secret(password)}]"
+                    ),
+                    structural=True,
+                )
             )
             return evidence[:limit]
     return []
 
 
-def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[str]:
+def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
@@ -709,7 +931,7 @@ def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[s
     if not _DOCKER_AUTHS_RE.search(content):
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for lineno, line in enumerate(content.splitlines(), 1):
         match = _DOCKER_AUTH_RE.search(line)
         if not match:
@@ -717,13 +939,19 @@ def _collect_docker_auth_evidence(path: str, content: str, limit: int) -> list[s
         auth_value = match.group("auth").strip()
         if _is_placeholder_secret_value(auth_value) or not _looks_like_docker_auth(auth_value):
             continue
-        evidence.append(f"{path}:{lineno} - auth=[REDACTED:{_redact_secret(auth_value)}]")
+        evidence.append(
+            _SecretEvidence(
+                lineno=lineno,
+                text=f"{path}:{lineno} - auth=[REDACTED:{_redact_secret(auth_value)}]",
+                structural=True,
+            )
+        )
         if len(evidence) >= limit:
             break
     return evidence
 
 
-def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> list[str]:
+def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
@@ -733,7 +961,7 @@ def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> li
     if not _TERRAFORM_HOST_RE.search(content):
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for lineno, line in enumerate(content.splitlines(), 1):
         match = _TERRAFORM_TOKEN_RE.search(line)
         if not match:
@@ -741,33 +969,50 @@ def _collect_terraform_token_evidence(path: str, content: str, limit: int) -> li
         token = match.group("token").strip()
         if _is_placeholder_secret_value(token):
             continue
-        evidence.append(f"{path}:{lineno} - token=[REDACTED:{_redact_secret(token)}]")
+        evidence.append(
+            _SecretEvidence(
+                lineno=lineno,
+                text=f"{path}:{lineno} - token=[REDACTED:{_redact_secret(token)}]",
+                structural=True,
+            )
+        )
         if len(evidence) >= limit:
             break
     return evidence
 
 
-def _collect_private_key_evidence(path: str, content: str) -> list[str]:
+def _collect_private_key_evidence(path: str, content: str) -> list[_SecretEvidence]:
     if _is_non_live_secret_path(path, allow_template_basename=True):
         return []
 
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     for lineno, line in enumerate(content.splitlines(), 1):
         if _is_redacted_example_line(line):
             continue
-        if _SSH_PRIVATE_KEY_HEADER_RE.search(line):
-            header_match = _SSH_PRIVATE_KEY_HEADER_RE.search(line)
-            if header_match is not None:
-                evidence.append(f"{path}:{lineno} - [REDACTED:{header_match.group(0)}]")
+        header_match = _SSH_PRIVATE_KEY_HEADER_RE.search(line)
+        if header_match is not None:
+            evidence.append(
+                _SecretEvidence(
+                    lineno=lineno,
+                    text=f"{path}:{lineno} - [REDACTED:{header_match.group(0)}]",
+                    structural=True,
+                )
+            )
 
     if "[REDACTED:" not in content and _GCP_SERVICE_ACCOUNT_RE.search(content):
-        evidence.append(f"{path}:1 - [REDACTED:GCP service account private key block]")
+        evidence.append(
+            _SecretEvidence(
+                lineno=1,
+                text=f"{path}:1 - [REDACTED:GCP service account private key block]",
+                structural=True,
+            )
+        )
 
     return evidence
 
 
-def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list[str]:
-    evidence: list[str] = []
+def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
+    evidence: list[_SecretEvidence] = []
     if limit <= 0:
         return evidence
     if _is_non_live_secret_path(path, allow_template_basename=True):
@@ -778,7 +1023,7 @@ def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list
             return evidence
         if _is_redacted_example_line(line):
             continue
-        for _secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
+        for secret_kind, pattern in _SECRET_ASSIGNMENT_RES:
             match = pattern.search(line)
             if not match:
                 continue
@@ -787,38 +1032,50 @@ def _collect_inline_secret_evidence(path: str, content: str, limit: int) -> list
                 continue
             if _is_env_template_path(path) and _is_placeholder_secret_value(line):
                 continue
+            weak = secret_kind in _WEAK_SECRET_KINDS
+            if weak and _is_low_signal_secret_value(secret_value):
+                continue
             redacted = _redact_secret(secret_value)
-            evidence.append(f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]")
+            evidence.append(
+                _SecretEvidence(
+                    lineno=lineno,
+                    text=f"{path}:{lineno} - {match.group(1)}=[REDACTED:{redacted}]",
+                    structural=not weak,
+                )
+            )
             break
 
     return evidence
 
 
-def _collect_exposed_secret_evidence(path: str, content: str, limit: int) -> list[str]:
-    evidence = _collect_private_key_evidence(path, content)
-    if len(evidence) < limit:
-        evidence.extend(_collect_netrc_evidence(path, content, limit - len(evidence)))
-    if len(evidence) < limit:
-        evidence.extend(_collect_aws_pair_evidence(path, content, limit - len(evidence)))
-    if len(evidence) < limit:
-        evidence.extend(_collect_connection_string_evidence(path, content, limit - len(evidence)))
-    if len(evidence) < limit:
-        evidence.extend(_collect_pypirc_evidence(path, content, limit - len(evidence)))
-    if len(evidence) < limit:
-        evidence.extend(_collect_docker_auth_evidence(path, content, limit - len(evidence)))
-    if len(evidence) < limit:
-        evidence.extend(_collect_terraform_token_evidence(path, content, limit - len(evidence)))
-    if len(evidence) >= limit:
-        return evidence[:limit]
-    evidence.extend(_collect_inline_secret_evidence(path, content, limit - len(evidence)))
-    return evidence
+def _collect_exposed_secret_evidence(path: str, content: str, limit: int) -> list[_SecretEvidence]:
+    collected = [
+        *_collect_private_key_evidence(path, content),
+        *_collect_netrc_evidence(path, content, limit),
+        *_collect_aws_pair_evidence(path, content, limit),
+        *_collect_pypirc_evidence(path, content, limit),
+        *_collect_docker_auth_evidence(path, content, limit),
+        *_collect_terraform_token_evidence(path, content, limit),
+        *_collect_inline_secret_evidence(path, content, limit),
+        *_collect_connection_string_evidence(path, content, limit),
+    ]
+    # One source line yields at most one indicator: an AWS credential pair otherwise
+    # counts twice, once from the pair detector and once from the inline detector,
+    # inflating the reported indicator count and the composite score.
+    strongest_per_line: dict[int, _SecretEvidence] = {}
+    for item in collected:
+        existing = strongest_per_line.get(item.lineno)
+        if existing is None or (item.structural and not existing.structural):
+            strongest_per_line[item.lineno] = item
+    return [strongest_per_line[lineno] for lineno in sorted(strongest_per_line)][:limit]
 
 
 def _detect_exposed_secrets(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    evidence: list[str] = []
+    evidence: list[_SecretEvidence] = []
     total_secret_hits = 0
+    structural_hits = 0
 
     for path, content in files.items():
         file_evidence = _collect_exposed_secret_evidence(
@@ -829,6 +1086,7 @@ def _detect_exposed_secrets(
         if not file_evidence:
             continue
         total_secret_hits += len(file_evidence)
+        structural_hits += sum(1 for item in file_evidence if item.structural)
         remaining = _MAX_EXPOSED_SECRET_EVIDENCE - len(evidence)
         if remaining > 0:
             evidence.extend(file_evidence[:remaining])
@@ -836,7 +1094,31 @@ def _detect_exposed_secrets(
     if not evidence:
         return []
 
+    lines = tuple(item.text for item in evidence)
     secret_label = "indicator" if total_secret_hits == 1 else "indicators"
+    if not structural_hits:
+        # Every hit is shape-based: a bare "scheme://user:password@host" DSN or a
+        # prefix-less token assignment. That is worth recording, but it is not
+        # defensible enough to open an issue on somebody else's repository.
+        return [
+            RepoFinding(
+                repo_full_name=metadata.full_name,
+                finding_type="exposed_secret",
+                title="Credential-shaped material appears in current repository files",
+                severity="medium",
+                confidence="needs_review",
+                summary=(
+                    f"{total_secret_hits} credential-shaped {secret_label} were found in fetched "
+                    "repository files, but none carries a provider-specific structure, private-key "
+                    "block, or credential-pair signature. This is recorded for review and is not "
+                    "treated as a confirmed exposure."
+                ),
+                issue_worthy=False,
+                scan_date=scan_date,
+                evidence=lines,
+            )
+        ]
+
     return [
         RepoFinding(
             repo_full_name=metadata.full_name,
@@ -847,11 +1129,13 @@ def _detect_exposed_secrets(
             summary=(
                 "Current repository files appear to contain committed API keys or webhook-style "
                 f"credential material. {total_secret_hits} redacted secret {secret_label} "
-                "were found in fetched repository files. Evidence is redacted in the report output."
+                f"were found in fetched repository files, {structural_hits} of which carry a "
+                "provider-specific or private-key signature. Evidence is redacted in the report "
+                "output."
             ),
             issue_worthy=True,
             scan_date=scan_date,
-            evidence=tuple(evidence[:_MAX_EXPOSED_SECRET_EVIDENCE]),
+            evidence=lines,
         )
     ]
 
@@ -976,10 +1260,37 @@ def _detect_raw_auth_forwarding(
     ]
 
 
+def _has_callback_semantics(path: str, content: str) -> bool:
+    return bool(
+        _OAUTH_CALLBACK_SEMANTIC_RE.search(path) or _OAUTH_CALLBACK_SEMANTIC_RE.search(content)
+    )
+
+
+def _callback_evidence_paths(files: dict[str, str]) -> list[str]:
+    """Return deployment/callback files that actually describe a published callback.
+
+    Two requirements are checked independently, because a broad bind alone proves
+    nothing: the file must describe OAuth/callback behaviour, and a Compose file must
+    additionally publish a host port. Container services that merely set HOST=0.0.0.0
+    and are reachable only on the Compose network are not exposed.
+    """
+    eligible: list[str] = []
+    for path in CALLBACK_PATHS:
+        content = files.get(path)
+        if content is None or not _has_callback_semantics(path, content):
+            continue
+        if _COMPOSE_BASENAME_RE.match(_basename(path)) and not any(
+            _PUBLISHED_PORT_RE.match(line) for line in content.splitlines()
+        ):
+            continue
+        eligible.append(path)
+    return eligible
+
+
 def _detect_callback_exposure(
     metadata: RepoMetadata, files: dict[str, str], scan_date: str
 ) -> list[RepoFinding]:
-    evidence = _find_matching_files(files, _CALLBACK_RE, CALLBACK_PATHS)
+    evidence = _find_matching_files(files, _CALLBACK_RE, _callback_evidence_paths(files))
     if len(evidence) < 2:
         return []
     return [
@@ -1054,12 +1365,46 @@ def _detect_wildcard_management_cors(
     ]
 
 
+def _finding_weight(finding: RepoFinding) -> float:
+    weight = _TYPE_WEIGHTS.get(finding.finding_type, 0.0)
+    if finding.confidence == "needs_review":
+        return weight * _NEEDS_REVIEW_WEIGHT_FACTOR
+    return weight
+
+
 def _classify(score: float) -> Classification:
     if score >= SCORE_HIGH_RISK:
         return "high_risk"
     if score >= SCORE_WATCHLIST:
         return "watchlist"
     return "clean"
+
+
+def _decide_action(
+    findings: list[RepoFinding],
+    classification: Classification,
+    overt_harvest_posture: bool,
+) -> IssueAction:
+    """Decide whether findings justify contacting the repository's maintainer.
+
+    External contact requires either a structurally distinctive secret, or several
+    independent evidence families, or a high-risk composite. A lone watchlist-grade
+    regex hit is recorded in the ledger and goes no further.
+    """
+    issue_worthy = [finding for finding in findings if finding.issue_worthy]
+    issue_worthy_types = {finding.finding_type for finding in issue_worthy}
+    has_persistence = any(f.finding_type == "credential_persistence" for f in findings)
+    has_exposed_secret = any(f.finding_type == "exposed_secret" for f in findings)
+    has_confirmed_secret = any(f.finding_type == "exposed_secret" for f in issue_worthy)
+
+    if overt_harvest_posture and (issue_worthy or has_persistence or has_exposed_secret):
+        return "report_only"
+    if has_confirmed_secret or (
+        issue_worthy
+        and (classification == "high_risk" or len(issue_worthy_types) >= _MIN_CORRELATED_FAMILIES)
+    ):
+        return "file_issue"
+    return "watch"
 
 
 def analyze_repository(
@@ -1084,22 +1429,14 @@ def analyze_repository(
 
     score = 0.0
     for finding in findings:
-        score += _TYPE_WEIGHTS.get(finding.finding_type, 0.0)
+        score += _finding_weight(finding)
     if findings:
         score += min(0.15, 0.03 * max(0, len(findings) - 1))
     score = round(min(score, 1.0), 3)
 
     classification = _classify(score)
     issue_worthy_count = sum(1 for finding in findings if finding.issue_worthy)
-    has_persistence = any(f.finding_type == "credential_persistence" for f in findings)
-    has_exposed_secret = any(f.finding_type == "exposed_secret" for f in findings)
-
-    if overt_harvest_posture and (issue_worthy_count > 0 or has_persistence or has_exposed_secret):
-        action = "report_only"
-    elif has_exposed_secret or issue_worthy_count > 0:
-        action = "file_issue"
-    else:
-        action = "watch"
+    action = _decide_action(findings, classification, overt_harvest_posture)
 
     report = RepoReport(
         full_name=metadata.full_name,

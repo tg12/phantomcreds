@@ -192,6 +192,10 @@ MAX_RECENT_COMMIT_REVIEW_CANDIDATES: Final[int] = 30
 MAX_FILES_PER_REPO: Final[int] = 18
 MAX_SECRET_SWEEP_FILES_PER_REPO: Final[int] = 80
 MAX_ISSUES_PER_SCAN: Final[int] = 10
+# Circuit breaker enforced from the notification ledger, independently of the heuristic
+# scorer. A scorer regression or a config mistake cannot exceed this across all repos.
+MAX_ISSUES_PER_ROLLING_WINDOW: Final[int] = 15
+ROLLING_ISSUE_WINDOW_HOURS: Final[int] = 24
 FILE_FETCH_WORKERS: Final[int] = 8
 RECENT_PUSH_WINDOW_HOURS: Final[int] = 72
 RECENT_COMMIT_LOOKBACK_DAYS: Final[int] = 7
@@ -200,8 +204,26 @@ MAX_RECENT_COMMITS_TO_CHECK: Final[int] = 15
 SCORE_HIGH_RISK: Final[float] = 0.65
 SCORE_WATCHLIST: Final[float] = 0.20
 
+# Pre-emptive opt-out. A maintainer can set either signal before phantomcreds ever
+# reaches the repository; both are checked before analysis, not just before filing.
+OPT_OUT_TOPICS: Final[frozenset[str]] = frozenset(
+    {
+        "no-phantomcreds",
+        "phantomcreds-opt-out",
+        "no-automated-issues",
+    }
+)
+OPT_OUT_MARKER_PATHS: Final[frozenset[str]] = frozenset(
+    {
+        ".phantomcreds-opt-out",
+        ".github/phantomcreds-opt-out",
+        ".well-known/phantomcreds-opt-out",
+    }
+)
+
 REPORTS_FILE: Final[Path] = Path("data/repos.jsonl")
 FINDINGS_FILE: Final[Path] = Path("data/findings.jsonl")
+NOTIFICATIONS_FILE: Final[Path] = Path("data/notifications.jsonl")
 ALLOWLIST_FILE: Final[Path] = Path("data/allowlist.txt")
 
 README_START_MARKER: Final[str] = "<!-- STATS:START -->"

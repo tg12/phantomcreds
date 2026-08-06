@@ -3,12 +3,19 @@
 from __future__ import annotations
 
 import logging
+from datetime import UTC, datetime, timedelta
 from typing import Protocol
 
 import requests
 
-from phantomcreds.config import MAX_ISSUES_PER_SCAN
-from phantomcreds.models import RepoFinding, RepoReport
+from phantomcreds.config import (
+    MAX_ISSUES_PER_ROLLING_WINDOW,
+    MAX_ISSUES_PER_SCAN,
+    OPT_OUT_MARKER_PATHS,
+    OPT_OUT_TOPICS,
+    ROLLING_ISSUE_WINDOW_HOURS,
+)
+from phantomcreds.models import NotificationRecord, RepoFinding, RepoReport
 
 _log = logging.getLogger(__name__)
 
@@ -21,6 +28,7 @@ _PROJECT_URL = "https://github.com/tg12/phantomcreds"
 _CREATOR_NAME = "James Sawyer"
 _CREATOR_URL = "https://github.com/tg12"
 _CREATOR_LABS_URL = "https://labs.jamessawyer.co.uk/"
+_CREATED_EVENTS: frozenset[str] = frozenset({"created"})
 
 
 def _scan_marker(scan_date: str) -> str:
@@ -30,13 +38,13 @@ def _scan_marker(scan_date: str) -> str:
 class IssueClient(Protocol):
     """Minimal issue client protocol for create/update operations."""
 
-    def find_open_issue(
+    def find_issue(
         self,
         owner_repo: str,
         title_fragment: str,
         body_markers: tuple[str, ...] | None = None,
-    ) -> int | None:
-        """Return an existing matching open issue number, if present."""
+    ) -> tuple[int, str] | None:
+        """Return the newest matching phantomcreds issue as (number, state)."""
 
     def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
         """Create a new issue and return its number."""
@@ -117,6 +125,24 @@ Show the exact files changed and include a short verification checklist for the 
 """
 
 
+def _opt_out_section() -> str:
+    topics = ", ".join(f"`{topic}`" for topic in sorted(OPT_OUT_TOPICS))
+    paths = ", ".join(f"`{path}`" for path in sorted(OPT_OUT_MARKER_PATHS))
+    return f"""\
+### Stop this bot contacting this repository
+
+Any one of these takes effect before the next scan, and no further issue or comment
+will be filed here:
+
+- Add one of these repository topics: {topics}
+- Commit an empty marker file at any of: {paths}
+- Close this issue. A closed phantomcreds issue is treated as a refusal, and this
+  repository will not be contacted again even if the finding persists.
+- Open an issue on [the phantomcreds tracker]({_PROJECT_URL}/issues) asking for
+  `{{owner}}/{{repo}}` to be added to the permanent exclusion list.
+"""
+
+
 def _issue_title(findings: list[RepoFinding]) -> str:
     if any(finding.finding_type == "exposed_secret" for finding in findings):
         return _SECRETS_ISSUE_TITLE
@@ -145,6 +171,10 @@ def _issue_body(report: RepoReport, findings: list[RepoFinding]) -> str:
 
 ## Credential-handling risk report for `{report.full_name}`
 
+This is an automated report from a scanner you did not install. Nothing here is a
+judgement about you or your project, and there is no obligation to reply. If this is
+unwelcome, the opt-out section at the end stops it permanently.
+
 phantomcreds detected repo-level code or deployment patterns that warrant maintainer review.
 
 | Metric | Value |
@@ -164,6 +194,8 @@ Detected finding types: `{finding_types}`
 
 This report is based on current files fetched from the repository's default branch at scan time.
 It does not by itself prove that older commits are clean or compromised.
+
+{_opt_out_section()}
 
 ---
 
@@ -188,7 +220,8 @@ def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
         f"{_scan_marker(report.scan_date)}\n"
         f"### Scan update: {report.scan_date}\n\n"
         "This issue remains open. The current scan still observes credential-handling "
-        "patterns that match the existing report.\n\n"
+        "patterns that match the existing report. Closing this issue stops all further "
+        "updates from this scanner.\n\n"
         f"- Composite score: **{report.composite:.3f}**\n"
         f"- Findings: {report.finding_count}\n"
         f"- Issue-worthy findings: {report.issue_worthy_count}\n\n"
@@ -204,8 +237,116 @@ def _comment_body(report: RepoReport, findings: list[RepoFinding]) -> str:
     )
 
 
-def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[RepoFinding]) -> None:
-    """Create or update one issue per qualifying repo."""
+def _record(
+    repo_full_name: str,
+    event: str,
+    title: str,
+    scan_date: str,
+    issue_number: int | None = None,
+) -> NotificationRecord:
+    return NotificationRecord(
+        repo_full_name=repo_full_name,
+        event=event,  # type: ignore[arg-type]
+        issue_number=issue_number,
+        title=title,
+        scan_date=scan_date,
+        recorded_at=datetime.now(UTC).isoformat(),
+    )
+
+
+def _recent_issue_count(prior: list[NotificationRecord], now: datetime) -> int:
+    """Count issues created across all repos inside the rolling window."""
+    cutoff = now - timedelta(hours=ROLLING_ISSUE_WINDOW_HOURS)
+    count = 0
+    for record in prior:
+        if record.event not in _CREATED_EVENTS:
+            continue
+        try:
+            recorded_at = datetime.fromisoformat(record.recorded_at)
+        except ValueError:
+            _log.warning("Unparsable notification timestamp: %r", record.recorded_at)
+            continue
+        if recorded_at.tzinfo is None:
+            recorded_at = recorded_at.replace(tzinfo=UTC)
+        if recorded_at >= cutoff:
+            count += 1
+    return count
+
+
+def _notify_repo(
+    client: IssueClient,
+    report: RepoReport,
+    repo_findings: list[RepoFinding],
+    budget_remaining: int,
+) -> NotificationRecord:
+    """Create or update one repo's issue and return what was decided."""
+    issue_title = _issue_title(repo_findings)
+    issue_markers = _issue_markers(repo_findings)
+    existing = client.find_issue(report.full_name, issue_title, issue_markers)
+
+    if existing is not None:
+        number, state = existing
+        if state != "open":
+            # A maintainer closed a phantomcreds issue. That is a refusal, and refiling
+            # over it is the behaviour that gets scanners blocked.
+            _log.info("Skipping %s: phantomcreds issue #%d is closed", report.full_name, number)
+            return _record(
+                report.full_name, "skipped_closed", issue_title, report.scan_date, number
+            )
+
+        comments = client.list_issue_comments(report.full_name, number)
+        marker = _scan_marker(report.scan_date)
+        if any(marker in comment for comment in comments):
+            _log.info(
+                "Skipping duplicate scan update for %s#%d on %s",
+                report.full_name,
+                number,
+                report.scan_date,
+            )
+            return _record(
+                report.full_name, "skipped_duplicate", issue_title, report.scan_date, number
+            )
+
+        client.add_comment(report.full_name, number, _comment_body(report, repo_findings))
+        _log.info("Commented on %s#%d", report.full_name, number)
+        return _record(report.full_name, "commented", issue_title, report.scan_date, number)
+
+    if budget_remaining <= 0:
+        _log.warning(
+            "Rolling %dh issue ceiling of %d reached; not filing on %s",
+            ROLLING_ISSUE_WINDOW_HOURS,
+            MAX_ISSUES_PER_ROLLING_WINDOW,
+            report.full_name,
+        )
+        return _record(report.full_name, "blocked_rate_limit", issue_title, report.scan_date)
+
+    # Re-check immediately before creating. This does not replace a lock, but it closes
+    # the window between the first lookup and the write.
+    if client.find_issue(report.full_name, issue_title, issue_markers) is not None:
+        _log.info("Issue appeared on %s between lookup and create; skipping", report.full_name)
+        return _record(report.full_name, "skipped_duplicate", issue_title, report.scan_date)
+
+    number = client.create_issue(
+        report.full_name, issue_title, _issue_body(report, repo_findings), []
+    )
+    _log.info("Created issue #%d on %s", number, report.full_name)
+    return _record(report.full_name, "created", issue_title, report.scan_date, number)
+
+
+def notify_all(
+    client: IssueClient,
+    reports: list[RepoReport],
+    findings: list[RepoFinding],
+    *,
+    allowlist: set[str],
+    prior_notifications: list[NotificationRecord] | None = None,
+) -> list[NotificationRecord]:
+    """Create or update one issue per qualifying repo and return what was decided."""
+    now = datetime.now(UTC)
+    prior = prior_notifications or []
+    budget = MAX_ISSUES_PER_ROLLING_WINDOW - _recent_issue_count(prior, now)
+    records: list[NotificationRecord] = []
+
     eligible = [
         report for report in reports if report.action == "file_issue" and report.issue_worthy_count
     ]
@@ -216,6 +357,13 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
         eligible = eligible[:MAX_ISSUES_PER_SCAN]
 
     for report in eligible:
+        # Re-checked here and not only at scan time: an allowlist entry added after a
+        # scan started must still suppress external contact.
+        if report.full_name.lower() in allowlist:
+            _log.info("Skipping allowlisted repo at notify time: %s", report.full_name)
+            records.append(_record(report.full_name, "blocked_allowlist", "", report.scan_date))
+            continue
+
         repo_findings = [
             finding
             for finding in findings
@@ -223,31 +371,18 @@ def notify_all(client: IssueClient, reports: list[RepoReport], findings: list[Re
         ]
         if not repo_findings:
             continue
-        issue_title = _issue_title(repo_findings)
-        issue_markers = _issue_markers(repo_findings)
+
         try:
-            existing = client.find_open_issue(report.full_name, issue_title, issue_markers)
-            if existing is None:
-                number = client.create_issue(
-                    report.full_name, issue_title, _issue_body(report, repo_findings), []
-                )
-                _log.info("Created issue #%d on %s", number, report.full_name)
-            else:
-                comments = client.list_issue_comments(report.full_name, existing)
-                marker = _scan_marker(report.scan_date)
-                if any(marker in comment for comment in comments):
-                    _log.info(
-                        "Skipping duplicate scan update for %s#%d on %s",
-                        report.full_name,
-                        existing,
-                        report.scan_date,
-                    )
-                    continue
-                client.add_comment(report.full_name, existing, _comment_body(report, repo_findings))
-                _log.info("Commented on %s#%d", report.full_name, existing)
+            record = _notify_repo(client, report, repo_findings, budget)
         except requests.HTTPError as exc:
             status = exc.response.status_code if exc.response is not None else 0
             if status in (403, 404, 410, 422):
                 _log.info("Skipping issue notification for %s (HTTP %d)", report.full_name, status)
                 continue
             raise
+
+        records.append(record)
+        if record.event == "created":
+            budget -= 1
+
+    return records

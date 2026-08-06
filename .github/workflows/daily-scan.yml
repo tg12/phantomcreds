@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
         env:
@@ -71,16 +71,26 @@ jobs:
 
       - name: Set up Python 3.14
         if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.14"
           cache: pip
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+      # Fails in seconds on a syntax error rather than after installing the environment
+      # and reaching the scan step.
+      - name: Compile check
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
+        run: python -m compileall -q src
+
       - name: Install dependencies
         if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
         run: pip install -e .[dev]
+
+      - name: Import smoke check
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.should_run == 'true'
+        run: python -c "import phantomcreds.main"
 
       - name: Run tests
         if: github.event_name == 'workflow_dispatch'

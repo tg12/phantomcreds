@@ -1,4 +1,5 @@
 """GitHub API client for search, content fetch, and issue filing."""
+
 # pylint: disable=duplicate-code
 
 from __future__ import annotations
@@ -26,12 +27,16 @@ _RATE_LIMIT_PAUSE_THRESHOLDS: dict[str, int] = {
     "search": 5,
     "code_search": 2,
 }
+_MAX_ISSUE_LOOKUP_PAGES = 10
+# Distinguishes "not looked up yet" from "looked up and unavailable".
+_UNRESOLVED_LOGIN = "\x00unresolved"
 
 
 class GitHubClient:
     """Thin wrapper over the GitHub REST API."""
 
     def __init__(self, token: str) -> None:
+        self._authenticated_login: str | None = _UNRESOLVED_LOGIN
         self._session = requests.Session()
         self._session.headers.update(
             {
@@ -105,6 +110,12 @@ class GitHubClient:
     def get_repo_metadata(self, repo_full_name: str) -> RepoMetadata:
         """Fetch repository metadata for the candidate repo."""
         data = self._rest_get(f"{GITHUB_API_BASE}/repos/{repo_full_name}")
+        raw_topics = data.get("topics")
+        topics = (
+            tuple(str(topic).lower() for topic in raw_topics)
+            if isinstance(raw_topics, list)
+            else ()
+        )
         return RepoMetadata(
             full_name=repo_full_name,
             description=(str(data.get("description")) if data.get("description") else None),
@@ -115,6 +126,7 @@ class GitHubClient:
             updated_at=str(data.get("updated_at", "")),
             archived=bool(data.get("archived", False)),
             fork=bool(data.get("fork", False)),
+            topics=topics,
         )
 
     def list_recent_commit_paths(
@@ -210,15 +222,14 @@ class GitHubClient:
         unique_paths = list(dict.fromkeys(paths))
         if not unique_paths:
             return {}
+        result: dict[str, str] = {}
         if max_workers <= 1 or len(unique_paths) == 1:
-            result: dict[str, str] = {}
             for path in unique_paths:
                 content = self.get_file_content(repo_full_name, path, ref)
                 if content is not None:
                     result[path] = content
             return result
 
-        result: dict[str, str] = {}
         worker_count = min(max_workers, len(unique_paths))
         with ThreadPoolExecutor(max_workers=worker_count) as executor:
             future_to_path = {
@@ -229,7 +240,8 @@ class GitHubClient:
                 path = future_to_path[future]
                 try:
                     content = future.result()
-                except Exception as exc:  # pylint: disable=broad-exception-caught  # pragma: no cover
+                # One unreadable file must not abort the rest of the repo's fetch.
+                except Exception as exc:  # pylint: disable=broad-exception-caught
                     _log.warning("Failed to fetch %s from %s: %s", path, repo_full_name, exc)
                     continue
                 if content is not None:
@@ -267,28 +279,61 @@ class GitHubClient:
                     comments.append(body)
         return comments
 
-    def find_open_issue(
+    def get_authenticated_login(self) -> str | None:
+        """Return the login of the token owner, or None when it cannot be determined."""
+        if self._authenticated_login is _UNRESOLVED_LOGIN:
+            try:
+                data = self._rest_get(f"{GITHUB_API_BASE}/user")
+            except requests.HTTPError as exc:
+                status = exc.response.status_code if exc.response is not None else 0
+                _log.warning("Could not resolve authenticated login (HTTP %d)", status)
+                self._authenticated_login = None
+            else:
+                login = data.get("login") if isinstance(data, dict) else None
+                self._authenticated_login = str(login) if isinstance(login, str) else None
+                _log.info("Authenticated as %s", self._authenticated_login)
+        return self._authenticated_login
+
+    def find_issue(
         self,
         owner_repo: str,
         title_fragment: str,
         body_markers: tuple[str, ...] | None = None,
-    ) -> int | None:
-        """Return the first matching open issue for phantomcreds-owned threads."""
-        for page in range(1, 5):
+    ) -> tuple[int, str] | None:
+        """Return the newest phantomcreds-authored issue as (number, state).
+
+        Results are filtered server-side to issues opened by the token owner, so the
+        page budget covers this bot's own history rather than the target repo's entire
+        backlog. Closed issues are returned too: a closed phantomcreds issue is a
+        maintainer decision, and the caller must not file over it.
+        """
+        params: dict[str, Any] = {
+            "state": "all",
+            "per_page": 100,
+            "sort": "created",
+            "direction": "desc",
+        }
+        login = self.get_authenticated_login()
+        if login:
+            params["creator"] = login
+
+        for page in range(1, _MAX_ISSUE_LOOKUP_PAGES + 1):
             items = self._rest_get(
                 f"{GITHUB_API_BASE}/repos/{owner_repo}/issues",
-                params={"state": "open", "per_page": 100, "page": page},
+                params={**params, "page": page},
             )
             if not isinstance(items, list) or not items:
                 break
             for item in items:
-                title = str(item.get("title", ""))
-                if title_fragment in title:
-                    if body_markers is not None and not any(
-                        marker in str(item.get("body", "")) for marker in body_markers
-                    ):
-                        continue
-                    return int(item["number"])
+                if "pull_request" in item:
+                    continue
+                if title_fragment not in str(item.get("title", "")):
+                    continue
+                if body_markers is not None and not any(
+                    marker in str(item.get("body") or "") for marker in body_markers
+                ):
+                    continue
+                return int(item["number"]), str(item.get("state", "open"))
         return None
 
     @retry(
@@ -327,11 +372,22 @@ class GitHubClient:
         _log.warning("Transient GitHub response %d for %s", resp.status_code, resource)
         raise TransientGitHubError(resp.status_code, message)
 
+    @staticmethod
+    def _header_int(resp: requests.Response, name: str, default: int) -> int:
+        raw = resp.headers.get(name)
+        if raw is None:
+            return default
+        try:
+            return int(raw)
+        except ValueError:
+            _log.warning("Non-numeric %s header: %r", name, raw)
+            return default
+
     def _check_rate_limit(self, resp: requests.Response) -> None:
         resource = resp.headers.get("X-RateLimit-Resource", "core")
-        limit = int(resp.headers.get("X-RateLimit-Limit", 0))
-        remaining = int(resp.headers.get("X-RateLimit-Remaining", 9999))
-        reset_at = int(resp.headers.get("X-RateLimit-Reset", 0))
+        limit = self._header_int(resp, "X-RateLimit-Limit", 0)
+        remaining = self._header_int(resp, "X-RateLimit-Remaining", 9999)
+        reset_at = self._header_int(resp, "X-RateLimit-Reset", 0)
         pause_threshold = _RATE_LIMIT_PAUSE_THRESHOLDS.get(
             resource,
             _DEFAULT_RATE_LIMIT_PAUSE_THRESHOLD,
