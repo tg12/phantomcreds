@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-07 | 33 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-06 | 34 | 11 | 3 | 6 | 6 | 0 |
 | 2026-08-05 | 38 | 13 | 3 | 7 | 4 | 0 |
 | 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-05 | 32 | 13 | 5 | 8 | 5 | 0 |
 | 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 3 |
 | 2026-07-02 | 29 | 8 | 4 | 5 | 3 | 0 |
-| 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 3 |
-| 2026-06-30 | 29 | 10 | 3 | 7 | 3 | 3 |
+| 2026-07-01 | 29 | 13 | 6 | 8 | 4 | 6 |
 <!-- STATS:END -->
 
 ---
@@ -169,17 +169,13 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-03 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 220 | 2026-08-05 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46315 | 2026-08-06 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-06 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46428 | 2026-08-07 |
 | BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 556 | 2026-08-05 |
-| Yuming12138/newapi-cmsg | 0.560 | 2 | file_issue | 0 | 2026-08-05 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2809 | 2026-08-06 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15245 | 2026-08-06 |
-| y0av/giverny | 0.390 | 2 | report_only | 0 | 2026-08-06 |
-| williamsuchun/relayport | 0.390 | 2 | report_only | 0 | 2026-08-06 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2654 | 2026-08-06 |
-| strnad/CrewAI-Studio | 0.350 | 1 | file_issue | 1334 | 2026-08-06 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2811 | 2026-08-07 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-08-07 |
+| williamsuchun/relayport | 0.390 | 2 | report_only | 0 | 2026-08-07 |
+| vladkens/twscrape | 0.390 | 2 | watch | 2655 | 2026-08-07 |
 <!-- REPO_STATS:END -->
 
 ---
