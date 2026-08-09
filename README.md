@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-09 | 37 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-08 | 33 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-07 | 33 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-06 | 34 | 11 | 3 | 6 | 6 | 0 |
@@ -156,10 +157,9 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 2 |
 | 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 0 |
 | 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 1 |
-| 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 1 |
+| 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 2 |
 | 2026-07-05 | 32 | 13 | 5 | 8 | 5 | 0 |
-| 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 4 |
-| 2026-07-02 | 29 | 8 | 4 | 5 | 3 | 4 |
+| 2026-07-04 | 28 | 12 | 6 | 8 | 6 | 6 |
 <!-- STATS:END -->
 
 ---
@@ -169,13 +169,13 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-06 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46508 | 2026-08-08 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 556 | 2026-08-05 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15367 | 2026-08-08 |
-| yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-08 |
-| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-08-07 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2658 | 2026-08-07 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-09 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 46608 | 2026-08-09 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 557 | 2026-08-08 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2813 | 2026-08-08 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15415 | 2026-08-09 |
+| yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-09 |
+| vladkens/twscrape | 0.390 | 2 | watch | 2661 | 2026-08-08 |
 <!-- REPO_STATS:END -->
 
 ---
