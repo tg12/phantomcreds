@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-11 | 41 | 7 | 2 | 3 | 2 | 0 |
 | 2026-08-10 | 43 | 8 | 2 | 3 | 4 | 0 |
 | 2026-08-09 | 37 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-08 | 33 | 7 | 2 | 3 | 3 | 0 |
@@ -152,14 +153,13 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-17 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 2 |
-| 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 0 |
+| 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 1 |
 | 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
 | 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 2 |
 | 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 2 |
-| 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 1 |
-| 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 1 |
-| 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 2 |
-| 2026-07-05 | 32 | 13 | 5 | 8 | 5 | 5 |
+| 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 2 |
+| 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 2 |
+| 2026-07-07 | 26 | 11 | 3 | 6 | 2 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -170,12 +170,11 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-10 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 225 | 2026-08-10 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 225 | 2026-08-11 |
 | BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 558 | 2026-08-10 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2813 | 2026-08-09 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15478 | 2026-08-10 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2816 | 2026-08-10 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-10 |
-| y0av/giverny | 0.390 | 2 | report_only | 0 | 2026-08-10 |
+| witqq/agent-session-exporter | 0.390 | 2 | watch | 0 | 2026-08-10 |
 | yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-09 |
 <!-- REPO_STATS:END -->
 
