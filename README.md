@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-13 | 40 | 11 | 2 | 3 | 3 | 0 |
 | 2026-08-12 | 43 | 6 | 2 | 2 | 2 | 0 |
 | 2026-08-11 | 41 | 7 | 2 | 3 | 2 | 0 |
 | 2026-08-10 | 43 | 8 | 2 | 3 | 4 | 0 |
@@ -156,10 +157,9 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 2 |
 | 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 1 |
 | 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
-| 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 2 |
-| 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 2 |
-| 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 2 |
-| 2026-07-08 | 30 | 15 | 5 | 7 | 5 | 5 |
+| 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 4 |
+| 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 3 |
+| 2026-07-10 | 31 | 13 | 3 | 6 | 4 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -169,12 +169,17 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-10 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-12 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 225 | 2026-08-11 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2819 | 2026-08-12 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-10 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2820 | 2026-08-13 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15649 | 2026-08-13 |
+| yilunzhao/codex-swap | 0.390 | 2 | watch | 0 | 2026-08-13 |
+| Youkamii/switcher | 0.390 | 2 | watch | 10 | 2026-08-13 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-13 |
+| zzw6776/codex-quota-injector | 0.390 | 2 | watch | 0 | 2026-08-13 |
 | yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-09 |
 | witqq/agent-session-exporter | 0.390 | 2 | watch | 0 | 2026-08-10 |
+| zapstiko/Bug-Bounty | 0.350 | 1 | file_issue | 133 | 2026-08-12 |
 <!-- REPO_STATS:END -->
 
 ---
