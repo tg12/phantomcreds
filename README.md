@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 0 |
 | 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 0 |
 | 2026-08-13 | 40 | 11 | 2 | 3 | 3 | 0 |
 | 2026-08-12 | 43 | 6 | 2 | 2 | 2 | 0 |
@@ -151,15 +152,14 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-25 | 34 | 15 | 6 | 12 | 6 | 0 |
 | 2026-07-24 | 37 | 15 | 5 | 12 | 6 | 0 |
 | 2026-07-22 | 40 | 15 | 6 | 11 | 6 | 0 |
-| 2026-07-20 | 27 | 14 | 5 | 10 | 6 | 0 |
+| 2026-07-20 | 27 | 14 | 5 | 10 | 6 | 1 |
 | 2026-07-19 | 24 | 8 | 3 | 5 | 3 | 1 |
 | 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-17 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 2 |
 | 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 1 |
 | 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 0 |
-| 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 5 |
-| 2026-07-11 | 38 | 12 | 4 | 9 | 4 | 4 |
+| 2026-07-12 | 34 | 15 | 8 | 12 | 5 | 8 |
 <!-- STATS:END -->
 
 ---
@@ -169,17 +169,15 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-12 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2820 | 2026-08-13 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15730 | 2026-08-14 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-15 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 47328 | 2026-08-15 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2819 | 2026-08-15 |
+| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15774 | 2026-08-15 |
 | yilunzhao/codex-swap | 0.390 | 2 | watch | 0 | 2026-08-13 |
-| Youkamii/switcher | 0.390 | 2 | watch | 10 | 2026-08-14 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-13 |
 | yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-13 |
-| Ylianst/MeshCentral | 0.390 | 2 | watch | 7054 | 2026-08-14 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1532 | 2026-08-13 |
+| Ylianst/MeshCentral | 0.390 | 2 | watch | 7059 | 2026-08-14 |
 | zapstiko/Bug-Bounty | 0.350 | 1 | file_issue | 133 | 2026-08-12 |
-| zone-eu/wildduck | 0.350 | 1 | file_issue | 2110 | 2026-08-09 |
 <!-- REPO_STATS:END -->
 
 ---
