@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 0 |
 | 2026-08-16 | 38 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 0 |
 | 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-17 | 29 | 10 | 5 | 7 | 4 | 0 |
 | 2026-07-16 | 30 | 12 | 5 | 8 | 4 | 2 |
-| 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 2 |
-| 2026-07-14 | 34 | 14 | 4 | 10 | 3 | 4 |
+| 2026-07-15 | 33 | 13 | 5 | 10 | 5 | 5 |
 <!-- STATS:END -->
 
 ---
@@ -169,13 +169,16 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-15 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 47390 | 2026-08-16 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 628 | 2026-08-15 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2820 | 2026-08-16 |
-| jlcodes99/cockpit-tools | 0.390 | 2 | report_only | 15836 | 2026-08-16 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-16 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-18 |
+| Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 47676 | 2026-08-18 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 633 | 2026-08-18 |
+| wudongdefeng/jd-base | 0.560 | 2 | file_issue | 58 | 2026-08-17 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2824 | 2026-08-18 |
+| nicko170/aiproxy | 0.390 | 2 | report_only | 0 | 2026-08-18 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-17 |
 | yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-13 |
+| zone-eu/wildduck | 0.350 | 1 | file_issue | 2109 | 2026-08-17 |
 <!-- REPO_STATS:END -->
 
 ---
