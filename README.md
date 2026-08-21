@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-21 | 42 | 8 | 3 | 5 | 2 | 0 |
 | 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 0 |
 | 2026-08-19 | 36 | 10 | 3 | 6 | 3 | 0 |
 | 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-22 | 40 | 15 | 6 | 11 | 6 | 0 |
 | 2026-07-20 | 27 | 14 | 5 | 10 | 6 | 2 |
 | 2026-07-19 | 24 | 8 | 3 | 5 | 3 | 2 |
-| 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 0 |
-| 2026-07-17 | 29 | 10 | 5 | 7 | 4 | 5 |
+| 2026-07-18 | 29 | 10 | 5 | 7 | 4 | 5 |
 <!-- STATS:END -->
 
 ---
@@ -170,12 +170,12 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-19 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 231 | 2026-08-20 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 638 | 2026-08-19 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2828 | 2026-08-20 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-19 |
-| xiaolizi0v0/CliProxy | 0.390 | 2 | watch | 0 | 2026-08-20 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 231 | 2026-08-20 |
+| BlessedRebuS/Krawl | 0.560 | 2 | file_issue | 641 | 2026-08-20 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2832 | 2026-08-21 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-21 |
+| Yaocool/kiro-proxy | 0.390 | 2 | watch | 1 | 2026-08-21 |
 | zone-eu/wildduck | 0.350 | 1 | file_issue | 2109 | 2026-08-19 |
 <!-- REPO_STATS:END -->
 
