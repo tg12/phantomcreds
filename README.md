@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-24 | 34 | 10 | 3 | 4 | 2 | 0 |
 | 2026-08-23 | 29 | 5 | 2 | 3 | 1 | 0 |
 | 2026-08-22 | 42 | 9 | 3 | 4 | 3 | 0 |
 | 2026-08-21 | 42 | 8 | 3 | 5 | 2 | 0 |
@@ -151,15 +152,14 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 1 |
 | 2026-08-03 | 35 | 11 | 2 | 7 | 2 | 0 |
 | 2026-07-31 | 34 | 14 | 6 | 9 | 5 | 0 |
-| 2026-07-30 | 30 | 10 | 3 | 5 | 6 | 0 |
+| 2026-07-30 | 30 | 10 | 3 | 5 | 6 | 1 |
 | 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 0 |
 | 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 0 |
 | 2026-07-27 | 35 | 12 | 5 | 10 | 3 | 0 |
 | 2026-07-26 | 32 | 16 | 7 | 13 | 5 | 1 |
 | 2026-07-25 | 34 | 15 | 6 | 12 | 6 | 1 |
 | 2026-07-24 | 37 | 15 | 5 | 12 | 6 | 0 |
-| 2026-07-22 | 40 | 15 | 6 | 11 | 6 | 2 |
-| 2026-07-20 | 27 | 14 | 5 | 10 | 6 | 5 |
+| 2026-07-22 | 40 | 15 | 6 | 11 | 6 | 6 |
 <!-- STATS:END -->
 
 ---
@@ -171,8 +171,13 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-23 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2834 | 2026-08-23 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-23 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 232 | 2026-08-24 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2835 | 2026-08-24 |
+| Jyleaves/aistudio-api-dsh | 0.390 | 2 | watch | 0 | 2026-08-24 |
+| Yaocool/kiro-proxy | 0.390 | 2 | watch | 1 | 2026-08-24 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-24 |
+| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 0 | 2026-08-24 |
+| yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-13 |
 | zone-eu/wildduck | 0.350 | 1 | file_issue | 2109 | 2026-08-19 |
 <!-- REPO_STATS:END -->
 
