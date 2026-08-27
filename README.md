@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-08-27 | 34 | 9 | 2 | 2 | 1 | 0 |
 | 2026-08-26 | 36 | 12 | 2 | 2 | 1 | 0 |
 | 2026-08-25 | 49 | 15 | 3 | 7 | 3 | 0 |
 | 2026-08-24 | 34 | 10 | 3 | 4 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 0 |
 | 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 0 |
 | 2026-07-27 | 35 | 12 | 5 | 10 | 3 | 0 |
-| 2026-07-26 | 32 | 16 | 7 | 13 | 5 | 2 |
-| 2026-07-25 | 34 | 15 | 6 | 12 | 6 | 6 |
+| 2026-07-26 | 32 | 16 | 7 | 13 | 5 | 7 |
 <!-- STATS:END -->
 
 ---
@@ -169,18 +169,15 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-23 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 233 | 2026-08-25 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2837 | 2026-08-26 |
-| taiyun668/grok-worker | 0.390 | 2 | watch | 1 | 2026-08-26 |
-| Jyleaves/aistudio-api-dsh | 0.390 | 2 | watch | 0 | 2026-08-26 |
-| Yaocool/kiro-proxy | 0.390 | 2 | watch | 2 | 2026-08-26 |
-| Youkamii/switcher | 0.390 | 2 | watch | 14 | 2026-08-26 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-24 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2839 | 2026-08-27 |
+| ndycode/oc-codex-multi-auth | 0.390 | 2 | watch | 180 | 2026-08-27 |
+| wuwei-io/wuwei | 0.390 | 2 | watch | 3 | 2026-08-27 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-27 |
+| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 1 | 2026-08-27 |
 | witqq/agent-session-exporter | 0.390 | 2 | watch | 0 | 2026-08-24 |
-| yutaro0915/cloudflare-os | 0.390 | 2 | watch | 0 | 2026-08-13 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2706 | 2026-08-25 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 127 | 2026-08-24 |
+| vladkens/twscrape | 0.390 | 2 | watch | 2711 | 2026-08-27 |
 <!-- REPO_STATS:END -->
 
 ---

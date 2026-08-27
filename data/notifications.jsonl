@@ -35,3 +35,4 @@
 {"repo_full_name": "BasedHardware/omi", "event": "created", "issue_number": 12180, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-08-25", "recorded_at": "2026-08-25T07:06:12.819979+00:00"}
 {"repo_full_name": "zone-eu/wildduck", "event": "skipped_closed", "issue_number": 1137, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-08-25", "recorded_at": "2026-08-25T07:06:13.136905+00:00"}
 {"repo_full_name": "Sastraaaa/proxypilot", "event": "commented", "issue_number": 2, "title": "[phantomcreds] Credential-handling risks detected in this repository", "scan_date": "2026-08-26", "recorded_at": "2026-08-26T07:06:19.362565+00:00"}
+{"repo_full_name": "Sastraaaa/proxypilot", "event": "commented", "issue_number": 2, "title": "[phantomcreds] Credential-handling risks detected in this repository", "scan_date": "2026-08-27", "recorded_at": "2026-08-27T17:39:58.600580+00:00"}
