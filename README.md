@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-01 | 31 | 6 | 2 | 2 | 1 | 0 |
 | 2026-08-31 | 31 | 8 | 2 | 2 | 1 | 0 |
 | 2026-08-28 | 32 | 7 | 2 | 2 | 2 | 0 |
 | 2026-08-27 | 34 | 9 | 2 | 2 | 1 | 0 |
@@ -156,10 +157,9 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-05 | 38 | 13 | 3 | 7 | 4 | 0 |
 | 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 1 |
 | 2026-08-03 | 35 | 11 | 2 | 7 | 2 | 0 |
-| 2026-07-31 | 34 | 14 | 6 | 9 | 5 | 2 |
+| 2026-07-31 | 34 | 14 | 6 | 9 | 5 | 3 |
 | 2026-07-30 | 30 | 10 | 3 | 5 | 6 | 2 |
-| 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 0 |
-| 2026-07-28 | 31 | 10 | 2 | 6 | 2 | 2 |
+| 2026-07-29 | 32 | 8 | 1 | 5 | 3 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -171,12 +171,10 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-08-31 |
 | Sastraaaa/proxypilot | 1.000 | 6 | file_issue | 0 | 2026-04-29 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2842 | 2026-08-31 |
-| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 3 | 2026-08-31 |
-| Xingze-Wang/learn-pi | 0.390 | 2 | watch | 0 | 2026-08-31 |
-| ndycode/oc-codex-multi-auth | 0.390 | 2 | watch | 180 | 2026-08-31 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2841 | 2026-09-01 |
+| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 4 | 2026-09-01 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-08-31 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2726 | 2026-08-31 |
+| zkhyww/flow2api-secure-account-pool | 0.390 | 2 | watch | 0 | 2026-09-01 |
 <!-- REPO_STATS:END -->
 
 ---
