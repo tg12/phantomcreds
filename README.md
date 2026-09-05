@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-05 | 35 | 6 | 2 | 3 | 2 | 0 |
 | 2026-09-04 | 42 | 9 | 2 | 4 | 2 | 1 |
 | 2026-09-03 | 32 | 5 | 2 | 2 | 1 | 0 |
 | 2026-09-02 | 32 | 6 | 2 | 2 | 1 | 0 |
@@ -145,7 +146,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-21 | 42 | 8 | 3 | 5 | 2 | 0 |
 | 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 0 |
 | 2026-08-19 | 36 | 10 | 3 | 6 | 3 | 0 |
-| 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 0 |
+| 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 1 |
 | 2026-08-16 | 38 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 0 |
 | 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-07 | 33 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-06 | 34 | 11 | 3 | 6 | 6 | 0 |
 | 2026-08-05 | 38 | 13 | 3 | 7 | 4 | 0 |
-| 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 3 |
-| 2026-08-03 | 35 | 11 | 2 | 7 | 2 | 2 |
+| 2026-08-04 | 42 | 15 | 4 | 11 | 5 | 4 |
 <!-- STATS:END -->
 
 ---
@@ -171,13 +171,10 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-09-04 |
 | Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-04 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2844 | 2026-09-03 |
-| Yaocool/kiro-proxy | 0.390 | 2 | watch | 2 | 2026-09-04 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-09-03 |
-| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-09-02 |
-| Ylianst/MeshCentral | 0.390 | 2 | watch | 7163 | 2026-09-04 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1604 | 2026-09-04 |
-| masasam/dotfiles | 0.350 | 1 | file_issue | 188 | 2026-09-04 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2845 | 2026-09-04 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-09-05 |
+| witqq/agent-session-exporter | 0.390 | 2 | watch | 0 | 2026-09-04 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1608 | 2026-09-05 |
 <!-- REPO_STATS:END -->
 
 ---

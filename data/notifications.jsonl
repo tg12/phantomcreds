@@ -43,3 +43,4 @@
 {"repo_full_name": "Sastraaaa/proxypilot", "event": "commented", "issue_number": 2, "title": "[phantomcreds] Credential-handling risks detected in this repository", "scan_date": "2026-09-03", "recorded_at": "2026-09-03T11:08:40.667803+00:00"}
 {"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-04", "recorded_at": "2026-09-04T11:09:49.236259+00:00"}
 {"repo_full_name": "masasam/dotfiles", "event": "created", "issue_number": 42, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-04", "recorded_at": "2026-09-04T11:09:50.889335+00:00"}
+{"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-05", "recorded_at": "2026-09-05T10:31:06.998631+00:00"}
