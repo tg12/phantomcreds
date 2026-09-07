@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-07 | 31 | 8 | 2 | 3 | 2 | 0 |
 | 2026-09-06 | 31 | 7 | 2 | 3 | 2 | 0 |
 | 2026-09-05 | 35 | 6 | 2 | 3 | 2 | 0 |
 | 2026-09-04 | 42 | 9 | 2 | 4 | 2 | 1 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-09 | 37 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-08 | 33 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-07 | 33 | 7 | 2 | 3 | 3 | 0 |
-| 2026-08-06 | 34 | 11 | 3 | 6 | 6 | 0 |
-| 2026-08-05 | 38 | 13 | 3 | 7 | 4 | 3 |
+| 2026-08-06 | 34 | 11 | 3 | 6 | 6 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -169,13 +169,14 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-09-06 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-09-07 |
 | Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-04 |
-| GboyCode/CodexAuth | 0.390 | 2 | watch | 4 | 2026-09-06 |
-| wuwei-io/wuwei | 0.390 | 2 | watch | 5 | 2026-09-06 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 5 | 2026-09-06 |
+| coddy-project/coddy-agent | 0.390 | 2 | watch | 137 | 2026-09-07 |
+| vishalsg42/munim | 0.390 | 2 | watch | 6 | 2026-09-07 |
+| Yaocool/kiro-proxy | 0.390 | 2 | watch | 2 | 2026-09-07 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-07 |
 | witqq/agent-session-exporter | 0.390 | 2 | watch | 0 | 2026-09-06 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1610 | 2026-09-06 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1612 | 2026-09-07 |
 <!-- REPO_STATS:END -->
 
 ---
