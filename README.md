@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-09 | 30 | 7 | 1 | 2 | 1 | 0 |
 | 2026-09-08 | 26 | 6 | 1 | 2 | 1 | 0 |
 | 2026-09-07 | 31 | 8 | 2 | 3 | 2 | 0 |
 | 2026-09-06 | 31 | 7 | 2 | 3 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-11 | 41 | 7 | 2 | 3 | 2 | 0 |
 | 2026-08-10 | 43 | 8 | 2 | 3 | 4 | 1 |
 | 2026-08-09 | 37 | 7 | 2 | 3 | 3 | 0 |
-| 2026-08-08 | 33 | 7 | 2 | 3 | 3 | 0 |
-| 2026-08-07 | 33 | 7 | 2 | 3 | 3 | 2 |
+| 2026-08-08 | 33 | 7 | 2 | 3 | 3 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,11 +170,12 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-09-08 |
-| coddy-project/coddy-agent | 0.390 | 2 | watch | 139 | 2026-09-08 |
+| coddy-project/coddy-agent | 0.390 | 2 | watch | 139 | 2026-09-09 |
+| Yaocool/kiro-proxy | 0.390 | 2 | watch | 2 | 2026-09-09 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-07 |
-| wellthewell/ag-multi-account-switchboard | 0.390 | 2 | watch | 0 | 2026-09-08 |
-| witqq/agent-session-exporter | 0.390 | 2 | watch | 0 | 2026-09-06 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1615 | 2026-09-08 |
+| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-09 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 129 | 2026-09-09 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1617 | 2026-09-09 |
 <!-- REPO_STATS:END -->
 
 ---
