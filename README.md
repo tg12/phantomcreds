@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-11 | 37 | 10 | 3 | 4 | 4 | 0 |
 | 2026-09-10 | 35 | 10 | 3 | 4 | 4 | 0 |
 | 2026-09-09 | 30 | 7 | 1 | 2 | 1 | 0 |
 | 2026-09-08 | 26 | 6 | 1 | 2 | 1 | 0 |
@@ -153,13 +154,12 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-19 | 36 | 10 | 3 | 6 | 3 | 0 |
 | 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 1 |
 | 2026-08-16 | 38 | 7 | 2 | 3 | 3 | 0 |
-| 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 0 |
+| 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 1 |
 | 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 0 |
 | 2026-08-13 | 40 | 11 | 2 | 3 | 3 | 0 |
 | 2026-08-12 | 43 | 6 | 2 | 2 | 2 | 0 |
 | 2026-08-11 | 41 | 7 | 2 | 3 | 2 | 0 |
-| 2026-08-10 | 43 | 8 | 2 | 3 | 4 | 1 |
-| 2026-08-09 | 37 | 7 | 2 | 3 | 3 | 2 |
+| 2026-08-10 | 43 | 8 | 2 | 3 | 4 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,15 +170,15 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 9 | 2026-09-10 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 246 | 2026-09-10 |
-| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-10 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 247 | 2026-09-10 |
+| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-11 |
 | moltis-org/moltis | 0.390 | 2 | watch | 2851 | 2026-09-10 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 139 | 2026-09-10 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-07 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 138 | 2026-09-11 |
+| yongfenggu/lark-listen-skill | 0.390 | 2 | watch | 1 | 2026-09-11 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-11 |
 | zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-10 |
-| ZombieDuckling/agent-relay | 0.390 | 2 | watch | 0 | 2026-09-10 |
 | wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 128 | 2026-09-10 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1621 | 2026-09-10 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1625 | 2026-09-11 |
 <!-- REPO_STATS:END -->
 
 ---
