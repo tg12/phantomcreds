@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-14 | 33 | 13 | 2 | 4 | 4 | 0 |
 | 2026-09-13 | 38 | 11 | 3 | 5 | 4 | 1 |
 | 2026-09-12 | 37 | 9 | 3 | 4 | 4 | 0 |
 | 2026-09-11 | 37 | 10 | 3 | 4 | 4 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-16 | 38 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 1 |
 | 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 0 |
-| 2026-08-13 | 40 | 11 | 2 | 3 | 3 | 0 |
-| 2026-08-12 | 43 | 6 | 2 | 2 | 2 | 2 |
+| 2026-08-13 | 40 | 11 | 2 | 3 | 3 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -171,15 +171,17 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 10 | 2026-09-12 |
 | Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-12 |
-| HsnSaboor/CLIProxyAPIPlus | 1.000 | 5 | report_only | 83 | 2026-09-11 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2855 | 2026-09-13 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 143 | 2026-09-12 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2859 | 2026-09-14 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 144 | 2026-09-14 |
+| Yaocool/kiro-proxy | 0.390 | 2 | watch | 2 | 2026-09-14 |
 | worklab-studio/claude-code-relay | 0.390 | 2 | watch | 0 | 2026-09-13 |
+| y0av/giverny | 0.390 | 2 | report_only | 1 | 2026-09-14 |
+| ZenRows/cli | 0.390 | 2 | watch | 14 | 2026-09-14 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-13 |
-| yongfenggu/lark-listen-skill | 0.390 | 2 | watch | 2 | 2026-09-12 |
-| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-13 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1629 | 2026-09-13 |
-| XNet-NGO/aiope | 0.350 | 1 | file_issue | 52 | 2026-09-13 |
+| WinterSold1er/cloudcode-link-core | 0.390 | 2 | watch | 0 | 2026-09-14 |
+| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-14 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1633 | 2026-09-14 |
+| XNet-NGO/aiope | 0.350 | 1 | file_issue | 52 | 2026-09-14 |
 <!-- REPO_STATS:END -->
 
 ---
