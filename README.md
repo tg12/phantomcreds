@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-15 | 28 | 11 | 1 | 3 | 2 | 0 |
 | 2026-09-14 | 33 | 13 | 2 | 4 | 4 | 0 |
 | 2026-09-13 | 38 | 11 | 3 | 5 | 4 | 1 |
 | 2026-09-12 | 37 | 9 | 3 | 4 | 4 | 0 |
@@ -153,13 +154,12 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-23 | 29 | 5 | 2 | 3 | 1 | 0 |
 | 2026-08-22 | 42 | 9 | 3 | 4 | 3 | 0 |
 | 2026-08-21 | 42 | 8 | 3 | 5 | 2 | 0 |
-| 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 0 |
+| 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 1 |
 | 2026-08-19 | 36 | 10 | 3 | 6 | 3 | 0 |
 | 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 1 |
 | 2026-08-16 | 38 | 7 | 2 | 3 | 3 | 0 |
 | 2026-08-15 | 40 | 9 | 2 | 3 | 3 | 1 |
-| 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 0 |
-| 2026-08-13 | 40 | 11 | 2 | 3 | 3 | 2 |
+| 2026-08-14 | 40 | 11 | 1 | 4 | 2 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -170,17 +170,15 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 10 | 2026-09-12 |
-| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-12 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2859 | 2026-09-14 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 144 | 2026-09-14 |
-| Yaocool/kiro-proxy | 0.390 | 2 | watch | 2 | 2026-09-14 |
-| worklab-studio/claude-code-relay | 0.390 | 2 | watch | 0 | 2026-09-13 |
-| y0av/giverny | 0.390 | 2 | report_only | 1 | 2026-09-14 |
-| ZenRows/cli | 0.390 | 2 | watch | 14 | 2026-09-14 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2860 | 2026-09-14 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 145 | 2026-09-14 |
+| verkyyi/tokenledger | 0.390 | 2 | watch | 0 | 2026-09-15 |
+| ndycode/oc-codex-multi-auth | 0.390 | 2 | watch | 187 | 2026-09-15 |
+| wwy155/agent-relay | 0.390 | 2 | watch | 1 | 2026-09-15 |
+| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 5 | 2026-09-15 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-13 |
-| WinterSold1er/cloudcode-link-core | 0.390 | 2 | watch | 0 | 2026-09-14 |
 | zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-14 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1633 | 2026-09-14 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1636 | 2026-09-15 |
 | XNet-NGO/aiope | 0.350 | 1 | file_issue | 52 | 2026-09-14 |
 <!-- REPO_STATS:END -->
 
