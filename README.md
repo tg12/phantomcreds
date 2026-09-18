@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-18 | 34 | 10 | 1 | 3 | 2 | 0 |
 | 2026-09-17 | 31 | 10 | 1 | 3 | 3 | 0 |
 | 2026-09-16 | 29 | 9 | 1 | 3 | 3 | 0 |
 | 2026-09-15 | 28 | 11 | 1 | 3 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-21 | 42 | 8 | 3 | 5 | 2 | 0 |
 | 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 1 |
 | 2026-08-19 | 36 | 10 | 3 | 6 | 3 | 0 |
-| 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 1 |
-| 2026-08-16 | 38 | 7 | 2 | 3 | 3 | 2 |
+| 2026-08-18 | 33 | 10 | 3 | 6 | 3 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -171,13 +171,13 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 10 | 2026-09-12 |
 | moltis-org/moltis | 0.390 | 2 | watch | 2865 | 2026-09-16 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 146 | 2026-09-17 |
-| y0av/giverny | 0.390 | 2 | report_only | 1 | 2026-09-17 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 6 | 2026-09-17 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 146 | 2026-09-18 |
+| foxy1402/cline-proxy | 0.390 | 2 | watch | 0 | 2026-09-18 |
+| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 1 | 2026-09-18 |
 | wwy155/agent-relay | 0.390 | 2 | watch | 1 | 2026-09-17 |
-| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 5 | 2026-09-16 |
-| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-16 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1642 | 2026-09-16 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 7 | 2026-09-18 |
+| zhangbozhb/OmniWork | 0.390 | 2 | watch | 0 | 2026-09-17 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1644 | 2026-09-18 |
 | XNet-NGO/aiope | 0.350 | 1 | file_issue | 55 | 2026-09-17 |
 <!-- REPO_STATS:END -->
 
