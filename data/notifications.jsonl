@@ -63,3 +63,4 @@
 {"repo_full_name": "XNet-NGO/aiope", "event": "skipped_closed", "issue_number": 136, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-17", "recorded_at": "2026-09-17T11:33:49.859053+00:00"}
 {"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-18", "recorded_at": "2026-09-18T11:07:16.195336+00:00"}
 {"repo_full_name": "XNet-NGO/aiope", "event": "skipped_closed", "issue_number": 136, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-18", "recorded_at": "2026-09-18T11:07:16.440566+00:00"}
+{"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-19", "recorded_at": "2026-09-19T10:49:42.947913+00:00"}
