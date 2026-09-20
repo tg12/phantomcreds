@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-20 | 30 | 9 | 1 | 2 | 2 | 0 |
 | 2026-09-19 | 28 | 5 | 0 | 1 | 1 | 0 |
 | 2026-09-18 | 34 | 10 | 1 | 3 | 2 | 0 |
 | 2026-09-17 | 31 | 10 | 1 | 3 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-23 | 29 | 5 | 2 | 3 | 1 | 0 |
 | 2026-08-22 | 42 | 9 | 3 | 4 | 3 | 0 |
 | 2026-08-21 | 42 | 8 | 3 | 5 | 2 | 0 |
-| 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 1 |
-| 2026-08-19 | 36 | 10 | 3 | 6 | 3 | 3 |
+| 2026-08-20 | 41 | 8 | 3 | 5 | 2 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -169,11 +169,15 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 10 | 2026-09-20 |
 | moltis-org/moltis | 0.390 | 2 | watch | 2866 | 2026-09-19 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 146 | 2026-09-19 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 7 | 2026-09-19 |
-| wwy155/agent-relay | 0.390 | 2 | watch | 1 | 2026-09-19 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1646 | 2026-09-19 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 147 | 2026-09-20 |
+| verkyyi/tokenledger | 0.390 | 2 | watch | 0 | 2026-09-20 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 7 | 2026-09-20 |
+| zyx3721/session-exporter-skills | 0.390 | 2 | watch | 1 | 2026-09-20 |
+| yangbobo2021/relay-dsh-plugin-claude | 0.390 | 2 | watch | 5 | 2026-09-19 |
+| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-09-20 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1650 | 2026-09-20 |
 <!-- REPO_STATS:END -->
 
 ---
