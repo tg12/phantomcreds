@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 0 |
 | 2026-09-22 | 35 | 9 | 2 | 3 | 3 | 0 |
 | 2026-09-21 | 31 | 7 | 2 | 3 | 3 | 1 |
 | 2026-09-20 | 30 | 9 | 1 | 2 | 2 | 0 |
@@ -157,9 +158,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-27 | 34 | 9 | 2 | 2 | 1 | 0 |
 | 2026-08-26 | 36 | 12 | 2 | 2 | 1 | 0 |
 | 2026-08-25 | 49 | 15 | 3 | 7 | 3 | 0 |
-| 2026-08-24 | 34 | 10 | 3 | 4 | 2 | 0 |
-| 2026-08-23 | 29 | 5 | 2 | 3 | 1 | 0 |
-| 2026-08-22 | 42 | 9 | 3 | 4 | 3 | 3 |
+| 2026-08-24 | 34 | 10 | 3 | 4 | 2 | 1 |
+| 2026-08-23 | 29 | 5 | 2 | 3 | 1 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -169,15 +169,16 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 11 | 2026-09-22 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 52805 | 2026-09-22 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 154 | 2026-09-22 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 11 | 2026-09-23 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 254 | 2026-09-23 |
+| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-23 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 52968 | 2026-09-23 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2870 | 2026-09-22 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 154 | 2026-09-23 |
 | whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 2 | 2026-09-22 |
-| ypyik0669/delegating-to-external-llm | 0.390 | 2 | watch | 3 | 2026-09-22 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 7 | 2026-09-21 |
-| yeager-j/larp | 0.390 | 2 | watch | 0 | 2026-09-22 |
+| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 0 | 2026-09-23 |
+| yeager-j/larp | 0.390 | 2 | watch | 0 | 2026-09-23 |
 | xingzhao-ji/study_tool | 0.390 | 2 | watch | 0 | 2026-09-22 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1652 | 2026-09-22 |
 <!-- REPO_STATS:END -->
 
 ---
