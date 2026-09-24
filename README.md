@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-24 | 34 | 11 | 4 | 4 | 6 | 0 |
 | 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 0 |
 | 2026-09-22 | 35 | 9 | 2 | 3 | 3 | 0 |
 | 2026-09-21 | 31 | 7 | 2 | 3 | 3 | 1 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-08-27 | 34 | 9 | 2 | 2 | 1 | 0 |
 | 2026-08-26 | 36 | 12 | 2 | 2 | 1 | 0 |
 | 2026-08-25 | 49 | 15 | 3 | 7 | 3 | 0 |
-| 2026-08-24 | 34 | 10 | 3 | 4 | 2 | 1 |
-| 2026-08-23 | 29 | 5 | 2 | 3 | 1 | 2 |
+| 2026-08-24 | 34 | 10 | 3 | 4 | 2 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -169,16 +169,17 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 11 | 2026-09-23 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-09-24 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 254 | 2026-09-23 |
 | Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-23 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 52968 | 2026-09-23 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2870 | 2026-09-22 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 154 | 2026-09-23 |
-| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 2 | 2026-09-22 |
-| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 0 | 2026-09-23 |
-| yeager-j/larp | 0.390 | 2 | watch | 0 | 2026-09-23 |
-| xingzhao-ji/study_tool | 0.390 | 2 | watch | 0 | 2026-09-22 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 53099 | 2026-09-24 |
+| moltis-org/moltis | 0.390 | 2 | watch | 2869 | 2026-09-23 |
+| nnnextyear/antigravity-proxy | 0.390 | 2 | watch | 1 | 2026-09-24 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 154 | 2026-09-24 |
+| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 2 | 2026-09-24 |
+| ya-luotao/remuda | 0.390 | 2 | report_only | 2 | 2026-09-24 |
+| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 1 | 2026-09-24 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-09-24 |
 <!-- REPO_STATS:END -->
 
 ---
