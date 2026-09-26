@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-26 | 29 | 6 | 2 | 2 | 3 | 0 |
 | 2026-09-25 | 34 | 10 | 4 | 4 | 6 | 0 |
 | 2026-09-24 | 34 | 11 | 4 | 4 | 6 | 0 |
 | 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 0 |
@@ -157,9 +158,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-01 | 31 | 6 | 2 | 2 | 1 | 0 |
 | 2026-08-31 | 31 | 8 | 2 | 2 | 1 | 0 |
 | 2026-08-28 | 32 | 7 | 2 | 2 | 2 | 0 |
-| 2026-08-27 | 34 | 9 | 2 | 2 | 1 | 0 |
-| 2026-08-26 | 36 | 12 | 2 | 2 | 1 | 0 |
-| 2026-08-25 | 49 | 15 | 3 | 7 | 3 | 3 |
+| 2026-08-27 | 34 | 9 | 2 | 2 | 1 | 1 |
+| 2026-08-26 | 36 | 12 | 2 | 2 | 1 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -169,16 +169,12 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-09-24 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 254 | 2026-09-23 |
-| Zeuyel/Proxy-me | 1.000 | 6 | report_only | 1 | 2026-09-23 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 53165 | 2026-09-25 |
-| moltis-org/moltis | 0.390 | 2 | watch | 2873 | 2026-09-25 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 155 | 2026-09-24 |
-| xinxinshuhao-create/genspark2api | 0.390 | 2 | report_only | 19 | 2026-09-25 |
-| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 1 | 2026-09-25 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-09-26 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 53234 | 2026-09-26 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 156 | 2026-09-25 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-09-25 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2802 | 2026-09-25 |
+| zchee/agctl | 0.390 | 2 | watch | 0 | 2026-09-26 |
+| yeager-j/larp | 0.390 | 2 | watch | 0 | 2026-09-26 |
 <!-- REPO_STATS:END -->
 
 ---
