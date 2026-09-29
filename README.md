@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-09-29 | 31 | 8 | 2 | 2 | 4 | 0 |
 | 2026-09-28 | 29 | 7 | 2 | 2 | 3 | 0 |
 | 2026-09-27 | 30 | 8 | 2 | 2 | 4 | 0 |
 | 2026-09-26 | 29 | 6 | 2 | 2 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-03 | 32 | 5 | 2 | 2 | 1 | 0 |
 | 2026-09-02 | 32 | 6 | 2 | 2 | 1 | 0 |
 | 2026-09-01 | 31 | 6 | 2 | 2 | 1 | 0 |
-| 2026-08-31 | 31 | 8 | 2 | 2 | 1 | 0 |
-| 2026-08-28 | 32 | 7 | 2 | 2 | 2 | 2 |
+| 2026-08-31 | 31 | 8 | 2 | 2 | 1 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,12 +170,13 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-09-28 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 53402 | 2026-09-28 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 156 | 2026-09-28 |
-| xsneser/cc-relay | 0.390 | 2 | watch | 2 | 2026-09-28 |
-| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 1 | 2026-09-28 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-09-28 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 53505 | 2026-09-29 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 157 | 2026-09-29 |
+| soulduse/team-ai | 0.390 | 2 | report_only | 18 | 2026-09-29 |
+| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 2 | 2026-09-29 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-09-29 |
 | zyx3721/session-exporter-skills | 0.390 | 2 | watch | 1 | 2026-09-27 |
+| yukimaru77/codex-account-pool | 0.390 | 2 | watch | 0 | 2026-09-29 |
 <!-- REPO_STATS:END -->
 
 ---
