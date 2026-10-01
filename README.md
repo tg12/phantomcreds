@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-01 | 32 | 8 | 1 | 1 | 4 | 0 |
 | 2026-09-30 | 33 | 10 | 2 | 2 | 4 | 0 |
 | 2026-09-29 | 31 | 8 | 2 | 2 | 4 | 0 |
 | 2026-09-28 | 29 | 7 | 2 | 2 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-05 | 35 | 6 | 2 | 3 | 2 | 0 |
 | 2026-09-04 | 42 | 9 | 2 | 4 | 2 | 1 |
 | 2026-09-03 | 32 | 5 | 2 | 2 | 1 | 0 |
-| 2026-09-02 | 32 | 6 | 2 | 2 | 1 | 0 |
-| 2026-09-01 | 31 | 6 | 2 | 2 | 1 | 2 |
+| 2026-09-02 | 32 | 6 | 2 | 2 | 1 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,15 +170,13 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-09-30 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 53623 | 2026-09-30 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 158 | 2026-09-30 |
-| GboyCode/CodexAuth | 0.390 | 2 | watch | 7 | 2026-09-30 |
-| Youkamii/switcher | 0.390 | 2 | report_only | 19 | 2026-09-30 |
-| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 2 | 2026-09-30 |
-| xsneser/cc-relay | 0.390 | 2 | watch | 2 | 2026-09-30 |
-| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 1 | 2026-09-30 |
+| asyncdargen/claude-proxy | 0.390 | 2 | report_only | 4 | 2026-10-01 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 160 | 2026-10-01 |
+| ya-luotao/remuda | 0.390 | 2 | watch | 2 | 2026-10-01 |
+| xsneser/cc-relay | 0.390 | 2 | watch | 2 | 2026-10-01 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-09-30 |
 | zyx3721/session-exporter-skills | 0.390 | 2 | watch | 1 | 2026-09-29 |
+| yp201/agent-router | 0.390 | 2 | report_only | 0 | 2026-10-01 |
 <!-- REPO_STATS:END -->
 
 ---
