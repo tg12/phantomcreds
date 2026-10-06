@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-06 | 29 | 12 | 1 | 1 | 1 | 0 |
 | 2026-10-05 | 29 | 11 | 1 | 1 | 1 | 0 |
 | 2026-10-04 | 30 | 11 | 1 | 1 | 2 | 0 |
 | 2026-10-03 | 33 | 11 | 1 | 1 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-10 | 35 | 10 | 3 | 4 | 4 | 1 |
 | 2026-09-09 | 30 | 7 | 1 | 2 | 1 | 0 |
 | 2026-09-08 | 26 | 6 | 1 | 2 | 1 | 0 |
-| 2026-09-07 | 31 | 8 | 2 | 3 | 2 | 0 |
-| 2026-09-06 | 31 | 7 | 2 | 3 | 2 | 2 |
+| 2026-09-07 | 31 | 8 | 2 | 3 | 2 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -169,17 +169,18 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-03 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2832 | 2026-10-05 |
-| wuwei-io/wuwei | 0.390 | 2 | watch | 4 | 2026-10-05 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-05 |
-| zhousun55-byte/RelayDesk | 0.390 | 2 | watch | 1 | 2026-10-05 |
-| vstaln/gray-claude-sub | 0.390 | 2 | watch | 0 | 2026-10-05 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-06 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-06 |
+| Youkamii/switcher | 0.390 | 2 | watch | 20 | 2026-10-06 |
+| zhousun55-byte/RelayDesk | 0.390 | 2 | watch | 1 | 2026-10-06 |
+| vstaln/gray-claude-sub | 0.390 | 2 | watch | 0 | 2026-10-06 |
+| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-10-06 |
 | wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-05 |
 | wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-05 |
 | wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-10-05 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-10-05 |
 | wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-10-05 |
+| vladkens/twscrape | 0.390 | 2 | watch | 2834 | 2026-10-06 |
 <!-- REPO_STATS:END -->
 
 ---
