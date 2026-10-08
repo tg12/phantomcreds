@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-08 | 30 | 9 | 1 | 1 | 1 | 0 |
 | 2026-10-07 | 36 | 12 | 1 | 1 | 1 | 0 |
 | 2026-10-06 | 29 | 12 | 1 | 1 | 1 | 0 |
 | 2026-10-05 | 29 | 11 | 1 | 1 | 1 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-12 | 37 | 9 | 3 | 4 | 4 | 0 |
 | 2026-09-11 | 37 | 10 | 3 | 4 | 4 | 0 |
 | 2026-09-10 | 35 | 10 | 3 | 4 | 4 | 2 |
-| 2026-09-09 | 30 | 7 | 1 | 2 | 1 | 0 |
-| 2026-09-08 | 26 | 6 | 1 | 2 | 1 | 1 |
+| 2026-09-09 | 30 | 7 | 1 | 2 | 1 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -170,17 +170,14 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-07 |
-| ZenRows/cli | 0.390 | 2 | watch | 15 | 2026-10-07 |
-| wuwei-io/wuwei | 0.390 | 2 | watch | 4 | 2026-10-07 |
-| zhousun55-byte/RelayDesk | 0.390 | 2 | watch | 1 | 2026-10-07 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-07 |
-| WinterSold1er/cloudcode-link-core | 0.390 | 2 | watch | 0 | 2026-10-07 |
-| vstaln/gray-claude-sub | 0.390 | 2 | watch | 0 | 2026-10-07 |
-| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-10-07 |
-| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-05 |
-| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-05 |
-| wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-10-05 |
-| vladkens/twscrape | 0.390 | 2 | watch | 2838 | 2026-10-07 |
+| WeZZard/mcp-vm-relay | 0.390 | 2 | watch | 1 | 2026-10-08 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-08 |
+| zhousun55-byte/RelayDesk | 0.390 | 2 | watch | 1 | 2026-10-08 |
+| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-08 |
+| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-08 |
+| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-10-08 |
+| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-10-08 |
+| vladkens/twscrape | 0.390 | 2 | watch | 2844 | 2026-10-08 |
 <!-- REPO_STATS:END -->
 
 ---
