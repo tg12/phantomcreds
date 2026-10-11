@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-11 | 24 | 8 | 1 | 1 | 3 | 0 |
 | 2026-10-10 | 27 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-09 | 28 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-08 | 30 | 9 | 1 | 1 | 1 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-15 | 28 | 11 | 1 | 3 | 2 | 0 |
 | 2026-09-14 | 33 | 13 | 2 | 4 | 4 | 0 |
 | 2026-09-13 | 38 | 11 | 3 | 5 | 4 | 1 |
-| 2026-09-12 | 37 | 9 | 3 | 4 | 4 | 0 |
-| 2026-09-11 | 37 | 10 | 3 | 4 | 4 | 3 |
+| 2026-09-12 | 37 | 9 | 3 | 4 | 4 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -170,12 +170,13 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-10 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-10 |
-| wuxianggujun/omnigate-panel | 0.390 | 2 | watch | 0 | 2026-10-10 |
-| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-10-10 |
-| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-08 |
-| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-08 |
-| XDTrees/dsh-workbuddy-xdpool | 0.390 | 2 | watch | 56 | 2026-10-10 |
+| Aafff623/pane | 0.390 | 2 | report_only | 19 | 2026-10-11 |
+| shoemoney/aigate | 0.390 | 2 | report_only | 2 | 2026-10-11 |
+| y0av/giverny | 0.390 | 2 | watch | 3 | 2026-10-11 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-11 |
+| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 2 | 2026-10-11 |
+| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-10-11 |
+| wuxianggujun/omnigate-panel | 0.390 | 2 | watch | 0 | 2026-10-11 |
 <!-- REPO_STATS:END -->
 
 ---
