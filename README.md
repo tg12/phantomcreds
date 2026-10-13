@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-12 | 28 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-11 | 24 | 8 | 1 | 1 | 3 | 0 |
 | 2026-10-10 | 27 | 7 | 1 | 1 | 1 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-17 | 31 | 10 | 1 | 3 | 3 | 0 |
 | 2026-09-16 | 29 | 9 | 1 | 3 | 3 | 0 |
 | 2026-09-15 | 28 | 11 | 1 | 3 | 2 | 0 |
-| 2026-09-14 | 33 | 13 | 2 | 4 | 4 | 0 |
-| 2026-09-13 | 38 | 11 | 3 | 5 | 4 | 3 |
+| 2026-09-14 | 33 | 13 | 2 | 4 | 4 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -169,13 +169,13 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-11 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 54940 | 2026-10-12 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-13 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 55054 | 2026-10-13 |
 | webagencyhermes1-dev/qwenproxy | 0.390 | 2 | watch | 0 | 2026-10-12 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 16 | 2026-10-12 |
-| y0av/giverny | 0.390 | 2 | watch | 3 | 2026-10-12 |
+| ya-luotao/remuda | 0.390 | 2 | watch | 2 | 2026-10-13 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 21 | 2026-10-13 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-12 |
-| veydanproject/Veydan-Space | 0.390 | 2 | watch | 0 | 2026-10-12 |
+| ZombieDuckling/agent-relay | 0.390 | 2 | watch | 0 | 2026-10-13 |
 <!-- REPO_STATS:END -->
 
 ---
