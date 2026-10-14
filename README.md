@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 0 |
 | 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-12 | 28 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-11 | 24 | 8 | 1 | 1 | 3 | 0 |
@@ -150,7 +151,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-26 | 29 | 6 | 2 | 2 | 3 | 0 |
 | 2026-09-25 | 34 | 10 | 4 | 4 | 6 | 0 |
 | 2026-09-24 | 34 | 11 | 4 | 4 | 6 | 0 |
-| 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 1 |
+| 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 2 |
 | 2026-09-22 | 35 | 9 | 2 | 3 | 3 | 0 |
 | 2026-09-21 | 31 | 7 | 2 | 3 | 3 | 1 |
 | 2026-09-20 | 30 | 9 | 1 | 2 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-18 | 34 | 10 | 1 | 3 | 2 | 0 |
 | 2026-09-17 | 31 | 10 | 1 | 3 | 3 | 0 |
 | 2026-09-16 | 29 | 9 | 1 | 3 | 3 | 0 |
-| 2026-09-15 | 28 | 11 | 1 | 3 | 2 | 0 |
-| 2026-09-14 | 33 | 13 | 2 | 4 | 4 | 2 |
+| 2026-09-15 | 28 | 11 | 1 | 3 | 2 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -169,13 +169,17 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-13 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 55054 | 2026-10-13 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-14 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 267 | 2026-10-14 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 55179 | 2026-10-14 |
 | webagencyhermes1-dev/qwenproxy | 0.390 | 2 | watch | 0 | 2026-10-12 |
-| ya-luotao/remuda | 0.390 | 2 | watch | 2 | 2026-10-13 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 21 | 2026-10-13 |
+| Yaocool/crosslane | 0.390 | 2 | watch | 2 | 2026-10-14 |
+| ZenRows/cli | 0.390 | 2 | report_only | 16 | 2026-10-14 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 22 | 2026-10-13 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-12 |
-| ZombieDuckling/agent-relay | 0.390 | 2 | watch | 0 | 2026-10-13 |
+| zhshie/agentic-bioflow_v2 | 0.390 | 2 | watch | 0 | 2026-10-14 |
+| vincimech010233/ev-charge-settlement-audit | 0.390 | 2 | watch | 0 | 2026-10-14 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 136 | 2026-10-14 |
 <!-- REPO_STATS:END -->
 
 ---
