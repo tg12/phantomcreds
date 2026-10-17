@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
 | 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 0 |
 | 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 0 |
 | 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-21 | 31 | 7 | 2 | 3 | 3 | 1 |
 | 2026-09-20 | 30 | 9 | 1 | 2 | 2 | 0 |
 | 2026-09-19 | 28 | 5 | 0 | 1 | 1 | 0 |
-| 2026-09-18 | 34 | 10 | 1 | 3 | 2 | 0 |
-| 2026-09-17 | 31 | 10 | 1 | 3 | 3 | 1 |
+| 2026-09-18 | 34 | 10 | 1 | 3 | 2 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -170,16 +170,14 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-15 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 267 | 2026-10-14 |
 | max-ramas/rms-mail-public | 0.390 | 2 | watch | 23 | 2026-10-16 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-15 |
-| xooxoxxo/relay | 0.390 | 2 | watch | 0 | 2026-10-16 |
+| loganpendragonmultiverse/browser-session-export-privacy-scrubber | 0.390 | 2 | watch | 0 | 2026-10-17 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-17 |
 | wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-10-15 |
 | wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-15 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-10-15 |
-| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-10-15 |
-| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-15 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 136 | 2026-10-15 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 137 | 2026-10-17 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 29 | 2026-10-17 |
 <!-- REPO_STATS:END -->
 
 ---
