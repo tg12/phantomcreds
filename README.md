@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-20 | 35 | 5 | 1 | 1 | 2 | 0 |
 | 2026-10-19 | 33 | 5 | 1 | 1 | 1 | 0 |
 | 2026-10-18 | 29 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-24 | 34 | 11 | 4 | 4 | 6 | 0 |
 | 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 2 |
 | 2026-09-22 | 35 | 9 | 2 | 3 | 3 | 0 |
-| 2026-09-21 | 31 | 7 | 2 | 3 | 3 | 1 |
-| 2026-09-20 | 30 | 9 | 1 | 2 | 2 | 1 |
+| 2026-09-21 | 31 | 7 | 2 | 3 | 3 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,10 +170,10 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-17 |
-| max-ramas/rms-mail-public | 0.390 | 2 | watch | 23 | 2026-10-16 |
 | loganpendragonmultiverse/browser-session-export-privacy-scrubber | 0.390 | 2 | watch | 0 | 2026-10-19 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-18 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 29 | 2026-10-17 |
+| ZenRows/cli | 0.390 | 2 | report_only | 16 | 2026-10-20 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-19 |
+| xooxoxxo/relay | 0.390 | 2 | watch | 0 | 2026-10-20 |
 <!-- REPO_STATS:END -->
 
 ---
