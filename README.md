@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-24 | 32 | 10 | 3 | 3 | 3 | 0 |
 | 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 0 |
 | 2026-10-21 | 35 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-20 | 35 | 5 | 1 | 1 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-27 | 30 | 8 | 2 | 2 | 4 | 0 |
 | 2026-09-26 | 29 | 6 | 2 | 2 | 3 | 0 |
 | 2026-09-25 | 34 | 10 | 4 | 4 | 6 | 0 |
-| 2026-09-24 | 34 | 11 | 4 | 4 | 6 | 0 |
-| 2026-09-23 | 36 | 10 | 4 | 4 | 5 | 4 |
+| 2026-09-24 | 34 | 11 | 4 | 4 | 6 | 4 |
 <!-- STATS:END -->
 
 ---
@@ -171,16 +171,14 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-17 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 268 | 2026-10-22 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 56053 | 2026-10-23 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 56122 | 2026-10-24 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-23 |
-| wyn-cmd/miso-chat | 0.390 | 2 | watch | 1 | 2026-10-23 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-10-22 |
 | wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-22 |
 | wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-10-22 |
 | wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-22 |
 | wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-10-22 |
-| XDTrees/dsh-xdpool | 0.390 | 2 | watch | 251 | 2026-10-23 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 29 | 2026-10-22 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 29 | 2026-10-23 |
 <!-- REPO_STATS:END -->
 
 ---
