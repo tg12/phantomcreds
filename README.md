@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-26 | 37 | 11 | 3 | 4 | 4 | 1 |
 | 2026-10-25 | 27 | 9 | 3 | 3 | 4 | 0 |
 | 2026-10-24 | 32 | 10 | 3 | 3 | 3 | 0 |
 | 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 0 |
@@ -140,7 +141,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
 | 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 0 |
 | 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 0 |
-| 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 0 |
+| 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 1 |
 | 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-12 | 28 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-11 | 24 | 8 | 1 | 1 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-09-29 | 31 | 8 | 2 | 2 | 4 | 0 |
 | 2026-09-28 | 29 | 7 | 2 | 2 | 3 | 0 |
 | 2026-09-27 | 30 | 8 | 2 | 2 | 4 | 0 |
-| 2026-09-26 | 29 | 6 | 2 | 2 | 3 | 0 |
-| 2026-09-25 | 34 | 10 | 4 | 4 | 6 | 4 |
+| 2026-09-26 | 29 | 6 | 2 | 2 | 3 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,14 +170,16 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-24 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 268 | 2026-10-22 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 56180 | 2026-10-25 |
-| ziuus/goroute | 0.390 | 2 | watch | 7 | 2026-10-25 |
-| whooperlove/cross-agent_mcp | 0.390 | 2 | watch | 4 | 2026-10-25 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-23 |
-| wang25669/msr-armbot | 0.390 | 2 | watch | 0 | 2026-10-25 |
-| xd88dx/afree-proxy | 0.390 | 2 | report_only | 0 | 2026-10-24 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 29 | 2026-10-23 |
+| jeffnash/CLIProxyAPI | 1.000 | 6 | report_only | 2 | 2026-10-24 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 56348 | 2026-10-26 |
+| youssef-110/A2A | 0.390 | 2 | watch | 2 | 2026-10-26 |
+| wuxianggujun/omnigate-panel | 0.390 | 2 | watch | 1 | 2026-10-26 |
+| ziuus/goroute | 0.390 | 2 | watch | 7 | 2026-10-26 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 8 | 2026-10-26 |
+| xd88dx/afree-proxy | 0.390 | 2 | report_only | 0 | 2026-10-26 |
+| Yeachan-Heo/oh-my-codex | 0.390 | 2 | watch | 33637 | 2026-10-26 |
+| Ylianst/MeshCentral | 0.390 | 2 | watch | 7503 | 2026-10-26 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1709 | 2026-10-26 |
 <!-- REPO_STATS:END -->
 
 ---
