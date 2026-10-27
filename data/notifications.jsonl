@@ -68,3 +68,4 @@
 {"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-21", "recorded_at": "2026-09-21T12:41:24.232861+00:00"}
 {"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-09-22", "recorded_at": "2026-09-22T11:29:17.824566+00:00"}
 {"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-10-26", "recorded_at": "2026-10-26T14:05:51.448288+00:00"}
+{"repo_full_name": "theopenco/llmgateway", "event": "skipped_closed", "issue_number": 3097, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-10-27", "recorded_at": "2026-10-27T13:09:04.712428+00:00"}
