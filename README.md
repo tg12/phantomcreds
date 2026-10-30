@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-10-30 | 44 | 12 | 2 | 2 | 4 | 0 |
 | 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 0 |
 | 2026-10-28 | 36 | 7 | 0 | 0 | 2 | 0 |
 | 2026-10-27 | 40 | 11 | 3 | 4 | 5 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-03 | 33 | 11 | 1 | 1 | 2 | 0 |
 | 2026-10-02 | 31 | 6 | 1 | 1 | 2 | 0 |
 | 2026-10-01 | 32 | 8 | 1 | 1 | 4 | 0 |
-| 2026-09-30 | 33 | 10 | 2 | 2 | 4 | 0 |
-| 2026-09-29 | 31 | 8 | 2 | 2 | 4 | 2 |
+| 2026-09-30 | 33 | 10 | 2 | 2 | 4 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -169,22 +169,18 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-24 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-30 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 268 | 2026-10-28 |
-| WinKing-R/dsh-uniterminal | 0.560 | 2 | file_issue | 0 | 2026-10-29 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 186 | 2026-10-29 |
-| wjf1/workbuddy2api-panel | 0.390 | 2 | watch | 1 | 2026-10-29 |
-| wuxianggujun/omnigate-panel | 0.390 | 2 | watch | 1 | 2026-10-29 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 10 | 2026-10-28 |
-| wang25669/msr-armbot | 0.390 | 2 | watch | 0 | 2026-10-29 |
-| xd88dx/afree-proxy | 0.390 | 2 | report_only | 0 | 2026-10-29 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 188 | 2026-10-30 |
+| ziuus/goroute | 0.390 | 2 | watch | 7 | 2026-10-30 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 10 | 2026-10-30 |
+| Xustalis/OpenPanda | 0.390 | 2 | watch | 15 | 2026-10-30 |
+| xd88dx/afree-proxy | 0.390 | 2 | report_only | 0 | 2026-10-30 |
 | wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-10-29 |
 | wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-10-29 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-10-29 |
 | wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-10-29 |
 | wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-10-29 |
-| yang12535/dsh-session-transfer | 0.390 | 2 | watch | 0 | 2026-10-27 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 31 | 2026-10-28 |
 <!-- REPO_STATS:END -->
 
 ---
