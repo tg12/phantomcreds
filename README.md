@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-01 | 39 | 7 | 2 | 3 | 4 | 0 |
 | 2026-10-31 | 39 | 10 | 2 | 3 | 4 | 0 |
 | 2026-10-30 | 44 | 12 | 2 | 2 | 4 | 0 |
 | 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-05 | 29 | 11 | 1 | 1 | 1 | 0 |
 | 2026-10-04 | 30 | 11 | 1 | 1 | 2 | 0 |
 | 2026-10-03 | 33 | 11 | 1 | 1 | 2 | 0 |
-| 2026-10-02 | 31 | 6 | 1 | 1 | 2 | 0 |
-| 2026-10-01 | 32 | 8 | 1 | 1 | 4 | 1 |
+| 2026-10-02 | 31 | 6 | 1 | 1 | 2 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -169,15 +169,12 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-10-30 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 268 | 2026-10-28 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 189 | 2026-10-31 |
-| Y-Kanekoo/pocket-dev-relay | 0.390 | 2 | watch | 0 | 2026-10-31 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-01 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 57172 | 2026-11-01 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 189 | 2026-11-01 |
+| WeZZard/mcp-relay | 0.390 | 2 | watch | 1 | 2026-11-01 |
 | xd88dx/afree-proxy | 0.390 | 2 | report_only | 0 | 2026-10-31 |
-| wuxianggujun/omnigate-panel | 0.390 | 2 | watch | 1 | 2026-10-31 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 15 | 2026-10-31 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 10 | 2026-10-30 |
-| wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-10-29 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 31 | 2026-10-31 |
 | vb64/markdown-pdf | 0.350 | 1 | file_issue | 163 | 2026-10-30 |
 <!-- REPO_STATS:END -->
 
