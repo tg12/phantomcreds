@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-04 | 39 | 9 | 3 | 3 | 3 | 0 |
 | 2026-11-03 | 42 | 8 | 2 | 2 | 4 | 0 |
 | 2026-11-02 | 41 | 12 | 2 | 3 | 5 | 0 |
 | 2026-11-01 | 39 | 7 | 2 | 3 | 4 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-08 | 30 | 9 | 1 | 1 | 1 | 0 |
 | 2026-10-07 | 36 | 12 | 1 | 1 | 1 | 0 |
 | 2026-10-06 | 29 | 12 | 1 | 1 | 1 | 0 |
-| 2026-10-05 | 29 | 11 | 1 | 1 | 1 | 0 |
-| 2026-10-04 | 30 | 11 | 1 | 1 | 2 | 1 |
+| 2026-10-05 | 29 | 11 | 1 | 1 | 1 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -169,14 +169,15 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-02 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 57398 | 2026-11-03 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 198 | 2026-11-03 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 15 | 2026-11-03 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-03 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-04 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 270 | 2026-11-04 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 57493 | 2026-11-04 |
+| Y-Kanekoo/pocket-dev-relay | 0.390 | 2 | watch | 0 | 2026-11-04 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-04 |
+| XiaYinchang/qswitch | 0.390 | 2 | watch | 0 | 2026-11-04 |
+| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-04 |
 | yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-03 |
-| xd88dx/afree-proxy | 0.390 | 2 | report_only | 0 | 2026-11-03 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 33 | 2026-11-02 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 33 | 2026-11-03 |
 <!-- REPO_STATS:END -->
 
 ---
