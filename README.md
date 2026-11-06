@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-06 | 43 | 18 | 3 | 3 | 4 | 0 |
 | 2026-11-05 | 42 | 13 | 3 | 3 | 4 | 0 |
 | 2026-11-04 | 39 | 9 | 3 | 3 | 3 | 0 |
 | 2026-11-03 | 42 | 8 | 2 | 2 | 4 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-10 | 27 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-09 | 28 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-08 | 30 | 9 | 1 | 1 | 1 | 0 |
-| 2026-10-07 | 36 | 12 | 1 | 1 | 1 | 0 |
-| 2026-10-06 | 29 | 12 | 1 | 1 | 1 | 1 |
+| 2026-10-07 | 36 | 12 | 1 | 1 | 1 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -169,19 +169,24 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-05 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-06 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 272 | 2026-11-05 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 57661 | 2026-11-05 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-05 |
-| yaphetsky7/Blackcat-SCRM | 0.390 | 2 | report_only | 0 | 2026-11-05 |
-| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-05 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 57782 | 2026-11-06 |
+| VynoDePal/codex-claude-relay | 0.390 | 2 | watch | 0 | 2026-11-06 |
+| max-ramas/rms-mail-public | 0.390 | 2 | watch | 23 | 2026-10-16 |
+| ZenRows/cli | 0.390 | 2 | report_only | 16 | 2026-11-06 |
+| zakyirsyaad/antigravity-bridge | 0.390 | 2 | watch | 4 | 2026-11-06 |
+| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-06 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-06 |
+| vlxlv/agy-pool-rust | 0.390 | 2 | watch | 0 | 2026-11-06 |
+| yumoii789/bilibili-cookie-login | 0.390 | 2 | watch | 0 | 2026-11-05 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-05 |
+| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-05 |
 | wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-11-05 |
 | wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-05 |
 | wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-11-05 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-05 |
 | wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-05 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-05 |
 <!-- REPO_STATS:END -->
 
 ---
