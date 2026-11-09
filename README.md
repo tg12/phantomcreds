@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-09 | 31 | 10 | 1 | 1 | 3 | 0 |
 | 2026-11-08 | 33 | 12 | 2 | 2 | 2 | 0 |
 | 2026-11-07 | 42 | 16 | 2 | 2 | 2 | 0 |
 | 2026-11-06 | 43 | 18 | 3 | 3 | 4 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 0 |
 | 2026-10-12 | 28 | 7 | 2 | 2 | 2 | 1 |
 | 2026-10-11 | 24 | 8 | 1 | 1 | 3 | 0 |
-| 2026-10-10 | 27 | 7 | 1 | 1 | 1 | 0 |
-| 2026-10-09 | 28 | 7 | 1 | 1 | 1 | 1 |
+| 2026-10-10 | 27 | 7 | 1 | 1 | 1 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -169,18 +169,16 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- REPO_STATS:START -->
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
-| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-06 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 273 | 2026-11-08 |
-| zaku-jd/VALAL | 0.390 | 2 | watch | 0 | 2026-11-08 |
+| BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-09 |
 | max-ramas/rms-mail-public | 0.390 | 2 | watch | 23 | 2026-11-08 |
-| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-08 |
-| wjf1/workbuddy2api-panel | 0.390 | 2 | watch | 1 | 2026-11-08 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-08 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-07 |
-| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-08 |
-| yumoii789/bilibili-cookie-login | 0.390 | 2 | watch | 0 | 2026-11-05 |
-| XDTrees/dsh-xdpool | 0.390 | 2 | watch | 467 | 2026-11-08 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-07 |
+| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-09 |
+| zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-09 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-09 |
+| yaphetsky7/Blackcat-SCRM | 0.390 | 2 | report_only | 0 | 2026-11-09 |
+| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-09 |
+| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-09 |
+| wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-11-09 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-08 |
 <!-- REPO_STATS:END -->
 
 ---
