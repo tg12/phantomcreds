@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-12 | 38 | 15 | 1 | 1 | 2 | 0 |
 | 2026-11-11 | 38 | 14 | 1 | 1 | 2 | 0 |
 | 2026-11-10 | 37 | 17 | 1 | 1 | 2 | 0 |
 | 2026-11-09 | 31 | 10 | 1 | 1 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 0 |
 | 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 0 |
 | 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 1 |
-| 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 0 |
-| 2026-10-12 | 28 | 7 | 2 | 2 | 2 | 2 |
+| 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -170,19 +170,20 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
-| zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-10 |
-| max-ramas/rms-mail-public | 0.390 | 2 | watch | 24 | 2026-11-11 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-11 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-11 |
-| Zac-Linley/dsh-plugin-mailharbor | 0.390 | 2 | watch | 0 | 2026-11-11 |
-| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-11 |
-| VynoDePal/codex-claude-relay | 0.390 | 2 | watch | 0 | 2026-11-11 |
-| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-11 |
-| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-10 |
-| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-10 |
-| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-10 |
-| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-10 |
-| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-11-10 |
+| zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
+| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-12 |
+| wjf1/workbuddy2api-panel | 0.390 | 2 | watch | 1 | 2026-11-11 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-12 |
+| wbi35772/openchamber-instabox-matrix | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| xesrevinu/cc-mods-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| XDTrees/dsh-xdpool | 0.390 | 2 | watch | 497 | 2026-11-12 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-08 |
 <!-- REPO_STATS:END -->
 
 ---
