@@ -73,3 +73,4 @@
 {"repo_full_name": "vb64/markdown-pdf", "event": "created", "issue_number": 115, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-10-31", "recorded_at": "2026-10-31T13:29:59.964354+00:00"}
 {"repo_full_name": "vb64/markdown-pdf", "event": "commented", "issue_number": 115, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-11-01", "recorded_at": "2026-11-01T14:12:43.990867+00:00"}
 {"repo_full_name": "vb64/markdown-pdf", "event": "commented", "issue_number": 115, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-11-02", "recorded_at": "2026-11-02T17:01:24.854906+00:00"}
+{"repo_full_name": "w0h1v/nixcavate", "event": "created", "issue_number": 1, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-11-13", "recorded_at": "2026-11-13T15:16:44.204700+00:00"}

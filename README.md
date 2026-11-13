@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-13 | 34 | 8 | 1 | 2 | 2 | 0 |
 | 2026-11-12 | 38 | 15 | 1 | 1 | 2 | 0 |
 | 2026-11-11 | 38 | 14 | 1 | 1 | 2 | 0 |
 | 2026-11-10 | 37 | 17 | 1 | 1 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
 | 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 0 |
 | 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 0 |
-| 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 1 |
-| 2026-10-13 | 26 | 7 | 2 | 2 | 2 | 2 |
+| 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -170,20 +170,13 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
+| w0h1v/nixcavate | 0.560 | 2 | file_issue | 1 | 2026-11-12 |
 | zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-12 |
-| wjf1/workbuddy2api-panel | 0.390 | 2 | watch | 1 | 2026-11-11 |
+| wcqqq1214/astrbot_plugin_openai_oauth | 0.390 | 2 | watch | 4 | 2026-11-11 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-12 |
-| wbi35772/openchamber-instabox-matrix | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| xesrevinu/cc-mods-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| XDTrees/dsh-xdpool | 0.390 | 2 | watch | 497 | 2026-11-12 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-08 |
 <!-- REPO_STATS:END -->
 
 ---
