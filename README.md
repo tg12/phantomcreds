@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-14 | 33 | 8 | 1 | 2 | 2 | 0 |
 | 2026-11-13 | 34 | 8 | 1 | 2 | 2 | 0 |
 | 2026-11-12 | 38 | 15 | 1 | 1 | 2 | 0 |
 | 2026-11-11 | 38 | 14 | 1 | 1 | 2 | 0 |
@@ -152,14 +153,13 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-25 | 27 | 9 | 3 | 3 | 4 | 0 |
 | 2026-10-24 | 32 | 10 | 3 | 3 | 3 | 0 |
 | 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 0 |
-| 2026-10-21 | 35 | 7 | 1 | 1 | 1 | 0 |
+| 2026-10-21 | 35 | 7 | 1 | 1 | 1 | 1 |
 | 2026-10-20 | 35 | 5 | 1 | 1 | 2 | 0 |
 | 2026-10-19 | 33 | 5 | 1 | 1 | 1 | 0 |
 | 2026-10-18 | 29 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
 | 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 0 |
-| 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 0 |
-| 2026-10-14 | 29 | 11 | 3 | 3 | 4 | 3 |
+| 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -172,11 +172,11 @@ The data model is structured so those questions can be answered from the ledger 
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
 | w0h1v/nixcavate | 0.560 | 2 | file_issue | 1 | 2026-11-12 |
 | zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| wcqqq1214/astrbot_plugin_openai_oauth | 0.390 | 2 | watch | 4 | 2026-11-11 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-12 |
+| WeZZard/mcp-relay | 0.390 | 2 | watch | 1 | 2026-11-02 |
+| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-12 |
+| vlxlv/agy-pool-rust | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
 <!-- REPO_STATS:END -->
 
 ---
