@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-15 | 43 | 12 | 1 | 3 | 3 | 0 |
 | 2026-11-14 | 33 | 8 | 1 | 2 | 2 | 0 |
 | 2026-11-13 | 34 | 8 | 1 | 2 | 2 | 0 |
 | 2026-11-12 | 38 | 15 | 1 | 1 | 2 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-19 | 33 | 5 | 1 | 1 | 1 | 0 |
 | 2026-10-18 | 29 | 7 | 1 | 1 | 1 | 0 |
 | 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
-| 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 0 |
-| 2026-10-15 | 37 | 13 | 2 | 2 | 3 | 2 |
+| 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 2 |
 <!-- STATS:END -->
 
 ---
@@ -171,12 +171,16 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
 | w0h1v/nixcavate | 0.560 | 2 | file_issue | 1 | 2026-11-12 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 205 | 2026-11-12 |
 | zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 11 | 2026-11-12 |
-| WeZZard/mcp-relay | 0.390 | 2 | watch | 1 | 2026-11-02 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 14 | 2026-11-12 |
-| vlxlv/agy-pool-rust | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| WeZZard/mcp-relay | 0.390 | 2 | watch | 1 | 2026-11-02 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 12 | 2026-11-15 |
+| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-11 |
+| XDTrees/dsh-xdpool | 0.390 | 2 | watch | 529 | 2026-11-15 |
+| Yeachan-Heo/oh-my-codex | 0.390 | 2 | watch | 33791 | 2026-11-15 |
+| theopenco/llmgateway | 0.350 | 1 | file_issue | 1743 | 2026-11-15 |
 <!-- REPO_STATS:END -->
 
 ---
