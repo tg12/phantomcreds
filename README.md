@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-16 | 41 | 13 | 2 | 2 | 5 | 0 |
 | 2026-11-15 | 43 | 12 | 1 | 3 | 3 | 0 |
 | 2026-11-14 | 33 | 8 | 1 | 2 | 2 | 0 |
 | 2026-11-13 | 34 | 8 | 1 | 2 | 2 | 0 |
@@ -153,13 +154,12 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-26 | 37 | 11 | 3 | 4 | 4 | 1 |
 | 2026-10-25 | 27 | 9 | 3 | 3 | 4 | 0 |
 | 2026-10-24 | 32 | 10 | 3 | 3 | 3 | 0 |
-| 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 0 |
+| 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 1 |
 | 2026-10-21 | 35 | 7 | 1 | 1 | 1 | 1 |
 | 2026-10-20 | 35 | 5 | 1 | 1 | 2 | 0 |
 | 2026-10-19 | 33 | 5 | 1 | 1 | 1 | 0 |
 | 2026-10-18 | 29 | 7 | 1 | 1 | 1 | 0 |
-| 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 0 |
-| 2026-10-16 | 39 | 11 | 2 | 2 | 2 | 2 |
+| 2026-10-17 | 32 | 9 | 1 | 1 | 1 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -170,17 +170,18 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
-| w0h1v/nixcavate | 0.560 | 2 | file_issue | 1 | 2026-11-12 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 205 | 2026-11-12 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 58722 | 2026-11-16 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 207 | 2026-11-16 |
+| wjf1/workbuddy2api-panel | 0.390 | 2 | report_only | 1 | 2026-11-12 |
 | zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| WeZZard/mcp-relay | 0.390 | 2 | watch | 1 | 2026-11-02 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 12 | 2026-11-15 |
+| Vidub2001/Vortex-Mail | 0.390 | 2 | watch | 0 | 2026-11-16 |
+| XiaYinchang/qswitch | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | yuuki/ssh_session_exporter | 0.390 | 2 | watch | 0 | 2026-11-11 |
-| XDTrees/dsh-xdpool | 0.390 | 2 | watch | 529 | 2026-11-15 |
-| Yeachan-Heo/oh-my-codex | 0.390 | 2 | watch | 33791 | 2026-11-15 |
-| theopenco/llmgateway | 0.350 | 1 | file_issue | 1743 | 2026-11-15 |
+| Yeachan-Heo/oh-my-codex | 0.390 | 2 | watch | 33796 | 2026-11-16 |
+| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-08 |
 <!-- REPO_STATS:END -->
 
 ---
