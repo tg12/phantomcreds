@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-18 | 35 | 7 | 1 | 1 | 3 | 0 |
 | 2026-11-17 | 35 | 8 | 2 | 2 | 3 | 0 |
 | 2026-11-16 | 41 | 13 | 2 | 2 | 5 | 0 |
 | 2026-11-15 | 43 | 12 | 1 | 3 | 3 | 0 |
@@ -158,8 +159,7 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 1 |
 | 2026-10-21 | 35 | 7 | 1 | 1 | 1 | 1 |
 | 2026-10-20 | 35 | 5 | 1 | 1 | 2 | 0 |
-| 2026-10-19 | 33 | 5 | 1 | 1 | 1 | 0 |
-| 2026-10-18 | 29 | 7 | 1 | 1 | 1 | 1 |
+| 2026-10-19 | 33 | 5 | 1 | 1 | 1 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -170,13 +170,12 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
-| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 58828 | 2026-11-17 |
 | coddy-project/coddy-agent | 0.390 | 2 | report_only | 208 | 2026-11-16 |
-| xesrevinu/cc-mods-relay | 0.390 | 2 | watch | 1 | 2026-11-17 |
+| wjf1/workbuddy2api-panel | 0.390 | 2 | report_only | 1 | 2026-11-12 |
 | xingkaixin/agent-dump | 0.390 | 2 | watch | 13 | 2026-11-16 |
-| yumoii789/bilibili-cookie-login | 0.390 | 2 | watch | 0 | 2026-11-05 |
+| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| VigilOSS/Vigil | 0.390 | 2 | watch | 34 | 2026-11-08 |
+| yumoii789/bilibili-cookie-login | 0.390 | 2 | watch | 0 | 2026-11-05 |
 <!-- REPO_STATS:END -->
 
 ---
