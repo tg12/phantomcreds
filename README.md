@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-20 | 37 | 14 | 2 | 2 | 2 | 0 |
 | 2026-11-19 | 40 | 12 | 2 | 2 | 2 | 1 |
 | 2026-11-18 | 35 | 7 | 1 | 1 | 3 | 0 |
 | 2026-11-17 | 35 | 8 | 2 | 2 | 3 | 0 |
@@ -157,9 +158,8 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-26 | 37 | 11 | 3 | 4 | 4 | 1 |
 | 2026-10-25 | 27 | 9 | 3 | 3 | 4 | 0 |
 | 2026-10-24 | 32 | 10 | 3 | 3 | 3 | 0 |
-| 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 1 |
+| 2026-10-23 | 31 | 12 | 3 | 3 | 3 | 2 |
 | 2026-10-21 | 35 | 7 | 1 | 1 | 1 | 1 |
-| 2026-10-20 | 35 | 5 | 1 | 1 | 2 | 1 |
 <!-- STATS:END -->
 
 ---
@@ -171,16 +171,18 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 4 | 2026-11-18 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 208 | 2026-11-16 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 13 | 2026-11-16 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 209 | 2026-11-20 |
 | Xustalis/OpenPanda | 0.390 | 2 | watch | 16 | 2026-11-16 |
-| wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-11-09 |
-| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| xingkaixin/agent-dump | 0.390 | 2 | watch | 13 | 2026-11-16 |
+| xb-cjlh/agent-relay | 0.390 | 2 | watch | 0 | 2026-11-20 |
+| X33834/bigrobot | 0.390 | 2 | watch | 0 | 2026-11-20 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
-| WGooold/Orbis | 0.390 | 2 | watch | 27 | 2026-11-19 |
+| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-US | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-11-09 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 144 | 2026-11-16 |
 <!-- REPO_STATS:END -->
 
 ---
