@@ -81,3 +81,4 @@
 {"repo_full_name": "traylinx/switchAILocal", "event": "commented", "issue_number": 260, "title": "[phantomcreds] Credential-handling risks detected in this repository", "scan_date": "2026-11-20", "recorded_at": "2026-11-20T16:04:38.698991+00:00"}
 {"repo_full_name": "traylinx/switchAILocal", "event": "commented", "issue_number": 260, "title": "[phantomcreds] Credential-handling risks detected in this repository", "scan_date": "2026-11-21", "recorded_at": "2026-11-21T15:15:17.220720+00:00"}
 {"repo_full_name": "w0h1v/nixcavate", "event": "skipped_closed", "issue_number": 1, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-11-21", "recorded_at": "2026-11-21T15:15:17.477252+00:00"}
+{"repo_full_name": "w0h1v/nixcavate", "event": "skipped_closed", "issue_number": 1, "title": "[phantomcreds] Exposed secrets detected in this repository", "scan_date": "2026-11-22", "recorded_at": "2026-11-22T15:12:49.256720+00:00"}
