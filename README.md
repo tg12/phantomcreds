@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-24 | 32 | 8 | 2 | 2 | 3 | 0 |
 | 2026-11-23 | 32 | 12 | 2 | 3 | 3 | 0 |
 | 2026-11-22 | 34 | 13 | 2 | 3 | 3 | 0 |
 | 2026-11-21 | 38 | 14 | 2 | 3 | 2 | 0 |
@@ -155,11 +156,10 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-11-01 | 39 | 7 | 2 | 3 | 4 | 0 |
 | 2026-10-31 | 39 | 10 | 2 | 3 | 4 | 0 |
 | 2026-10-30 | 44 | 12 | 2 | 2 | 4 | 0 |
-| 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 0 |
+| 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 1 |
 | 2026-10-28 | 36 | 7 | 0 | 0 | 2 | 0 |
 | 2026-10-27 | 40 | 11 | 3 | 4 | 5 | 0 |
-| 2026-10-26 | 37 | 11 | 3 | 4 | 4 | 1 |
-| 2026-10-25 | 27 | 9 | 3 | 3 | 4 | 3 |
+| 2026-10-26 | 37 | 11 | 3 | 4 | 4 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -171,15 +171,11 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 4 | 2026-11-18 |
-| w0h1v/nixcavate | 0.560 | 2 | file_issue | 1 | 2026-11-12 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 212 | 2026-11-23 |
-| zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| bitscoid/bits-affiliate | 0.390 | 2 | watch | 0 | 2026-11-22 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 17 | 2026-11-23 |
-| wuwei-io/wuwei | 0.390 | 2 | watch | 9 | 2026-11-12 |
-| xingkaixin/agent-dump | 0.390 | 2 | watch | 13 | 2026-11-16 |
-| yezzzp/agent-relay-protocol | 0.390 | 2 | watch | 0 | 2026-11-23 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 213 | 2026-11-23 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
+| wangbingnan136/agy-max | 0.390 | 2 | watch | 2 | 2026-11-24 |
+| yezzzp/agent-relay-protocol | 0.390 | 2 | watch | 0 | 2026-11-24 |
 | wj-sidiss/otopilot | 0.390 | 2 | watch | 261 | 2026-11-23 |
 <!-- REPO_STATS:END -->
 
