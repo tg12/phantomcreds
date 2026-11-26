@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-26 | 41 | 13 | 3 | 3 | 4 | 0 |
 | 2026-11-25 | 40 | 13 | 3 | 3 | 4 | 0 |
 | 2026-11-24 | 32 | 8 | 2 | 2 | 3 | 0 |
 | 2026-11-23 | 32 | 12 | 2 | 3 | 3 | 0 |
@@ -154,12 +155,11 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-11-04 | 39 | 9 | 3 | 3 | 3 | 0 |
 | 2026-11-03 | 42 | 8 | 2 | 2 | 4 | 0 |
 | 2026-11-02 | 41 | 12 | 2 | 3 | 5 | 0 |
-| 2026-11-01 | 39 | 7 | 2 | 3 | 4 | 0 |
+| 2026-11-01 | 39 | 7 | 2 | 3 | 4 | 1 |
 | 2026-10-31 | 39 | 10 | 2 | 3 | 4 | 0 |
 | 2026-10-30 | 44 | 12 | 2 | 2 | 4 | 0 |
-| 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 1 |
+| 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 2 |
 | 2026-10-28 | 36 | 7 | 0 | 0 | 2 | 0 |
-| 2026-10-27 | 40 | 11 | 3 | 4 | 5 | 3 |
 <!-- STATS:END -->
 
 ---
@@ -170,18 +170,18 @@ The data model is structured so those questions can be answered from the ledger 
 | Repo | Score | Findings | Action | Stars | Updated |
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
-| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 276 | 2026-11-25 |
+| kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 276 | 2026-11-26 |
 | traylinx/switchAILocal | 1.000 | 5 | file_issue | 4 | 2026-11-18 |
 | coddy-project/coddy-agent | 0.390 | 2 | report_only | 214 | 2026-11-25 |
-| VOfficial404/colaunch | 0.390 | 2 | watch | 0 | 2026-11-25 |
-| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| wuwei-io/wuwei | 0.390 | 2 | watch | 9 | 2026-11-12 |
-| Xustalis/OpenPanda | 0.390 | 2 | watch | 17 | 2026-11-23 |
-| ZSlayerHQ/Synapse | 0.390 | 2 | watch | 1 | 2026-11-25 |
-| WGooold/Orbis | 0.390 | 2 | watch | 29 | 2026-11-24 |
+| youssef-110/A2A | 0.390 | 2 | watch | 2 | 2026-11-26 |
+| xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-11-09 |
+| wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-12 |
+| w9rrt2s/zai-session-exporter | 0.390 | 2 | watch | 0 | 2026-11-25 |
 | wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 145 | 2026-11-20 |
-| wj-sidiss/otopilot | 0.390 | 2 | watch | 261 | 2026-11-23 |
 <!-- REPO_STATS:END -->
 
 ---
