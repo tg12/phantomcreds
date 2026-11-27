@@ -130,6 +130,7 @@ The data model is structured so those questions can be answered from the ledger 
 <!-- STATS:START -->
 | Date | Scanned | Flagged | High Risk | Issue-Worthy | Report Only | New High Risk |
 |------|---------|---------|-----------|--------------|-------------|---------------|
+| 2026-11-27 | 42 | 12 | 3 | 3 | 5 | 0 |
 | 2026-11-26 | 41 | 13 | 3 | 3 | 4 | 0 |
 | 2026-11-25 | 40 | 13 | 3 | 3 | 4 | 0 |
 | 2026-11-24 | 32 | 8 | 2 | 2 | 3 | 0 |
@@ -159,7 +160,6 @@ The data model is structured so those questions can be answered from the ledger 
 | 2026-10-31 | 39 | 10 | 2 | 3 | 4 | 0 |
 | 2026-10-30 | 44 | 12 | 2 | 2 | 4 | 0 |
 | 2026-10-29 | 41 | 16 | 2 | 3 | 4 | 2 |
-| 2026-10-28 | 36 | 7 | 0 | 0 | 2 | 0 |
 <!-- STATS:END -->
 
 ---
@@ -171,17 +171,16 @@ The data model is structured so those questions can be answered from the ledger 
 |------|-------|----------|--------|-------|---------|
 | BlueSkyXN/CPA-Core-LTS | 1.000 | 7 | report_only | 12 | 2026-11-11 |
 | kaitranntt/CLIProxyAPIPlus | 1.000 | 6 | report_only | 276 | 2026-11-26 |
-| traylinx/switchAILocal | 1.000 | 5 | file_issue | 4 | 2026-11-18 |
-| coddy-project/coddy-agent | 0.390 | 2 | report_only | 214 | 2026-11-25 |
+| router-for-me/CLIProxyAPI | 1.000 | 5 | report_only | 59604 | 2026-11-27 |
+| coddy-project/coddy-agent | 0.390 | 2 | report_only | 214 | 2026-11-26 |
 | zhu748/aistudio-api | 0.390 | 2 | report_only | 0 | 2026-11-12 |
-| youssef-110/A2A | 0.390 | 2 | watch | 2 | 2026-11-26 |
 | xd88dx/afree-proxy | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | wung667/Auto-Renew-HidenCloud-MX | 0.390 | 2 | watch | 0 | 2026-11-09 |
 | wung667/Auto-Renew-HidenCloud-FR | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | wung667/Auto-Renew-HidenCloud-AE | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | wung667/Auto-Renew-HidenCloud-IN | 0.390 | 2 | watch | 0 | 2026-11-12 |
 | w9rrt2s/zai-session-exporter | 0.390 | 2 | watch | 0 | 2026-11-25 |
-| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 145 | 2026-11-20 |
+| wannanbigpig/codex-accounts-manager | 0.390 | 2 | watch | 146 | 2026-11-27 |
 <!-- REPO_STATS:END -->
 
 ---
